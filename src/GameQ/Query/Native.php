@@ -133,9 +133,6 @@ class Native extends Core
     /**
      * Pull the responses out of the stream
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @param array $sockets
      * @param int   $timeout
      * @param int   $stream_timeout
@@ -144,10 +141,6 @@ class Native extends Core
      */
     public function getResponses(array $sockets, $timeout, $stream_timeout)
     {
-
-        // Set the loop to active
-        $loop_active = true;
-
         // Will hold the responses read from the sockets
         $responses = [];
 
@@ -180,7 +173,7 @@ class Native extends Core
         $time_stop = microtime(true) + $timeout;
 
         // Let's loop until we break something.
-        while ($loop_active && microtime(true) < $time_stop) {
+        while (microtime(true) < $time_stop) {
             // Check to make sure $read is not empty, if so we are done
             if (empty($read)) {
                 break;

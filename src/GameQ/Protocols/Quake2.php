@@ -108,7 +108,7 @@ class Quake2 extends Protocol
             throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
         }
 
-        return call_user_func_array([$this, $this->responses[$header]], [$buffer]);
+        return $this->{$this->responses[$header]}($buffer);
     }
 
     /**
@@ -127,8 +127,6 @@ class Quake2 extends Protocol
             $results,
             $this->processPlayers(new Buffer($buffer->getBuffer()))
         );
-
-        unset($buffer);
 
         // Return results
         return $results;
@@ -160,8 +158,6 @@ class Quake2 extends Protocol
 
         $result->add('password', 0);
         $result->add('mod', 0);
-
-        unset($buffer);
 
         return $result->fetch();
     }
@@ -211,8 +207,7 @@ class Quake2 extends Protocol
 
         $result->add('clients', $playerCount);
 
-        // Clear
-        unset($buffer, $playerCount);
+        unset($playerCount);
 
         return $result->fetch();
     }

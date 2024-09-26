@@ -128,11 +128,11 @@ class M2mp extends Protocol
 
         // Header
         // Figure out which packet response this is
-        if ($header != "M2MP") {
+        if ($header !== "M2MP") {
             throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
         }
 
-        return call_user_func_array([$this, $this->responses[$header]], [$buffer]);
+        return $this->{$this->responses[$header]}($buffer);
     }
 
     /**
@@ -151,8 +151,6 @@ class M2mp extends Protocol
             $results,
             $this->processPlayers($buffer)
         );
-
-        unset($buffer);
 
         // Return results
         return $results;
@@ -180,8 +178,6 @@ class M2mp extends Protocol
         $result->add('max_players', $buffer->readPascalString(1, true));
         $result->add('gamemode', $buffer->readPascalString(1, true));
         $result->add('password', (bool) $buffer->readInt8());
-
-        unset($buffer);
 
         return $result->fetch();
     }

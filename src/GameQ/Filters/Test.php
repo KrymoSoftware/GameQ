@@ -32,8 +32,6 @@ class Test extends Base
     /**
      * Apply the filter.  For this we just return whatever is sent
      *
-     * @SuppressWarnings(PHPMD)
-     *
      * @param array         $result
      * @param \GameQ\Server $server
      *

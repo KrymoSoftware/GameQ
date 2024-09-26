@@ -89,8 +89,6 @@ class Killingfloor extends Unreal2
         $result->add('maxplayers', $buffer->readInt32());
         $result->add('currentwave', $buffer->readInt32());
 
-        unset($buffer);
-
         return $result->fetch();
     }
 }

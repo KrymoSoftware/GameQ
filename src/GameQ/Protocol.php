@@ -23,8 +23,6 @@ namespace GameQ;
 /**
  * Handles the core functionality for the protocols
  *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
- *
  * @author Austin Bischoff <austin@codebeard.com>
  */
 abstract class Protocol
@@ -356,7 +354,7 @@ abstract class Protocol
     /**
      * Return specific packet(s)
      *
-     * @param array $type
+     * @param array|string $type
      *
      * @return array
      */
@@ -375,7 +373,7 @@ abstract class Protocol
                     $packets[$packet_type] = $packet_data;
                 }
             }
-        } elseif ($type == '!challenge') {
+        } elseif ($type === '!challenge') {
             // Loop the packets
             foreach ($this->packets as $packet_type => $packet_data) {
                 // Dont want challenge packets
@@ -434,7 +432,6 @@ abstract class Protocol
      * This should be overloaded by extending class
      *
      * @codeCoverageIgnore
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
      * @param \GameQ\Buffer $challenge_buffer
      *
@@ -483,7 +480,6 @@ abstract class Protocol
      * Generic method to allow protocol classes to do work right before the query is sent
      *
      * @codeCoverageIgnore
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
      * @param \GameQ\Server $server
      */

@@ -305,7 +305,7 @@ class Bf3 extends Protocol
 
         $result->add('version', $items[2]);
 
-        unset($buffer, $items);
+        unset($items);
 
         return $result->fetch();
     }

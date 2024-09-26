@@ -174,8 +174,6 @@ class Teeworlds extends Protocol
             $result->addPlayer('team', $buffer->readString());
         }
 
-        unset($buffer);
-
         return $result->fetch();
     }
 }

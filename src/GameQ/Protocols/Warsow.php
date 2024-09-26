@@ -88,9 +88,6 @@ class Warsow extends Quake3
             unset($playerInfo);
         }
 
-        // Clear
-        unset($buffer);
-
         return $result->fetch();
     }
 }

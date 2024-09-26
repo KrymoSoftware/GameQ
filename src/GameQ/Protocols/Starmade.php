@@ -151,8 +151,6 @@ class Starmade extends Protocol
     /**
      * Parse the server response parameters
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *
      * @param \GameQ\Buffer $buffer
      *
      * @return array

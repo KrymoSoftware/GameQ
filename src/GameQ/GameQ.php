@@ -33,11 +33,11 @@ use GameQ\Exception\Query as QueryException;
  *
  * @author Austin Bischoff <austin@codebeard.com>
  *
- * @property bool   $debug
- * @property string $capture_packets_file
- * @property int    $stream_timeout
- * @property int    $timeout
- * @property int    $write_wait
+ * @property bool        $debug
+ * @property string|null $capture_packets_file
+ * @property int         $stream_timeout
+ * @property int         $timeout
+ * @property int         $write_wait
  */
 class GameQ
 {
@@ -149,15 +149,16 @@ class GameQ
      *
      * @param mixed $option
      * @param mixed $value
-     *
-     * @return bool
      */
     public function __set($option, $value)
     {
 
         $this->options[$option] = $value;
+    }
 
-        return true;
+    public function __isset($option)
+    {
+        return isset($this->options[$option]);
     }
 
     public function getServers()
@@ -437,9 +438,11 @@ class GameQ
         // We have at least one server with a challenge, we need to listen for responses
         if ($server_challenge) {
             // Now we need to listen for and grab challenge response(s)
-            $responses = call_user_func_array(
+            $responses = call_user_func(
                 [$this->query, 'getResponses'],
-                [$sockets, $this->timeout, $this->stream_timeout]
+                $sockets,
+                $this->timeout,
+                $this->stream_timeout
             );
 
             // Iterate over the challenge responses
@@ -535,9 +538,11 @@ class GameQ
         }
 
         // Now we need to listen for and grab response(s)
-        $responses = call_user_func_array(
+        $responses = call_user_func(
             [$this->query, 'getResponses'],
-            [$sockets, $this->timeout, $this->stream_timeout]
+            $sockets,
+            $this->timeout,
+            $this->stream_timeout
         );
 
         // Iterate over the responses

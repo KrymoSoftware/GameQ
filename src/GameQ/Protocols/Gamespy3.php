@@ -99,6 +99,7 @@ class Gamespy3 extends Protocol
 
         // Check for valid challenge (see #197)
         if ($challenge) {
+            $challenge = (int) $challenge;
             // Encode chellenge result
             $challenge_result = sprintf(
                 "%c%c%c%c",

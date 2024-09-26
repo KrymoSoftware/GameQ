@@ -76,8 +76,7 @@ class Quake4 extends Doom3
         // Add the number of players to the result
         $result->add('numplayers', $playerCount);
 
-        // Clear
-        unset($buffer, $playerCount);
+        unset($playerCount);
 
         return $result->fetch();
     }

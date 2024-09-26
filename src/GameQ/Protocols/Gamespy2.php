@@ -185,8 +185,6 @@ class Gamespy2 extends Protocol
             $result->add($key, utf8_encode($buffer->readString()));
         }
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -212,8 +210,6 @@ class Gamespy2 extends Protocol
 
         // Teams are next
         $this->parsePlayerTeam('teams', $buffer, $result);
-
-        unset($buffer);
 
         return $result->fetch();
     }

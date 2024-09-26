@@ -174,8 +174,6 @@ class Unreal2 extends Protocol
         $result->add('maxplayers', $buffer->readInt32());
         $result->add('ping', $buffer->readInt32()); // 0
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -207,7 +205,7 @@ class Unreal2 extends Protocol
             }
         }
 
-        unset($buffer, $id);
+        unset($id);
 
         return $result->fetch();
     }
@@ -238,8 +236,6 @@ class Unreal2 extends Protocol
 
             $result->add(strtolower($key), utf8_encode($buffer->readPascalString(1)));
         }
-
-        unset($buffer);
 
         return $result->fetch();
     }

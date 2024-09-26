@@ -156,7 +156,7 @@ class Bfbc2 extends Protocol
 
             // Check to make sure the expected length matches the real length
             // Subtract 4 for the header burn
-            if ($packetLength != ($buffer->readInt32() - 4)) {
+            if ($packetLength !== ($buffer->readInt32() - 4)) {
                 throw new Exception(__METHOD__ . " packet length does not match expected length!");
             }
 
@@ -283,7 +283,7 @@ class Bfbc2 extends Protocol
 
         $result->add('version', $items[2]);
 
-        unset($buffer, $items);
+        unset($items);
 
         return $result->fetch();
     }

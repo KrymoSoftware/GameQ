@@ -176,8 +176,6 @@ class Lhmp extends Protocol
         $result->add('website', utf8_encode($buffer->readPascalString()));
         $result->add('mapname', utf8_encode($buffer->readPascalString()));
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -207,7 +205,7 @@ class Lhmp extends Protocol
             }
         }
 
-        unset($buffer, $id);
+        unset($id);
 
         return $result->fetch();
     }

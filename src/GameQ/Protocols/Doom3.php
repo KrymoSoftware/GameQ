@@ -123,7 +123,7 @@ class Doom3 extends Protocol
             throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
         }
 
-        return call_user_func_array([$this, $this->responses[$header]], [$buffer]);
+        return $this->{$this->responses[$header]}($buffer);
     }
 
     /**
@@ -142,8 +142,6 @@ class Doom3 extends Protocol
             $results,
             $this->processPlayers($buffer)
         );
-
-        unset($buffer);
 
         // Return results
         return $results;
@@ -175,8 +173,6 @@ class Doom3 extends Protocol
 
             $result->add($key, $val);
         }
-
-        unset($buffer);
 
         return $result->fetch();
     }
@@ -214,7 +210,7 @@ class Doom3 extends Protocol
         $result->add('clients', $playerCount);
 
         // Clear
-        unset($buffer, $playerCount);
+        unset($playerCount);
 
         return $result->fetch();
     }

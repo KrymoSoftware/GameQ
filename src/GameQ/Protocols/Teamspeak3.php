@@ -198,7 +198,7 @@ class Teamspeak3 extends Protocol
             }
         }
 
-        unset($buffer, $sections, $section, $check);
+        unset($buffer, $sections, $check);
 
         return $result->fetch();
     }

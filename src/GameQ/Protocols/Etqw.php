@@ -117,9 +117,7 @@ class Etqw extends Protocol
         }
 
         // Offload the call
-        $results = call_user_func_array([$this, $this->responses[$response_type]], [$buffer]);
-
-        return $results;
+        return $this->{$this->responses[$response_type]}($buffer);
     }
 
     /*
@@ -175,8 +173,6 @@ class Etqw extends Protocol
 
         // Now let's parse the extended player info
         $this->parsePlayersExtra($buffer, $result);
-
-        unset($buffer);
 
         return $result->fetch();
     }

@@ -208,8 +208,6 @@ class Cs2d extends Protocol
         $result->add('num_bots', (($this->readFlag($serverFlags, 5)) ? $buffer->readInt8() : 0));
         $result->add('dedicated', 1);
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -243,7 +241,7 @@ class Cs2d extends Protocol
             }
         }
 
-        unset($buffer, $id);
+        unset($id);
 
         return $result->fetch();
     }

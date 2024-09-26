@@ -131,9 +131,6 @@ class Gamespy extends Protocol
         // Explode the data
         $data = explode('\\', $buffer->getBuffer());
 
-        // No longer needed
-        unset($buffer);
-
         // Init some vars
         $numPlayers = 0;
         $numTeams = 0;

@@ -177,8 +177,6 @@ abstract class Core
     /**
      * Read the responses from the socket(s)
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
      * @param array $sockets
      * @param int   $timeout
      * @param int   $stream_timeout

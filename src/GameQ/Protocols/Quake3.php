@@ -108,7 +108,7 @@ class Quake3 extends Protocol
             throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
         }
 
-        return call_user_func_array([$this, $this->responses[$header]], [$buffer]);
+        return $this->{$this->responses[$header]}($buffer);
     }
 
     protected function processStatus(Buffer $buffer)
@@ -120,8 +120,6 @@ class Quake3 extends Protocol
             $results,
             $this->processPlayers(new Buffer($buffer->getBuffer()))
         );
-
-        unset($buffer);
 
         // Return results
         return $results;
@@ -150,8 +148,6 @@ class Quake3 extends Protocol
                 utf8_encode(trim($buffer->readStringMulti(['\\', "\x0a"])))
             );
         }
-
-        unset($buffer);
 
         return $result->fetch();
     }
@@ -206,8 +202,7 @@ class Quake3 extends Protocol
 
         $result->add('clients', $playerCount);
 
-        // Clear
-        unset($buffer, $playerCount);
+        unset($playerCount);
 
         return $result->fetch();
     }

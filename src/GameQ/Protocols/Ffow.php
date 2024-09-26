@@ -185,8 +185,6 @@ class Ffow extends Protocol
         $result->add('max_rounds', $buffer->readInt8());
         $result->add('time_left', $buffer->readInt16());
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -217,8 +215,6 @@ class Ffow extends Protocol
             }
         }
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -233,11 +229,6 @@ class Ffow extends Protocol
      */
     protected function processPlayers(Buffer $buffer)
     {
-        // Set the result to a new result instance
-        $result = new Result();
-
-        unset($buffer);
-
-        return $result->fetch();
+        return (new Result())->fetch();
     }
 }

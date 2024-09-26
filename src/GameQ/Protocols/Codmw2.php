@@ -80,9 +80,8 @@ class Codmw2 extends Quake3
 
         // Add Playercount
         $result->add('clients', count($players));
-        
-        // Clear
-        unset($buffer, $players);
+
+        unset($players);
 
         return $result->fetch();
     }

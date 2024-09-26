@@ -217,8 +217,6 @@ class Samp extends Protocol
         $result->add('gametype', $buffer->read($buffer->readInt32()));
         $result->add('language', $buffer->read($buffer->readInt32()));
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -246,8 +244,6 @@ class Samp extends Protocol
             $result->addPlayer('ping', $buffer->readInt32());
         }
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -271,8 +267,6 @@ class Samp extends Protocol
         while ($buffer->getLength()) {
             $result->add($buffer->readPascalString(), $buffer->readPascalString());
         }
-
-        unset($buffer);
 
         return $result->fetch();
     }

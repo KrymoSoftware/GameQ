@@ -88,8 +88,6 @@ class Ship extends Source
             }
         }
 
-        unset($buffer);
-
         return $result->fetch();
     }
 }

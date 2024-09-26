@@ -133,8 +133,7 @@ class Arma3 extends Source
         // Make a new buffer with the reassembled data
         $responseBuffer = new Buffer($data);
 
-        // Kill the old buffer, should be empty
-        unset($buffer, $data);
+        unset($data);
 
         // Set the result to a new result instance
         $result = new Result();

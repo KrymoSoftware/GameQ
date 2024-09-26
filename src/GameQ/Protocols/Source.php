@@ -29,8 +29,6 @@ use GameQ\Result;
  * This class is used as the basis for all other source based servers
  * that rely on the source protocol for game querying.
  *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
- *
  * @author Austin Bischoff <austin@codebeard.com>
  */
 class Source extends Protocol
@@ -217,7 +215,7 @@ class Source extends Protocol
         }
 
         // Free up memory
-        unset($packets, $packet, $packet_id, $response_type);
+        unset($packets, $packet_id, $response_type);
 
         return $results;
     }
@@ -228,8 +226,6 @@ class Source extends Protocol
 
     /**
      * Process the split packets and decompress if necessary
-     *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      *
      * @param       $packet_id
      * @param array $packets
@@ -323,9 +319,6 @@ class Source extends Protocol
             unset($buffer);
         }
 
-        // Free some memory
-        unset($packets, $packet);
-
         // Sort the packets by packet number
         ksort($packs);
 
@@ -401,8 +394,6 @@ class Source extends Protocol
             unset($edf);
         }
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -449,8 +440,6 @@ class Source extends Protocol
         $result->add('secure', $buffer->readInt8());
         $result->add('num_bots', $buffer->readInt8());
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -486,8 +475,6 @@ class Source extends Protocol
             $result->addPlayer('time', $buffer->readFloat32());
         }
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
@@ -514,8 +501,6 @@ class Source extends Protocol
         while ($buffer->getLength()) {
             $result->add($buffer->readString(), $buffer->readString());
         }
-
-        unset($buffer);
 
         return $result->fetch();
     }

@@ -106,15 +106,15 @@ class Openttd extends Protocol
         // Grab the header
         $length = $buffer->readInt16();
         //$type = $buffer->readInt8();
-        $buffer->skip(1); // Skip the "$type" as its not used in the code, and to comply with phpmd it cant be assigned and not used.
+        $buffer->skip(1); // Skip the "$type" as its not used in the code.
 
         // Header
         // Figure out which packet response this is
-        if ($packetLength != $length) {
-            throw new Exception(__METHOD__ . " response type '" . bin2hex($length) . "' is not valid");
+        if ($packetLength !== $length) {
+            throw new Exception(__METHOD__ . " header length '" .$length . "' does not match packet length '" . $packetLength . "'.");
         }
 
-        return call_user_func_array([$this, 'processServerInfo'], [$buffer]);
+        return $this->processServerInfo($buffer);
     }
 
     /**
@@ -176,7 +176,6 @@ class Openttd extends Protocol
                 $result->add('dedicated', $buffer->readInt8());
                 // Cascades all the way down even if case is meet
         }
-        unset($buffer);
 
         return $result->fetch();
     }

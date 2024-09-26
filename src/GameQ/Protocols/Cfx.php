@@ -82,8 +82,6 @@ class Cfx extends Protocol
 
     /**
      * Holds the Player list so we can overwrite it back
-     *
-     * @var string
      */
     protected $PlayerList = [];
 
@@ -140,9 +138,7 @@ class Cfx extends Protocol
         }
 
         // Offload the call
-        $results = call_user_func_array([$this, $this->responses[$response_type]], [$buffer]);
-
-        return $results;
+        return $this->{$this->responses[$response_type]}($buffer);
     }
 
     /*
@@ -169,9 +165,6 @@ class Cfx extends Protocol
 
         // Explode the data
         $data = explode('\\', $buffer->getBuffer());
-
-        // No longer needed
-        unset($buffer);
 
         $itemCount = count($data);
 

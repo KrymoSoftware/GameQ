@@ -37,8 +37,8 @@ class Result
     /**
      * Adds variable to results
      *
-     * @param string $name  Variable name
-     * @param string|array $value Variable value
+     * @param string                      $name  Variable name
+     * @param string|array|int|float|bool $value Variable value
      */
     public function add($name, $value)
     {
@@ -49,8 +49,8 @@ class Result
     /**
      * Adds player variable to output
      *
-     * @param string $name  Variable name
-     * @param string $value Variable value
+     * @param string           $name  Variable name
+     * @param string|int|float $value Variable value
      */
     public function addPlayer($name, $value)
     {
@@ -61,8 +61,8 @@ class Result
     /**
      * Adds player variable to output
      *
-     * @param string $name  Variable name
-     * @param string $value Variable value
+     * @param string           $name  Variable name
+     * @param string|int|float $value Variable value
      */
     public function addTeam($name, $value)
     {

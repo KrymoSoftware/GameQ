@@ -23,8 +23,6 @@ use GameQ\Tests\TestBase;
 /**
  * Class Base for protocol tests
  *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
- *
  * @package GameQ\Tests\Protocols
  */
 abstract class Base extends TestBase
