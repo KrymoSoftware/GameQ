@@ -124,9 +124,9 @@ class Samp extends Protocol
      */
     public function beforeSend(Server $server)
     {
-
         // Build the server code
-        $this->server_code = implode('', array_map('chr', explode('.', $server->ip()))) .
+        $ipNumbers = array_map('intval', explode('.', $server->ip()));
+        $this->server_code = implode('', array_map('chr', $ipNumbers)) .
             pack("S", $server->portClient());
 
         // Loop over the packets and update them
