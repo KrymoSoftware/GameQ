@@ -87,24 +87,30 @@ class Stripcolors extends Base
     /**
      * Strip color codes from quake based games
      */
-    protected function stripQuake(string &$string): void
+    protected function stripQuake(mixed &$string): void
     {
-        $string = preg_replace('#(\^.)#', '', $string);
+        if (is_string($string)) {
+            $string = preg_replace('#(\^.)#', '', $string);
+        }
     }
 
     /**
      * Strip color codes from Source based games
      */
-    protected function stripSource(string &$string): void
+    protected function stripSource(mixed &$string): void
     {
-        $string = strip_tags($string);
+        if (is_string($string)) {
+            $string = strip_tags($string);
+        }
     }
 
     /**
      * Strip color codes from Unreal based games
      */
-    protected function stripUnreal(string &$string): void
+    protected function stripUnreal(mixed &$string): void
     {
-        $string = preg_replace('/\x1b.../', '', $string);
+        if (is_string($string)) {
+            $string = preg_replace('/\x1b.../', '', $string);
+        }
     }
 }

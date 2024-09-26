@@ -104,15 +104,15 @@ class Mumble extends Protocol
      */
     public function processResponse(): mixed
     {
-
-        // Try to json_decode, make it into an array
-        if (($data = json_decode(
+        $data = json_decode(
             implode('', $this->packets_response),
             true,
             512,
             JSON_THROW_ON_ERROR
-        )) === null) {
-            throw new Exception(__METHOD__ . " Unable to decode JSON data.");
+        );
+
+        if (!is_array($data)) {
+            throw new Exception('Failed to decode JSON response to array');
         }
 
         // Set the result to a new result instance

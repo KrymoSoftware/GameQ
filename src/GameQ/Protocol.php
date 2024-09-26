@@ -275,9 +275,8 @@ abstract class Protocol
     /**
      * Return specific packet(s)
      */
-    public function getPacket(array|string $type = []): array
+    public function getPacket(array|string $type = []): array|string
     {
-
         $packets = [];
 
         // We want an array of packets back

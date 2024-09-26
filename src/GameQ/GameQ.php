@@ -176,9 +176,8 @@ class GameQ
      *
      * @throws \Exception
      */
-    public function addServersFromFiles(array $files = []): self
+    public function addServersFromFiles(string|array $files = []): self
     {
-
         // Since we expect an array let us turn a string (i.e. single file) into an array
         if (!is_array($files)) {
             $files = [$files];
