@@ -109,8 +109,8 @@ class Tshock extends Http
         }
 
         // Check the status response
-        if ($json->status != 200) {
-            throw new Exception("JSON status from Tshock protocol response was '{$json->status}', expected '200'.");
+        if ($json->status !== 200) {
+            throw new Exception("JSON status from Tshock protocol response was '$json->status', expected '200'.");
         }
 
         $result = new Result();

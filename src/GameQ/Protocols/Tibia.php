@@ -19,7 +19,6 @@
 namespace GameQ\Protocols;
 
 use GameQ\Protocol;
-use GameQ\Buffer;
 use GameQ\Result;
 use GameQ\Exception\Protocol as Exception;
 
@@ -124,7 +123,7 @@ class Tibia extends Protocol
         // Iterate over the info
         foreach (['serverinfo', 'owner', 'map', 'npcs', 'monsters', 'players'] as $property) {
             foreach ($xmlDoc->{$property}->attributes() as $key => $value) {
-                if (!in_array($property, ['serverinfo'])) {
+                if ($property !== 'serverinfo') {
                     $key = $property . '_' . $key;
                 }
 
@@ -135,7 +134,7 @@ class Tibia extends Protocol
 
         $result->add("motd", (string)$xmlDoc->motd);
 
-        unset($xmlDoc, $xmlDoc);
+        unset($xmlDoc);
 
         return $result->fetch();
     }

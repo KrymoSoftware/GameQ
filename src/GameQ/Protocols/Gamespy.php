@@ -21,7 +21,7 @@ namespace GameQ\Protocols;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use \GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\Protocol as Exception;
 
 /**
  * GameSpy Protocol class

@@ -166,14 +166,13 @@ class Source extends Protocol
             $header = $buffer->readInt32Signed();
 
             // Single packet
-            if ($header == -1) {
+            if ($header === -1) {
                 // We need to peek and see what kind of engine this is for later processing
-                if ($buffer->lookAhead(1) == "\x6d") {
+                if ($buffer->lookAhead(1) === "\x6d") {
                     $this->source_engine = self::GOLDSOURCE_ENGINE;
                 }
 
                 $packets[] = $buffer->getBuffer();
-                continue;
             } else {
                 // Split packet
 
@@ -202,7 +201,7 @@ class Source extends Protocol
 
             // Figure out which packet response this is
             if (!array_key_exists($response_type, $this->responses)) {
-                throw new Exception(__METHOD__ . " response type '{$response_type}' is not valid");
+                throw new Exception(__METHOD__ . " response type '$response_type' is not valid");
             }
 
             // Now we need to call the proper method
@@ -286,17 +285,17 @@ class Source extends Protocol
                     $result = bzdecompress($buffer->getBuffer());
 
                     // Now verify the length
-                    if (strlen($result) != $packet_length) {
+                    if (strlen($result) !== $packet_length) {
                         // @codeCoverageIgnoreStart
                         throw new Exception(
-                            "Checksum for compressed packet failed! Length expected: {$packet_length}, length
+                            "Checksum for compressed packet failed! Length expected: $packet_length, length
                             returned: " . strlen($result)
                         );
                         // @codeCoverageIgnoreEnd
                     }
 
                     // We need to burn the extra header (\xFF\xFF\xFF\xFF) on first loop
-                    if ($i == 0) {
+                    if ($i === 0) {
                         $result = substr($result, 4);
                     }
                 } else {
@@ -304,7 +303,7 @@ class Source extends Protocol
                     $buffer->readInt16Signed();
 
                     // We need to burn the extra header (\xFF\xFF\xFF\xFF) on first loop
-                    if ($i == 0) {
+                    if ($i === 0) {
                         $buffer->read(4);
                     }
 

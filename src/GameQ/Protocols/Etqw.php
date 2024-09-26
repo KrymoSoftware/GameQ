@@ -113,7 +113,7 @@ class Etqw extends Protocol
 
         // Figure out which packet response this is
         if (!array_key_exists($response_type, $this->responses)) {
-            throw new Exception(__METHOD__ . " response type '{$response_type}' is not valid");
+            throw new Exception(__METHOD__ . " response type '$response_type' is not valid");
         }
 
         // Offload the call
@@ -183,7 +183,7 @@ class Etqw extends Protocol
      * @param Buffer $buffer
      * @param Result $result
      */
-    protected function parsePlayers(Buffer &$buffer, Result &$result)
+    protected function parsePlayers(Buffer $buffer, Result $result)
     {
         // By default there are 0 players
         $players = 0;
@@ -212,7 +212,7 @@ class Etqw extends Protocol
      * @param Buffer $buffer
      * @param Result $result
      */
-    protected function parsePlayersExtra(Buffer &$buffer, Result &$result)
+    protected function parsePlayersExtra(Buffer $buffer, Result $result)
     {
         // Iterate over the extra player info
         while (($id = $buffer->readInt8()) != 32) {

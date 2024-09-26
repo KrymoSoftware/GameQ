@@ -161,7 +161,7 @@ abstract class Core
     /**
      * Write data to the socket
      *
-     * @param string $data
+     * @param string|array $data
      *
      * @return int The number of bytes written
      */

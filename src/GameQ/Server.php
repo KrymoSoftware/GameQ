@@ -141,7 +141,7 @@ class Server
             );
 
             $this->protocol = $class->newInstanceArgs([$this->options]);
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             throw new Exception("Unable to locate Protocols class for '{$server_info[self::SERVER_TYPE]}'!");
         }
 
@@ -164,7 +164,7 @@ class Server
         // Test for IPv6
         if (substr_count($ip_address, ':') > 1) {
             // See if we have a port, input should be in the format [::1]:27015 or similar
-            if (strstr($ip_address, ']:')) {
+            if (str_contains($ip_address, ']:')) {
                 // Explode to get port
                 $server_addr = explode(':', $ip_address);
 
@@ -178,18 +178,18 @@ class Server
             } else {
                 // Just the IPv6 address, no port defined, fail
                 throw new Exception(
-                    "The host address '{$ip_address}' is missing the port.  All "
+                    "The host address '$ip_address' is missing the port.  All "
                     . "servers must have a port defined!"
                 );
             }
 
             // Now let's validate the IPv6 value sent, remove the square brackets ([]) first
             if (!filter_var(trim($this->ip, '[]'), FILTER_VALIDATE_IP, ['flags' => FILTER_FLAG_IPV6,])) {
-                throw new Exception("The IPv6 address '{$this->ip}' is invalid.");
+                throw new Exception("The IPv6 address '$this->ip' is invalid.");
             }
         } else {
             // We have IPv4 with a port defined
-            if (strstr($ip_address, ':')) {
+            if (str_contains($ip_address, ':')) {
                 list($this->ip, $this->port_client) = explode(':', $ip_address);
 
                 // Type case the port
@@ -197,7 +197,7 @@ class Server
             } else {
                 // No port, fail
                 throw new Exception(
-                    "The host address '{$ip_address}' is missing the port. All "
+                    "The host address '$ip_address' is missing the port. All "
                     . "servers must have a port defined!"
                 );
             }
@@ -210,7 +210,7 @@ class Server
                 // When gethostbyname() fails it returns the original string
                 if ($this->ip === $resolved) {
                     // so if ip and the result from gethostbyname() are equal this failed.
-                    throw new Exception("Unable to resolve the host '{$this->ip}' to an IP address.");
+                    throw new Exception("Unable to resolve the host '$this->ip' to an IP address.");
                 } else {
                     $this->ip = $resolved;
                 }

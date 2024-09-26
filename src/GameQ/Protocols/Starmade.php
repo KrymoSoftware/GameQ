@@ -156,7 +156,7 @@ class Starmade extends Protocol
      * @return array
      * @throws \GameQ\Exception\Protocol
      */
-    protected function parseServerParameters(Buffer &$buffer)
+    protected function parseServerParameters(Buffer $buffer)
     {
 
         // Init the parsed data array

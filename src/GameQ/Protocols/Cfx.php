@@ -23,7 +23,6 @@ use GameQ\Exception\Protocol as Exception;
 use GameQ\Protocol;
 use GameQ\Result;
 use GameQ\Server;
-use GameQ\Protocols\Http;
 
 /**
  * GTA Five M Protocol Class
@@ -115,7 +114,7 @@ class Cfx extends Protocol
             'host' => "$server->ip:$server->port_query",
         ]);
         $results = $GameQ->process();
-        $this->PlayerList = isset($results[0]) && isset($results[0][0]) ? $results[0][0] : [];
+        $this->PlayerList = $results[0][0] ?? [];
     }
 
     /**
@@ -134,7 +133,7 @@ class Cfx extends Protocol
 
         // Figure out which packet response this is
         if (empty($response_type) || !array_key_exists($response_type, $this->responses)) {
-            throw new Exception(__METHOD__ . " response type '{$response_type}' is not valid");
+            throw new Exception(__METHOD__ . " response type '$response_type' is not valid");
         }
 
         // Offload the call
@@ -174,7 +173,7 @@ class Cfx extends Protocol
             $key = $data[$x];
             $val = $data[$x + 1];
 
-            if (in_array($key, ['challenge'])) {
+            if ($key === 'challenge') {
                 continue; // skip
             }
 

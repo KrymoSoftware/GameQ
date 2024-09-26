@@ -149,7 +149,7 @@ class Teamspeak2 extends Protocol
 
         // Check the header [TS]
         if (($header = trim($buffer->readString("\n"))) !== '[TS]') {
-            throw new Exception(__METHOD__ . " Expected header '{$header}' does not match expected '[TS]'.");
+            throw new Exception(__METHOD__ . " Expected header '$header' does not match expected '[TS]'.");
         }
 
         // Split this buffer as the data blocks are bound by "OK" and drop any empty values
@@ -200,7 +200,7 @@ class Teamspeak2 extends Protocol
      * @param string        $data
      * @param \GameQ\Result $result
      */
-    protected function processDetails($data, Result &$result)
+    protected function processDetails($data, Result $result)
     {
 
         // Create a buffer
@@ -230,7 +230,7 @@ class Teamspeak2 extends Protocol
      * @param string        $data
      * @param \GameQ\Result $result
      */
-    protected function processChannels($data, Result &$result)
+    protected function processChannels($data, Result $result)
     {
 
         // Create a buffer
@@ -262,7 +262,7 @@ class Teamspeak2 extends Protocol
      * @param string        $data
      * @param \GameQ\Result $result
      */
-    protected function processPlayers($data, Result &$result)
+    protected function processPlayers($data, Result $result)
     {
 
         // Create a buffer

@@ -141,7 +141,7 @@ class GameQ
     public function __get($option)
     {
 
-        return isset($this->options[$option]) ? $this->options[$option] : null;
+        return $this->options[$option] ?? null;
     }
 
     /**
@@ -623,7 +623,7 @@ class GameQ
         $results['gq_transport'] = $server->protocol()->transport();
 
         // Process the join link
-        if (!isset($results['gq_joinlink']) || empty($results['gq_joinlink'])) {
+        if (empty($results['gq_joinlink'])) {
             $results['gq_joinlink'] = $server->getJoinLink();
         }
 
@@ -653,7 +653,7 @@ class GameQ
 
                 // Apply the filter to the data
                 $results = $filter->apply($results, $server);
-            } catch (\ReflectionException $exception) {
+            } catch (\ReflectionException) {
                 // Invalid, skip it
                 continue;
             }

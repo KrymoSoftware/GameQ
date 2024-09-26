@@ -135,7 +135,7 @@ class Mumble extends Protocol
         // Let's iterate over the response items, there are a lot
         foreach ($data as $key => $value) {
             // Ignore root for now, that is where all of the channel/player info is housed
-            if (in_array($key, ['root'])) {
+            if ($key === 'root') {
                 continue;
             }
 

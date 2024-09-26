@@ -123,13 +123,10 @@ class Quake2 extends Protocol
         // We need to split the data and offload
         $results = $this->processServerInfo(new Buffer($buffer->readString("\x0A")));
 
-        $results = array_merge_recursive(
+        return array_merge_recursive(
             $results,
             $this->processPlayers(new Buffer($buffer->getBuffer()))
         );
-
-        // Return results
-        return $results;
     }
 
     /**

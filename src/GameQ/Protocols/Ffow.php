@@ -207,7 +207,7 @@ class Ffow extends Protocol
         while ($buffer->getLength()) {
             $key = $buffer->readString();
             // Check for map
-            if (strstr($key, "Map:")) {
+            if (str_contains($key, "Map:")) {
                 $result->addSub("maplist", "name", $buffer->readString());
             } else // Regular rule
             {

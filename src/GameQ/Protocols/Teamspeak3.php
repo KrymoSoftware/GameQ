@@ -149,7 +149,7 @@ class Teamspeak3 extends Protocol
 
         // Check the header TS3
         if (($header = trim($buffer->readString("\n"))) !== 'TS3') {
-            throw new Exception(__METHOD__ . " Expected header '{$header}' does not match expected 'TS3'.");
+            throw new Exception(__METHOD__ . " Expected header '$header' does not match expected 'TS3'.");
         }
 
         // Convert all the escaped characters
@@ -171,7 +171,7 @@ class Teamspeak3 extends Protocol
             $value = trim($value);
 
             // Not empty string or a message response for "error id=\d"
-            return !empty($value) && substr($value, 0, 5) !== 'error';
+            return !empty($value) && !str_starts_with($value, 'error');
         });
 
         // Trim up the values to remove extra whitespace
@@ -251,7 +251,7 @@ class Teamspeak3 extends Protocol
      * @param string        $data
      * @param \GameQ\Result $result
      */
-    protected function processDetails($data, Result &$result)
+    protected function processDetails($data, Result $result)
     {
 
         // Offload the parsing for these values
@@ -280,7 +280,7 @@ class Teamspeak3 extends Protocol
      * @param string        $data
      * @param \GameQ\Result $result
      */
-    protected function processChannels($data, Result &$result)
+    protected function processChannels($data, Result $result)
     {
 
         // We need to split the data at the pipe
@@ -306,7 +306,7 @@ class Teamspeak3 extends Protocol
      * @param string        $data
      * @param \GameQ\Result $result
      */
-    protected function processPlayers($data, Result &$result)
+    protected function processPlayers($data, Result $result)
     {
 
         // We need to split the data at the pipe

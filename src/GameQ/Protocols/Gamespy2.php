@@ -223,7 +223,7 @@ class Gamespy2 extends Protocol
      *
      * @throws Exception
      */
-    protected function parsePlayerTeam($dataType, Buffer &$buffer, Result &$result)
+    protected function parsePlayerTeam($dataType, Buffer $buffer, Result $result)
     {
 
         // Do count
@@ -243,7 +243,7 @@ class Gamespy2 extends Protocol
         }
 
         // Check if there are any value entries
-        if ($buffer->lookAhead() == "\x00") {
+        if ($buffer->lookAhead() === "\x00") {
             $buffer->skip();
 
             return;
@@ -259,7 +259,5 @@ class Gamespy2 extends Protocol
                 break;
             }
         }
-
-        return;
     }
 }

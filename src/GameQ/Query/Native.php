@@ -124,7 +124,7 @@ class Native extends Core
 
             // Something bad happened, throw query exception
             throw new Exception(
-                __METHOD__ . " - Error creating socket to server {$this->ip}:{$this->port}. Error: " . $errstr,
+                __METHOD__ . " - Error creating socket to server $this->ip:$this->port. Error: " . $errstr,
                 $errno
             );
         }

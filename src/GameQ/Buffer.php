@@ -48,7 +48,7 @@ class Buffer
      *
      * @type string
      */
-    private $number_type = self::NUMBER_TYPE_LITTLEENDIAN;
+    private $number_type;
 
     /**
      * The original data
@@ -130,7 +130,7 @@ class Buffer
     {
 
         if (($length + $this->index) > $this->length) {
-            throw new Exception("Unable to read length={$length} from buffer.  Bad protocol format or return?");
+            throw new Exception("Unable to read length=$length from buffer.  Bad protocol format or return?");
         }
 
         $string = substr($this->data, $this->index, $length);
@@ -332,18 +332,11 @@ class Buffer
     {
 
         // Change the integer type we are looking up
-        switch ($this->number_type) {
-            case self::NUMBER_TYPE_BIGENDIAN:
-                $type = 'nint';
-                break;
-
-            case self::NUMBER_TYPE_LITTLEENDIAN:
-                $type = 'vint';
-                break;
-
-            default:
-                $type = 'Sint';
-        }
+        $type = match ($this->number_type) {
+            self::NUMBER_TYPE_BIGENDIAN => 'nint',
+            self::NUMBER_TYPE_LITTLEENDIAN => 'vint',
+            default => 'Sint',
+        };
 
         $int = unpack($type, $this->read(2));
 
@@ -442,20 +435,13 @@ class Buffer
     {
 
         // We have the pack 64-bit codes available. See: http://php.net/manual/en/function.pack.php
-        if (version_compare(PHP_VERSION, '5.6.3') >= 0 && PHP_INT_SIZE == 8) {
+        if (version_compare(PHP_VERSION, '5.6.3') >= 0 && PHP_INT_SIZE === 8) {
             // Change the integer type we are looking up
-            switch ($this->number_type) {
-                case self::NUMBER_TYPE_BIGENDIAN:
-                    $type = 'Jint';
-                    break;
-
-                case self::NUMBER_TYPE_LITTLEENDIAN:
-                    $type = 'Pint';
-                    break;
-
-                default:
-                    $type = 'Qint';
-            }
+            $type = match ($this->number_type) {
+                self::NUMBER_TYPE_BIGENDIAN => 'Jint',
+                self::NUMBER_TYPE_LITTLEENDIAN => 'Pint',
+                default => 'Qint',
+            };
 
             $int64 = unpack($type, $this->read(8));
 
@@ -463,7 +449,7 @@ class Buffer
 
             unset($int64);
         } else {
-            if ($this->number_type == self::NUMBER_TYPE_BIGENDIAN) {
+            if ($this->number_type === self::NUMBER_TYPE_BIGENDIAN) {
                 $high = $this->readInt32();
                 $low = $this->readInt32();
             } else {

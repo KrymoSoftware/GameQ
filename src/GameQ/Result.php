@@ -125,6 +125,6 @@ class Result
     public function get($var)
     {
 
-        return isset($this->result[$var]) ? $this->result[$var] : null;
+        return $this->result[$var] ?? null;
     }
 }

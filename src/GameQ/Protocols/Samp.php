@@ -158,7 +158,7 @@ class Samp extends Protocol
 
             // Check the header, should be SAMP
             if (($header = $buffer->read(4)) !== 'SAMP') {
-                throw new Exception(__METHOD__ . " header response '{$header}' is not valid");
+                throw new Exception(__METHOD__ . " header response '$header' is not valid");
             }
 
             // Check to make sure the server response code matches what we sent
@@ -171,7 +171,7 @@ class Samp extends Protocol
 
             // Figure out which packet response this is
             if (!array_key_exists($response_type, $this->responses)) {
-                throw new Exception(__METHOD__ . " response type '{$response_type}' is not valid");
+                throw new Exception(__METHOD__ . " response type '$response_type' is not valid");
             }
 
             // Now we need to call the proper method

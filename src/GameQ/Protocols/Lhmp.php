@@ -134,7 +134,7 @@ class Lhmp extends Protocol
         foreach ($packets as $header => $packetGroup) {
             // Figure out which packet response this is
             if (!array_key_exists($header, $this->responses)) {
-                throw new Exception(__METHOD__ . " response type '{$header}' is not valid");
+                throw new Exception(__METHOD__ . " response type '$header' is not valid");
             }
 
             // Now we need to call the proper method

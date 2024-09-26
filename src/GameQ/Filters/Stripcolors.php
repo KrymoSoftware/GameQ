@@ -53,6 +53,7 @@ class Stripcolors extends Base
         switch ($server->protocol()->getProtocol()) {
             case 'quake2':
             case 'quake3':
+            case 'gta5m':
             case 'doom3':
                 array_walk_recursive($result, [$this, 'stripQuake']);
                 break;
@@ -64,9 +65,6 @@ class Stripcolors extends Base
                 break;
             case 'source':
                 array_walk_recursive($result, [$this, 'stripSource']);
-                break;
-            case 'gta5m':
-                array_walk_recursive($result, [$this, 'stripQuake']);
                 break;
         }
 

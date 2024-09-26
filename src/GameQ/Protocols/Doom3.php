@@ -138,13 +138,10 @@ class Doom3 extends Protocol
         // We need to split the data and offload
         $results = $this->processServerInfo($buffer);
 
-        $results = array_merge_recursive(
+        return array_merge_recursive(
             $results,
             $this->processPlayers($buffer)
         );
-
-        // Return results
-        return $results;
     }
 
     /**

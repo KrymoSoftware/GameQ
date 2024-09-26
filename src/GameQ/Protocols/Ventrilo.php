@@ -838,7 +838,7 @@ class Ventrilo extends Protocol
      * @param int           $fieldCount
      * @param \GameQ\Result $result
      */
-    protected function processChannel($data, $fieldCount, Result &$result)
+    protected function processChannel($data, $fieldCount, Result $result)
     {
 
         // Split the items on the comma
@@ -860,7 +860,7 @@ class Ventrilo extends Protocol
      * @param int           $fieldCount
      * @param \GameQ\Result $result
      */
-    protected function processPlayer($data, $fieldCount, Result &$result)
+    protected function processPlayer($data, $fieldCount, Result $result)
     {
 
         // Split the items on the comma

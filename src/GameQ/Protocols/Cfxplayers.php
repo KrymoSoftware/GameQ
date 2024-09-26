@@ -20,7 +20,6 @@
 namespace GameQ\Protocols;
 
 use GameQ\Exception\Protocol as Exception;
-use GameQ\Protocols\Http;
 
 /**
  * GTA Five M Protocol Class
@@ -35,7 +34,7 @@ use GameQ\Protocols\Http;
  * @author Jesse Lukas <eranio@g-one.org>
  */
 
-class CFXPlayers extends Http
+class Cfxplayers extends Http
 {
     /**
      * Holds the real ip so we can overwrite it back

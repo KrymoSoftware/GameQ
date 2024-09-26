@@ -212,7 +212,7 @@ class Gamespy3 extends Protocol
             $sndvar = substr($snd, 0, strpos($snd, "\x00"));
             // Check if fstvar is a substring of sndvar
             // If so, remove it from the first string
-            if (!empty($fstvar) && strpos($sndvar, $fstvar) !== false) {
+            if (!empty($fstvar) && str_contains($sndvar, $fstvar)) {
                 $packets[$i] = preg_replace("#(\\x00[^\\x00]+\\x00)$#", "\x00", $packets[$i]);
             }
         }
@@ -224,7 +224,8 @@ class Gamespy3 extends Protocol
             $prefix = $buffer->readString();
 
             // Check to see if the return before has the same prefix present
-            if ($prefix != null && strstr($packets[($x - 1)], $prefix)) {
+            if ($prefix !== null && str_contains($packets[($x - 1)], $prefix)
+            ) {
                 // Update the return by removing the prefix plus 2 chars
                 $packets[$x] = substr(str_replace($prefix, '', $packets[$x]), 2);
             }
@@ -306,12 +307,12 @@ class Gamespy3 extends Protocol
             * For now we just strip out these characters
             */
             // Check to see if $item has a _ at the end, this is player info
-            if (substr($item, -1) == '_') {
+            if (str_ends_with($item, '_')) {
                 // Set the item group
                 $item_group = 'players';
                 // Set the item type, rip off any trailing stuff and bad chars
                 $item_type = rtrim(str_replace("\x01", '', $item), '_');
-            } elseif (substr($item, -2) == '_t') {
+            } elseif (str_ends_with($item, '_t')) {
                 // Check to see if $item has a _t at the end, this is team info
                 // Set the item group
                 $item_group = 'teams';

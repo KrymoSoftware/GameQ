@@ -157,7 +157,7 @@ class Ase extends Protocol
      * @param \GameQ\Buffer $buffer
      * @param \GameQ\Result $result
      */
-    protected function processKeyValuePairs(Buffer &$buffer, Result &$result)
+    protected function processKeyValuePairs(Buffer $buffer, Result $result)
     {
 
         // Key / value pairs
@@ -185,7 +185,7 @@ class Ase extends Protocol
      * @param \GameQ\Buffer $buffer
      * @param \GameQ\Result $result
      */
-    protected function processPlayersAndTeams(Buffer &$buffer, Result &$result)
+    protected function processPlayersAndTeams(Buffer $buffer, Result $result)
     {
 
         // Players and team info
