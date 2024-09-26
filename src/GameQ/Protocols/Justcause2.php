@@ -33,48 +33,38 @@ class Justcause2 extends Gamespy4
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'justcause2';
+    protected string $name = 'justcause2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Just Cause 2 Multiplayer";
+    protected string $name_long = "Just Cause 2 Multiplayer";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "steam://connect/%s:%d/";
+    protected ?string $join_link = "steam://connect/%s:%d/";
 
     /**
      * Change the packets used
      *
      * @var array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_CHALLENGE => "\xFE\xFD\x09\x10\x20\x30\x40",
         self::PACKET_ALL       => "\xFE\xFD\x00\x10\x20\x30\x40%s\xFF\xFF\xFF\x02",
     ];
 
     /**
      * Override the packet split
-     *
-     * @var string
      */
-    protected $packetSplit = "/\\x00\\x00\\x00/m";
+    protected string $packetsplit = "/\\x00\\x00\\x00/m";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         'general' => [
             // target       => source
             'dedicated'  => 'dedicated',
@@ -94,11 +84,8 @@ class Justcause2 extends Gamespy4
 
     /**
      * Overload so we can add in some static data points
-     *
-     * @param Buffer $buffer
-     * @param Result $result
      */
-    protected function processDetails(Buffer &$buffer, Result &$result)
+    protected function processDetails(Buffer $buffer, Result $result): void
     {
         parent::processDetails($buffer, $result);
 
@@ -110,12 +97,9 @@ class Justcause2 extends Gamespy4
     /**
      * Override the parent, this protocol is returned differently
      *
-     * @param Buffer $buffer
-     * @param Result $result
-     *
      * @see Gamespy3::processPlayersAndTeams()
      */
-    protected function processPlayersAndTeams(Buffer &$buffer, Result &$result)
+    protected function processPlayersAndTeams(Buffer $buffer, Result $result): void
     {
         // Loop until we run out of data
         while ($buffer->getLength()) {

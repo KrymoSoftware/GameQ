@@ -29,15 +29,11 @@ class Hl1 extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'hl1';
+    protected string $name = 'hl1';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Half Life";
+    protected string $name_long = "Half Life";
 }

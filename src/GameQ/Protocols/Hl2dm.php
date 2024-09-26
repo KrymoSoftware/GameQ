@@ -28,15 +28,11 @@ class Hl2dm extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'hl2dm';
+    protected string $name = 'hl2dm';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Half Life 2: Deathmatch";
+    protected string $name_long = "Half Life 2: Deathmatch";
 }

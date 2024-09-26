@@ -40,37 +40,32 @@ class Tshock extends Http
      *
      * @var array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "GET /v2/server/status?players=true&rules=true HTTP/1.0\r\nAccept: */*\r\n\r\n",
     ];
 
     /**
      * The protocol being used
      *
-     * @var string
      */
-    protected $protocol = 'tshock';
+    protected string $protocol = 'tshock';
 
     /**
      * String name of this protocol class
      *
-     * @var string
      */
-    protected $name = 'tshock';
+    protected string $name = 'tshock';
 
     /**
      * Longer string name of this protocol class
      *
-     * @var string
      */
-    protected $name_long = "Tshock";
+    protected string $name_long = "Tshock";
 
     /**
      * Normalize some items
-     *
-     * @var array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -91,10 +86,10 @@ class Tshock extends Http
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         if (empty($this->packets_response)) {
             return [];
@@ -104,13 +99,18 @@ class Tshock extends Http
         preg_match('/\{(.*)\}/ms', implode('', $this->packets_response), $matches);
 
         // Return should be JSON, let's validate
-        if (!isset($matches[0]) || ($json = json_decode($matches[0])) === null) {
+        if (!isset($matches[0]) || ($json = json_decode(
+            $matches[0],
+            false,
+            512,
+            JSON_THROW_ON_ERROR
+        )) === null) {
             throw new Exception("JSON response from Tshock protocol is invalid.");
         }
 
         // Check the status response
-        if ($json->status != 200) {
-            throw new Exception("JSON status from Tshock protocol response was '{$json->status}', expected '200'.");
+        if ($json->status !== '200') {
+            throw new Exception("JSON status from Tshock protocol response was '$json->status', expected '200'.");
         }
 
         $result = new Result();

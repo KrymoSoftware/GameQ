@@ -34,10 +34,8 @@ class Etqw extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "\xFF\xFFgetInfoEx\x00\x00\x00\x00",
         //self::PACKET_STATUS => "\xFF\xFFgetInfo\x00\x00\x00\x00\x00",
     ];
@@ -45,39 +43,30 @@ class Etqw extends Protocol
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\xFF\xFFinfoExResponse" => "processStatus",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'etqw';
+    protected string $protocol = 'etqw';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'etqw';
+    protected string $name = 'etqw';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Enemy Territory Quake Wars";
+    protected string $name_long = "Enemy Territory Quake Wars";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -100,10 +89,10 @@ class Etqw extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // In case it comes back as multiple packets (it shouldn't)
         $buffer = new Buffer(implode('', $this->packets_response));
@@ -113,13 +102,11 @@ class Etqw extends Protocol
 
         // Figure out which packet response this is
         if (!array_key_exists($response_type, $this->responses)) {
-            throw new Exception(__METHOD__ . " response type '{$response_type}' is not valid");
+            throw new Exception(__METHOD__ . " response type '$response_type' is not valid");
         }
 
         // Offload the call
-        $results = call_user_func_array([$this, $this->responses[$response_type]], [$buffer]);
-
-        return $results;
+        return $this->{$this->responses[$response_type]}($buffer);
     }
 
     /*
@@ -128,8 +115,6 @@ class Etqw extends Protocol
 
     /**
      * Handle processing the status response
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -176,24 +161,19 @@ class Etqw extends Protocol
         // Now let's parse the extended player info
         $this->parsePlayersExtra($buffer, $result);
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
     /**
      * Parse players out of the status ex response
-     *
-     * @param Buffer $buffer
-     * @param Result $result
      */
-    protected function parsePlayers(Buffer &$buffer, Result &$result)
+    protected function parsePlayers(Buffer $buffer, Result $result)
     {
         // By default there are 0 players
         $players = 0;
 
         // Iterate over the players until we run out
-        while (($id = $buffer->readInt8()) != 32) {
+        while (($id = $buffer->readInt8()) !== 32) {
             $result->addPlayer('id', $id);
             $result->addPlayer('ping', $buffer->readInt16());
             $result->addPlayer('name', $buffer->readString());
@@ -212,11 +192,8 @@ class Etqw extends Protocol
 
     /**
      * Handle parsing extra player data
-     *
-     * @param Buffer $buffer
-     * @param Result $result
      */
-    protected function parsePlayersExtra(Buffer &$buffer, Result &$result)
+    protected function parsePlayersExtra(Buffer $buffer, Result $result)
     {
         // Iterate over the extra player info
         while (($id = $buffer->readInt8()) != 32) {

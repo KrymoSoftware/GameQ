@@ -34,24 +34,19 @@ class Ship extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'ship';
+    protected string $name = 'ship';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "The Ship";
+    protected string $name_long = "The Ship";
 
     /**
      * Specific player parse for The Ship
      *
      * Player response has unknown data after the last real player
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      */
@@ -87,8 +82,6 @@ class Ship extends Source
                 $result->addPlayer('money', $buffer->readInt32Signed());
             }
         }
-
-        unset($buffer);
 
         return $result->fetch();
     }

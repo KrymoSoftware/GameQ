@@ -26,10 +26,8 @@
  * i.e. require_once('/path/to/src/GameQ/Autoloader.php');
  *
  * See: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
- *
- * @codeCoverageIgnore
  */
-spl_autoload_register(function ($class) {
+spl_autoload_register(static function ($class) {
 
     // project-specific namespace prefix
     $prefix = 'GameQ\\';

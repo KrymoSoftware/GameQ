@@ -29,8 +29,6 @@ use GameQ\Result;
  * This class is used as the basis for all other source based servers
  * that rely on the source protocol for game querying.
  *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
- *
  * @author Austin Bischoff <austin@codebeard.com>
  */
 class Source extends Protocol
@@ -39,16 +37,14 @@ class Source extends Protocol
     /*
      * Source engine type constants
      */
-    const SOURCE_ENGINE = 0,
-        GOLDSOURCE_ENGINE = 1;
+    public const SOURCE_ENGINE = 0;
+    public const GOLDSOURCE_ENGINE = 1;
 
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_CHALLENGE => "\xFF\xFF\xFF\xFF\x56\x00\x00\x00\x00",
         self::PACKET_DETAILS   => "\xFF\xFF\xFF\xFFTSource Engine Query\x00%s",
         self::PACKET_PLAYERS   => "\xFF\xFF\xFF\xFF\x55%s",
@@ -58,9 +54,8 @@ class Source extends Protocol
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\x49" => "processDetails", // I
         "\x6d" => "processDetailsGoldSource", // m, goldsource
         "\x44" => "processPlayers", // D
@@ -69,45 +64,33 @@ class Source extends Protocol
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'source';
+    protected string $protocol = 'source';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'source';
+    protected string $name = 'source';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Source Server";
+    protected string $name_long = "Source Server";
 
     /**
      * Define the Source engine type.  By default it is assumed to be Source
-     *
-     * @type int
      */
-    protected $source_engine = self::SOURCE_ENGINE;
+    protected int $source_engine = self::SOURCE_ENGINE;
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "steam://connect/%s:%d/";
+    protected ?string $join_link = "steam://connect/%s:%d/";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -131,12 +114,9 @@ class Source extends Protocol
     /**
      * Parse the challenge response and apply it to all the packet types
      *
-     * @param \GameQ\Buffer $challenge_buffer
-     *
-     * @return bool
      * @throws \GameQ\Exception\Protocol
      */
-    public function challengeParseAndApply(Buffer $challenge_buffer)
+    public function challengeParseAndApply(Buffer $challenge_buffer): bool
     {
 
         // Skip the header
@@ -149,10 +129,10 @@ class Source extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Will hold the results when complete
         $results = [];
@@ -168,14 +148,13 @@ class Source extends Protocol
             $header = $buffer->readInt32Signed();
 
             // Single packet
-            if ($header == -1) {
+            if ($header === -1) {
                 // We need to peek and see what kind of engine this is for later processing
-                if ($buffer->lookAhead(1) == "\x6d") {
+                if ($buffer->lookAhead() === "\x6d") {
                     $this->source_engine = self::GOLDSOURCE_ENGINE;
                 }
 
                 $packets[] = $buffer->getBuffer();
-                continue;
             } else {
                 // Split packet
 
@@ -200,11 +179,11 @@ class Source extends Protocol
             }
 
             // Figure out what packet response this is for
-            $response_type = $buffer->read(1);
+            $response_type = $buffer->read();
 
             // Figure out which packet response this is
             if (!array_key_exists($response_type, $this->responses)) {
-                throw new Exception(__METHOD__ . " response type '{$response_type}' is not valid");
+                throw new Exception(__METHOD__ . " response type '$response_type' is not valid");
             }
 
             // Now we need to call the proper method
@@ -217,7 +196,7 @@ class Source extends Protocol
         }
 
         // Free up memory
-        unset($packets, $packet, $packet_id, $response_type);
+        unset($packets, $packet_id, $response_type);
 
         return $results;
     }
@@ -228,8 +207,6 @@ class Source extends Protocol
 
     /**
      * Process the split packets and decompress if necessary
-     *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      *
      * @param       $packet_id
      * @param array $packets
@@ -249,12 +226,12 @@ class Source extends Protocol
             $buffer = new Buffer($packet);
 
             // Gold source
-            if ($this->source_engine == self::GOLDSOURCE_ENGINE) {
+            if ($this->source_engine === self::GOLDSOURCE_ENGINE) {
                 // Grab the packet number (byte)
                 $packet_number = $buffer->readInt8();
 
                 // We need to burn the extra header (\xFF\xFF\xFF\xFF) on first loop
-                if ($i == 0) {
+                if ($i === 0) {
                     $buffer->read(4);
                 }
 
@@ -272,12 +249,10 @@ class Source extends Protocol
                 if ($packet_id & 0x80000000) {
                     // Check to see if we have Bzip2 installed
                     if (!function_exists('bzdecompress')) {
-                        // @codeCoverageIgnoreStart
                         throw new Exception(
                             'Bzip2 is not installed.  See http://www.php.net/manual/en/book.bzip2.php for more info.',
                             0
                         );
-                        // @codeCoverageIgnoreEnd
                     }
 
                     // Get the length of the packet (long)
@@ -290,17 +265,15 @@ class Source extends Protocol
                     $result = bzdecompress($buffer->getBuffer());
 
                     // Now verify the length
-                    if (strlen($result) != $packet_length) {
-                        // @codeCoverageIgnoreStart
+                    if (strlen($result) !== $packet_length) {
                         throw new Exception(
-                            "Checksum for compressed packet failed! Length expected: {$packet_length}, length
+                            "Checksum for compressed packet failed! Length expected: $packet_length, length
                             returned: " . strlen($result)
                         );
-                        // @codeCoverageIgnoreEnd
                     }
 
                     // We need to burn the extra header (\xFF\xFF\xFF\xFF) on first loop
-                    if ($i == 0) {
+                    if ($i === 0) {
                         $result = substr($result, 4);
                     }
                 } else {
@@ -308,7 +281,7 @@ class Source extends Protocol
                     $buffer->readInt16Signed();
 
                     // We need to burn the extra header (\xFF\xFF\xFF\xFF) on first loop
-                    if ($i == 0) {
+                    if ($i === 0) {
                         $buffer->read(4);
                     }
 
@@ -323,9 +296,6 @@ class Source extends Protocol
             unset($buffer);
         }
 
-        // Free some memory
-        unset($packets, $packet);
-
         // Sort the packets by packet number
         ksort($packs);
 
@@ -335,8 +305,6 @@ class Source extends Protocol
 
     /**
      * Handles processing the details data into a usable format
-     *
-     * @param \GameQ\Buffer $buffer
      *
      * @return mixed
      * @throws \GameQ\Exception\Protocol
@@ -362,7 +330,7 @@ class Source extends Protocol
         $result->add('secure', $buffer->readInt8());
 
         // Special result for The Ship only (appid=2400)
-        if ($result->get('steamappid') == 2400) {
+        if ($result->get('steamappid') === 2400) {
             $result->add('game_mode', $buffer->readInt8());
             $result->add('witness_count', $buffer->readInt8());
             $result->add('witness_time', $buffer->readInt8());
@@ -371,7 +339,7 @@ class Source extends Protocol
         $result->add('version', $buffer->readString());
 
         // Because of php 5.4...
-        $edfCheck = $buffer->lookAhead(1);
+        $edfCheck = $buffer->lookAhead();
 
         // Extra data flag
         if (!empty($edfCheck)) {
@@ -401,15 +369,12 @@ class Source extends Protocol
             unset($edf);
         }
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
     /**
      * Handles processing the server details from goldsource response
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      * @throws \GameQ\Exception\Protocol
@@ -436,7 +401,7 @@ class Source extends Protocol
         $result->add('ismod', $buffer->readInt8());
 
         // We only run these if ismod is 1 (true)
-        if ($result->get('ismod') == 1) {
+        if ($result->get('ismod') === 1) {
             $result->add('mod_urlinfo', $buffer->readString());
             $result->add('mod_urldl', $buffer->readString());
             $buffer->skip();
@@ -449,17 +414,13 @@ class Source extends Protocol
         $result->add('secure', $buffer->readInt8());
         $result->add('num_bots', $buffer->readInt8());
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
     /**
      * Handles processing the player data into a usable format
      *
-     * @param \GameQ\Buffer $buffer
-     *
-     * @return mixed
+     * @return array
      */
     protected function processPlayers(Buffer $buffer)
     {
@@ -474,7 +435,7 @@ class Source extends Protocol
         $result->add('num_players', $num_players);
 
         // No players so no need to look any further
-        if ($num_players == 0) {
+        if ($num_players === 0) {
             return $result->fetch();
         }
 
@@ -486,17 +447,13 @@ class Source extends Protocol
             $result->addPlayer('time', $buffer->readFloat32());
         }
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
     /**
      * Handles processing the rules data into a usable format
      *
-     * @param \GameQ\Buffer $buffer
-     *
-     * @return mixed
+     * @return array
      */
     protected function processRules(Buffer $buffer)
     {
@@ -514,8 +471,6 @@ class Source extends Protocol
         while ($buffer->getLength()) {
             $result->add($buffer->readString(), $buffer->readString());
         }
-
-        unset($buffer);
 
         return $result->fetch();
     }

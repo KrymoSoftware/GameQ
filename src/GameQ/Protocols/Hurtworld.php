@@ -29,14 +29,10 @@ class Hurtworld extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'hurtworld';
+    protected string $name = 'hurtworld';
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Hurtworld";
+    protected string $name_long = "Hurtworld";
 }

@@ -29,15 +29,11 @@ class Arma extends Gamespy2
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'arma';
+    protected string $name = 'arma';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "ArmA Armed Assault";
+    protected string $name_long = "ArmA Armed Assault";
 }

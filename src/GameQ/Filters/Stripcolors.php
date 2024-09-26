@@ -33,14 +33,9 @@ class Stripcolors extends Base
     /**
      * Apply this filter
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *
-     * @param array         $result
-     * @param \GameQ\Server $server
-     *
-     * @return array
+     * @return mixed
      */
-    public function apply(array $result, Server $server)
+    public function apply(array $result, Server $server): mixed
     {
 
         // No result passed so just return
@@ -51,10 +46,16 @@ class Stripcolors extends Base
         //$data = [];
         //$data['raw'][ $server->id() ] = $result;
 
+        $protocol = $server->protocol();
+        if ($protocol === null) {
+            return $result;
+        }
+
         // Switch based on the base (not game) protocol
-        switch ($server->protocol()->getProtocol()) {
+        switch ($protocol->getProtocol()) {
             case 'quake2':
             case 'quake3':
+            case 'gta5m':
             case 'doom3':
                 array_walk_recursive($result, [$this, 'stripQuake']);
                 break;
@@ -66,9 +67,6 @@ class Stripcolors extends Base
                 break;
             case 'source':
                 array_walk_recursive($result, [$this, 'stripSource']);
-                break;
-            case 'gta5m':
-                array_walk_recursive($result, [$this, 'stripQuake']);
                 break;
         }
 
@@ -88,31 +86,31 @@ class Stripcolors extends Base
 
     /**
      * Strip color codes from quake based games
-     *
-     * @param string $string
      */
-    protected function stripQuake(&$string)
+    protected function stripQuake(mixed &$string): void
     {
-        $string = preg_replace('#(\^.)#', '', $string);
+        if (is_string($string)) {
+            $string = preg_replace('#(\^.)#', '', $string);
+        }
     }
 
     /**
      * Strip color codes from Source based games
-     *
-     * @param string $string
      */
-    protected function stripSource(&$string)
+    protected function stripSource(mixed &$string): void
     {
-        $string = strip_tags($string);
+        if (is_string($string)) {
+            $string = strip_tags($string);
+        }
     }
 
     /**
      * Strip color codes from Unreal based games
-     *
-     * @param string $string
      */
-    protected function stripUnreal(&$string)
+    protected function stripUnreal(mixed &$string): void
     {
-        $string = preg_replace('/\x1b.../', '', $string);
+        if (is_string($string)) {
+            $string = preg_replace('/\x1b.../', '', $string);
+        }
     }
 }

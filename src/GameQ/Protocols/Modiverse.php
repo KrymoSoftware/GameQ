@@ -29,15 +29,11 @@ class Modiverse extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'modiverse';
+    protected string $name = 'modiverse';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Modiverse";
+    protected string $name_long = "Modiverse";
 }

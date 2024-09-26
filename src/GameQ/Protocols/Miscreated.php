@@ -28,32 +28,24 @@ class Miscreated extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'miscreated';
+    protected string $name = 'miscreated';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Miscreated";
+    protected string $name_long = "Miscreated";
 
     /**
      * query_port = client_port + 2
      * 64092 = 64090 + 2
-     *
-     * @type int
      */
-    protected $port_diff = 2;
+    protected int $port_diff = 2;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         'general' => [
             // target       => source
             'dedicated'  => 'dedicated',

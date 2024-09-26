@@ -20,56 +20,43 @@ class Quake3 extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "\xFF\xFF\xFF\xFF\x67\x65\x74\x73\x74\x61\x74\x75\x73\x0A",
     ];
 
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\xFF\xFF\xFF\xFFstatusResponse" => 'processStatus',
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'quake3';
+    protected string $protocol = 'quake3';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'quake3';
+    protected string $name = 'quake3';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Quake 3 Server";
+    protected string $name_long = "Quake 3 Server";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -95,7 +82,7 @@ class Quake3 extends Protocol
      * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Make a buffer
         $buffer = new Buffer(implode('', $this->packets_response));
@@ -108,29 +95,21 @@ class Quake3 extends Protocol
             throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
         }
 
-        return call_user_func_array([$this, $this->responses[$header]], [$buffer]);
+        return $this->{$this->responses[$header]}($buffer);
     }
 
     protected function processStatus(Buffer $buffer)
     {
         // We need to split the data and offload
         $results = $this->processServerInfo(new Buffer($buffer->readString("\x0A")));
-
-        $results = array_merge_recursive(
+        return array_merge_recursive(
             $results,
             $this->processPlayers(new Buffer($buffer->getBuffer()))
         );
-
-        unset($buffer);
-
-        // Return results
-        return $results;
     }
 
     /**
      * Handle processing the server information
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -147,19 +126,15 @@ class Quake3 extends Protocol
             // Add result
             $result->add(
                 trim($buffer->readString('\\')),
-                utf8_encode(trim($buffer->readStringMulti(['\\', "\x0a"])))
+                $this->convertToUtf8(trim($buffer->readStringMulti(['\\', "\x0a"])))
             );
         }
-
-        unset($buffer);
 
         return $result->fetch();
     }
 
     /**
      * Handle processing of player data
-     *
-     * @param Buffer $buffer
      *
      * @return array
      * @throws Exception
@@ -179,10 +154,10 @@ class Quake3 extends Protocol
             $result->addPlayer('ping', $buffer->readString("\x20"));
 
             // Look ahead to see if we have a name or team
-            $checkTeam = $buffer->lookAhead(1);
+            $checkTeam = $buffer->lookAhead();
 
             // We have team info
-            if ($checkTeam != '' and $checkTeam != '"') {
+            if ($checkTeam !== '' && $checkTeam !== '"') {
                 $result->addPlayer('team', $buffer->readString("\x20"));
             }
 
@@ -195,7 +170,7 @@ class Quake3 extends Protocol
             }
 
             // Add player name, encoded
-            $result->addPlayer('name', utf8_encode(trim($buffer->readString('"'))));
+            $result->addPlayer('name', $this->convertToUtf8(trim($buffer->readString('"'))));
 
             // Burn ending delimiter
             $buffer->read();
@@ -206,8 +181,7 @@ class Quake3 extends Protocol
 
         $result->add('clients', $playerCount);
 
-        // Clear
-        unset($buffer, $playerCount);
+        unset($playerCount);
 
         return $result->fetch();
     }

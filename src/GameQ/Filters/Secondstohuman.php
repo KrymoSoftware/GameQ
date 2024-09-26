@@ -37,19 +37,17 @@ class Secondstohuman extends Base
     /**
      * The options key for setting the data key(s) to look for to convert
      */
-    const OPTION_TIMEKEYS = 'timekeys';
+    public const OPTION_TIMEKEYS = 'timekeys';
 
     /**
      * The result key added when applying this filter to a result
      */
-    const RESULT_KEY = 'gq_%s_human';
+    public const RESULT_KEY = 'gq_%s_human';
 
     /**
      * Holds the default 'time' keys from the response array.  This is key is usually 'time' from A2S responses
-     *
-     * @var array
      */
-    protected $timeKeysDefault = ['time'];
+    protected array $timeKeysDefault = ['time'];
 
     /**
      * Secondstohuman constructor.
@@ -74,12 +72,9 @@ class Secondstohuman extends Base
     /**
      * Apply this filter to the result data
      *
-     * @param array  $result
-     * @param Server $server
-     *
-     * @return array
+     * @return mixed
      */
-    public function apply(array $result, Server $server)
+    public function apply(array $result, Server $server): mixed
     {
         // Send the results off to be iterated and return the updated result
         return $this->iterate($result);
@@ -103,9 +98,14 @@ class Secondstohuman extends Base
             if (is_array($value)) {
                 // Iterate and update the result
                 $result[$key] = $this->iterate($value);
-            } elseif (in_array($key, $this->options[self::OPTION_TIMEKEYS])) {
+            } elseif (in_array(
+                $key,
+                $this->options[self::OPTION_TIMEKEYS],
+                true
+            )
+            ) {
                 // Make sure the value is a float (throws E_WARNING in PHP 7.1+)
-                $value = floatval($value);
+                $value = (float)$value;
                 // We match one of the keys we are wanting to convert so add it and move on
                 $result[sprintf(self::RESULT_KEY, $key)] = sprintf(
                     "%02d:%02d:%02d",

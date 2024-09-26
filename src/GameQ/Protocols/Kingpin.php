@@ -29,15 +29,11 @@ class Kingpin extends Quake2
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'kingpin';
+    protected string $name = 'kingpin';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Kingpin: Life of Crime";
+    protected string $name_long = "Kingpin: Life of Crime";
 }

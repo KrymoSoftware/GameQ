@@ -28,15 +28,11 @@ class L4d2 extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'l4d2';
+    protected string $name = 'l4d2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Left 4 Dead 2";
+    protected string $name_long = "Left 4 Dead 2";
 }

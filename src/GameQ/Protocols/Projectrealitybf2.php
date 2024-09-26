@@ -31,15 +31,11 @@ class Projectrealitybf2 extends Bf2
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'projectrealitybf2';
+    protected string $name = 'projectrealitybf2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Project Reality: Battlefield 2";
+    protected string $name_long = "Project Reality: Battlefield 2";
 }

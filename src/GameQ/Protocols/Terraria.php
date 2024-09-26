@@ -30,30 +30,22 @@ class Terraria extends Tshock
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'terraria';
+    protected string $name = 'terraria';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Terraria";
+    protected string $name_long = "Terraria";
 
     /**
      * query_port = client_port + 101
      * 7878 = 7777 + 101
-     *
-     * @type int
      */
-    protected $port_diff = 101;
+    protected int $port_diff = 101;
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "steam://connect/%s:%d/";
+    protected ?string $join_link = "steam://connect/%s:%d/";
 }

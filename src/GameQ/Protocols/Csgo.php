@@ -29,15 +29,11 @@ class Csgo extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'csgo';
+    protected string $name = 'csgo';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Counter-Strike: Global Offensive";
+    protected string $name_long = "Counter-Strike: Global Offensive";
 }

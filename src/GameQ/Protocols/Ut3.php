@@ -32,24 +32,18 @@ class Ut3 extends Gamespy3
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'ut3';
+    protected string $name = 'ut3';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Unreal Tournament 3";
+    protected string $name_long = "Unreal Tournament 3";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             'dedicated'  => 'bIsDedicated',
@@ -61,13 +55,12 @@ class Ut3 extends Gamespy3
     /**
      * Overload the response process so we can make some changes
      *
-     * @return array
+     * @return mixed
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         // Grab the result from the parent
-        /** @type array $result */
         $result = parent::processResponse();
 
         // Move some stuff around
@@ -102,12 +95,8 @@ class Ut3 extends Gamespy3
 
     /**
      * Dirty hack to rename result entries into something more useful
-     *
-     * @param array  $result
-     * @param string $old
-     * @param string $new
      */
-    protected function renameResult(array &$result, $old, $new)
+    protected function renameResult(array &$result, string $old, string $new): void
     {
 
         // Check to see if the old item is there
@@ -119,11 +108,8 @@ class Ut3 extends Gamespy3
 
     /**
      * Dirty hack to delete result items
-     *
-     * @param array $result
-     * @param array $array
      */
-    protected function deleteResult(array &$result, array $array)
+    protected function deleteResult(array &$result, array $array): void
     {
 
         foreach ($array as $key) {

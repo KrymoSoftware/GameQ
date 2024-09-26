@@ -29,25 +29,19 @@ class Aa3 extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'aa3';
+    protected string $name = 'aa3';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "America's Army 3";
+    protected string $name_long = "America's Army 3";
 
     /**
      * Query port = client_port + 18243
      *
      * client_port default 8777
      * query_port default 27020
-     *
-     * @type int
      */
-    protected $port_diff = 18243;
+    protected int $port_diff = 18243;
 }

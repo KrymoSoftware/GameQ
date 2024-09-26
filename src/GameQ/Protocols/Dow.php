@@ -18,8 +18,6 @@
 
 namespace GameQ\Protocols;
 
-use GameQ\Buffer;
-
 /**
  * Class Dow
  *
@@ -32,24 +30,18 @@ class Dow extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'dow';
+    protected string $name = 'dow';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Days of War";
+    protected string $name_long = "Days of War";
 
     /**
      * Normalize main fields
-     *
-     * @var array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source

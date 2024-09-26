@@ -30,20 +30,15 @@ class Normalize extends Base
 
     /**
      * Holds the protocol specific normalize information
-     *
-     * @type array
      */
-    protected $normalize = [];
+    protected array $normalize = [];
 
     /**
      * Apply this filter
      *
-     * @param array         $result
-     * @param \GameQ\Server $server
-     *
-     * @return array
+     * @return mixed
      */
-    public function apply(array $result, Server $server)
+    public function apply(array $result, Server $server): mixed
     {
 
         // No result passed so just return
@@ -117,11 +112,9 @@ class Normalize extends Base
                             break;
                         }
                     }
-                } else {
+                } elseif (array_key_exists($raw, $data)) {
                     // String
-                    if (array_key_exists($raw, $data)) {
-                        $value = $data[$raw];
-                    }
+                    $value = $data[$raw];
                 }
 
                 $normalized['gq_' . $property] = $value;

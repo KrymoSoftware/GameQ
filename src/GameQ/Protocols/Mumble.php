@@ -36,61 +36,45 @@ class Mumble extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_ALL => "\x6A\x73\x6F\x6E", // JSON packet
     ];
 
     /**
      * The transport mode for this protocol is TCP
-     *
-     * @type string
-     */
-    protected $transport = self::TRANSPORT_TCP;
+      */
+    protected string $transport = self::TRANSPORT_TCP;
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'mumble';
+    protected string $protocol = 'mumble';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'mumble';
+    protected string $name = 'mumble';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Mumble Server";
+    protected string $name_long = "Mumble Server";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "mumble://%s:%d/";
+    protected ?string $join_link = "mumble://%s:%d/";
 
     /**
      * 27800 = 64738 - 36938
-     *
-     * @type int
      */
-    protected $port_diff = -36938;
+    protected int $port_diff = -36938;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             'dedicated'  => 'dedicated',
@@ -115,15 +99,20 @@ class Mumble extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
+        $data = json_decode(
+            implode('', $this->packets_response),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
 
-        // Try to json_decode, make it into an array
-        if (($data = json_decode(implode('', $this->packets_response), true)) === null) {
-            throw new Exception(__METHOD__ . " Unable to decode JSON data.");
+        if (!is_array($data)) {
+            throw new Exception('Failed to decode JSON response to array');
         }
 
         // Set the result to a new result instance
@@ -135,7 +124,7 @@ class Mumble extends Protocol
         // Let's iterate over the response items, there are a lot
         foreach ($data as $key => $value) {
             // Ignore root for now, that is where all of the channel/player info is housed
-            if (in_array($key, ['root'])) {
+            if ($key === 'root') {
                 continue;
             }
 
@@ -160,13 +149,9 @@ class Mumble extends Protocol
 
     /**
      * Handles processing the the channels and user info
-     *
-     * @param array         $data
-     * @param \GameQ\Result $result
      */
-    protected function processChannelsAndUsers(array $data, Result &$result)
+    protected function processChannelsAndUsers(array $data, Result $result): void
     {
-
         // Let's add all of the channel information
         foreach ($data as $key => $value) {
             // We will handle these later

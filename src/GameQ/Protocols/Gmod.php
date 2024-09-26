@@ -28,15 +28,11 @@ class Gmod extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'gmod';
+    protected string $name = 'gmod';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Garry's Mod";
+    protected string $name_long = "Garry's Mod";
 }

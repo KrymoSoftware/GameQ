@@ -36,56 +36,43 @@ class Doom3 extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_ALL => "\xFF\xFFgetInfo\x00PiNGPoNG\x00",
     ];
 
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\xFF\xFFinfoResponse" => 'processStatus',
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'doom3';
+    protected string $protocol = 'doom3';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'doom3';
+    protected string $name = 'doom3';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Doom 3";
+    protected string $name_long = "Doom 3";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -109,7 +96,7 @@ class Doom3 extends Protocol
      * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Make a buffer
         $buffer = new Buffer(implode('', $this->packets_response));
@@ -123,13 +110,11 @@ class Doom3 extends Protocol
             throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
         }
 
-        return call_user_func_array([$this, $this->responses[$header]], [$buffer]);
+        return $this->{$this->responses[$header]}($buffer);
     }
 
     /**
      * Process the status response
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -138,21 +123,14 @@ class Doom3 extends Protocol
         // We need to split the data and offload
         $results = $this->processServerInfo($buffer);
 
-        $results = array_merge_recursive(
+        return array_merge_recursive(
             $results,
             $this->processPlayers($buffer)
         );
-
-        unset($buffer);
-
-        // Return results
-        return $results;
     }
 
     /**
      * Handle processing the server information
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -166,7 +144,7 @@ class Doom3 extends Protocol
         // Key / value pairs, delimited by an empty pair
         while ($buffer->getLength()) {
             $key = trim($buffer->readString());
-            $val = utf8_encode(trim($buffer->readString()));
+            $val = $this->convertToUtf8(trim($buffer->readString()));
 
             // Something is empty so we are done
             if (empty($key) && empty($val)) {
@@ -176,15 +154,11 @@ class Doom3 extends Protocol
             $result->add($key, $val);
         }
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
     /**
      * Handle processing of player data
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -204,7 +178,7 @@ class Doom3 extends Protocol
             $result->addPlayer('ping', $buffer->readInt16());
             $result->addPlayer('rate', $buffer->readInt32());
             // Add player name, encoded
-            $result->addPlayer('name', utf8_encode(trim($buffer->readString())));
+            $result->addPlayer('name', $this->convertToUtf8(trim($buffer->readString())));
 
             // Increment
             $playerCount++;
@@ -214,7 +188,7 @@ class Doom3 extends Protocol
         $result->add('clients', $playerCount);
 
         // Clear
-        unset($buffer, $playerCount);
+        unset($playerCount);
 
         return $result->fetch();
     }

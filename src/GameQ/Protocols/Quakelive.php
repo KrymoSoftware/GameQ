@@ -28,15 +28,11 @@ class Quakelive extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'quakelive';
+    protected string $name = 'quakelive';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Quake Live";
+    protected string $name_long = "Quake Live";
 }

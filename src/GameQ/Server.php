@@ -19,6 +19,7 @@
 namespace GameQ;
 
 use GameQ\Exception\Server as Exception;
+use GameQ\Query\Core;
 
 /**
  * Server class to represent each server entity
@@ -30,13 +31,10 @@ class Server
     /*
      * Server array keys
      */
-    const SERVER_TYPE = 'type';
-
-    const SERVER_HOST = 'host';
-
-    const SERVER_ID = 'id';
-
-    const SERVER_OPTIONS = 'options';
+    public const SERVER_TYPE = 'type';
+    public const SERVER_HOST = 'host';
+    public const SERVER_ID = 'id';
+    public const SERVER_OPTIONS = 'options';
 
     /*
      * Server options keys
@@ -45,61 +43,45 @@ class Server
     /*
      * Use this option when the query_port and client connect ports are different
      */
-    const SERVER_OPTIONS_QUERY_PORT = 'query_port';
+    public const SERVER_OPTIONS_QUERY_PORT = 'query_port';
 
     /**
      * The protocol class for this server
-     *
-     * @type \GameQ\Protocol
      */
-    protected $protocol = null;
+    protected ?Protocol $protocol = null;
 
     /**
      * Id of this server
-     *
-     * @type string
      */
-    public $id = null;
+    public ?string $id = null;
 
     /**
      * IP Address of this server
-     *
-     * @type string
      */
-    public $ip = null;
+    public ?string $ip = null;
 
     /**
      * The server's client port (connect port)
-     *
-     * @type int
      */
-    public $port_client = null;
+    public ?int $port_client = null;
 
     /**
      * The server's query port
-     *
-     * @type int
      */
-    public $port_query = null;
+    public ?int $port_query = null;
 
     /**
      * Holds other server specific options
-     *
-     * @type array
      */
-    protected $options = [];
+    protected array $options = [];
 
     /**
      * Holds the sockets already open for this server
-     *
-     * @type array
      */
-    protected $sockets = [];
+    protected array $sockets = [];
 
     /**
      * Construct the class with the passed options
-     *
-     * @param array $server_info
      *
      * @throws \GameQ\Exception\Server
      */
@@ -141,30 +123,28 @@ class Server
             );
 
             $this->protocol = $class->newInstanceArgs([$this->options]);
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             throw new Exception("Unable to locate Protocols class for '{$server_info[self::SERVER_TYPE]}'!");
         }
 
         // Check and set any server options
         $this->checkAndSetServerOptions();
 
-        unset($server_info, $class);
+        unset($class);
     }
 
     /**
      * Check and set the ip address for this server
      *
-     * @param $ip_address
-     *
      * @throws \GameQ\Exception\Server
      */
-    protected function checkAndSetIpPort($ip_address)
+    protected function checkAndSetIpPort(string $ip_address): void
     {
 
         // Test for IPv6
         if (substr_count($ip_address, ':') > 1) {
             // See if we have a port, input should be in the format [::1]:27015 or similar
-            if (strstr($ip_address, ']:')) {
+            if (str_contains($ip_address, ']:')) {
                 // Explode to get port
                 $server_addr = explode(':', $ip_address);
 
@@ -178,42 +158,41 @@ class Server
             } else {
                 // Just the IPv6 address, no port defined, fail
                 throw new Exception(
-                    "The host address '{$ip_address}' is missing the port.  All "
+                    "The host address '$ip_address' is missing the port.  All "
                     . "servers must have a port defined!"
                 );
             }
 
             // Now let's validate the IPv6 value sent, remove the square brackets ([]) first
             if (!filter_var(trim($this->ip, '[]'), FILTER_VALIDATE_IP, ['flags' => FILTER_FLAG_IPV6,])) {
-                throw new Exception("The IPv6 address '{$this->ip}' is invalid.");
+                throw new Exception("The IPv6 address '$this->ip' is invalid.");
             }
         } else {
             // We have IPv4 with a port defined
-            if (strstr($ip_address, ':')) {
-                list($this->ip, $this->port_client) = explode(':', $ip_address);
-
-                // Type case the port
-                $this->port_client = (int)$this->port_client;
+            if (str_contains($ip_address, ':')) {
+                $addressParts = explode(':', $ip_address);
+                $this->ip = $addressParts[0];
+                $this->port_client = (int)$addressParts[1];
             } else {
                 // No port, fail
                 throw new Exception(
-                    "The host address '{$ip_address}' is missing the port. All "
+                    "The host address '$ip_address' is missing the port. All "
                     . "servers must have a port defined!"
                 );
             }
 
             // Validate the IPv4 value, if FALSE is not a valid IP, maybe a hostname.
-            if (! filter_var($this->ip, FILTER_VALIDATE_IP, ['flags' => FILTER_FLAG_IPV4,])) {
+            if (!filter_var($this->ip, FILTER_VALIDATE_IP, ['flags' => FILTER_FLAG_IPV4,])) {
                 // Try to resolve the hostname to IPv4
                 $resolved = gethostbyname($this->ip);
 
                 // When gethostbyname() fails it returns the original string
                 if ($this->ip === $resolved) {
                     // so if ip and the result from gethostbyname() are equal this failed.
-                    throw new Exception("Unable to resolve the host '{$this->ip}' to an IP address.");
-                } else {
-                    $this->ip = $resolved;
+                    throw new Exception("Unable to resolve the host '$this->ip' to an IP address.");
                 }
+
+                $this->ip = $resolved;
             }
         }
     }
@@ -221,7 +200,7 @@ class Server
     /**
      * Check and set any server specific options
      */
-    protected function checkAndSetServerOptions()
+    protected function checkAndSetServerOptions(): void
     {
 
         // Specific query port defined
@@ -236,30 +215,22 @@ class Server
     /**
      * Set an option for this server
      *
-     * @param $key
-     * @param $value
-     *
      * @return $this
      */
-    public function setOption($key, $value)
+    public function setOption(string $key, mixed $value): self
     {
-
         $this->options[$key] = $value;
 
-        return $this; // Make chainable
+        return $this;
     }
 
     /**
      * Return set option value
-     *
-     * @param mixed $key
-     *
-     * @return mixed
      */
-    public function getOption($key)
+    public function getOption(string $key): mixed
     {
 
-        return (array_key_exists($key, $this->options)) ? $this->options[$key] : null;
+        return $this->options[$key] ?? null;
     }
 
     public function getOptions()
@@ -269,10 +240,8 @@ class Server
 
     /**
      * Get the ID for this server
-     *
-     * @return string
      */
-    public function id()
+    public function id(): string
     {
 
         return $this->id;
@@ -280,10 +249,8 @@ class Server
 
     /**
      * Get the IP address for this server
-     *
-     * @return string
      */
-    public function ip()
+    public function ip(): string
     {
 
         return $this->ip;
@@ -291,10 +258,8 @@ class Server
 
     /**
      * Get the client port for this server
-     *
-     * @return int
      */
-    public function portClient()
+    public function portClient(): int
     {
 
         return $this->port_client;
@@ -302,10 +267,8 @@ class Server
 
     /**
      * Get the query port for this server
-     *
-     * @return int
      */
-    public function portQuery()
+    public function portQuery(): int
     {
 
         return $this->port_query;
@@ -313,10 +276,8 @@ class Server
 
     /**
      * Return the protocol class for this server
-     *
-     * @return \GameQ\Protocol
      */
-    public function protocol()
+    public function protocol(): ?Protocol
     {
 
         return $this->protocol;
@@ -324,13 +285,16 @@ class Server
 
     /**
      * Get the join link for this server
-     *
-     * @return string
      */
-    public function getJoinLink()
+    public function getJoinLink(): ?string
     {
+        $joinLink = $this->protocol?->joinLink();
 
-        return sprintf($this->protocol->joinLink(), $this->ip, $this->portClient());
+        if ($joinLink === null) {
+            return null;
+        }
+
+        return sprintf($joinLink, $this->ip, $this->portClient());
     }
 
     /*
@@ -339,12 +303,8 @@ class Server
 
     /**
      * Add a socket for this server to be reused
-     *
-     * @codeCoverageIgnore
-     *
-     * @param \GameQ\Query\Core $socket
      */
-    public function socketAdd(Query\Core $socket)
+    public function socketAdd(Core $socket): void
     {
 
         $this->sockets[] = $socket;
@@ -352,12 +312,8 @@ class Server
 
     /**
      * Get a socket from the list to reuse, if any are available
-     *
-     * @codeCoverageIgnore
-     *
-     * @return \GameQ\Query\Core|null
      */
-    public function socketGet()
+    public function socketGet(): ?Core
     {
 
         $socket = null;
@@ -371,10 +327,8 @@ class Server
 
     /**
      * Clear any sockets still listed and attempt to close them
-     *
-     * @codeCoverageIgnore
      */
-    public function socketCleanse()
+    public function socketCleanse(): void
     {
 
         // Close all of the sockets available

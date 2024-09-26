@@ -29,17 +29,13 @@ class Atlas extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'atlas';
+    protected string $name = 'atlas';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Atlas";
+    protected string $name_long = "Atlas";
 
     /**
      * query_port = client_port + 51800
@@ -48,8 +44,6 @@ class Atlas extends Source
      * this is the default value for the stock game server, both ports
      * can be independently changed from the stock ones,
      * making the port_diff logic useless.
-     *
-     * @type int
      */
-    protected $port_diff = 51800;
+    protected int $port_diff = 51800;
 }

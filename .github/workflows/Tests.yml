@@ -13,18 +13,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.0, 7.1, 7.2, 7.3, 7.4, 8.0, 8.1]
+        php: [8.1, 8.2, 8.3]
         ocular: [^1.9]
         experimental: [false]
         composer-extra: ['']
-        include:
-          - php: 5.6
-            experimental: false
-            ocular: ~1.8.1
-          - php: 8.2
-            experimental: true
-            ocular: ^1.9
-            composer-extra: '--ignore-platform-req=php+'
     env:
       PHP_VERSION: ${{ matrix.php }}
     name: PHP ${{ matrix.php }}
@@ -43,7 +35,7 @@ jobs:
 
       - name: Validate composer.json
         run: composer validate
-        
+
       - name: Cache composer files
         uses: actions/cache@v3
         with:
@@ -56,8 +48,10 @@ jobs:
       - name: PHP CodeStyle
         run: |
           mkdir -p build/logs
-          vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --report=checkstyle --report-file=build/logs/checkstyle.xml --standard=build/config/phpcs.xml -v
-          vendor/bin/phpmd src,tests xml build/config/phpmd.xml
+          composer phpcs
+
+      - name: Run PHPStan
+        run: composer phpstan
 
       - name: Run PHPUnit
-        run: vendor/bin/phpunit -c phpunit.xml --verbose
+        run: composer phpunit

@@ -21,7 +21,7 @@ namespace GameQ\Protocols;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use \GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\Protocol as Exception;
 
 /**
  * GameSpy Protocol class
@@ -34,48 +34,37 @@ class Gamespy extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "\x5C\x73\x74\x61\x74\x75\x73\x5C",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'gamespy';
+    protected string $protocol = 'gamespy';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'gamespy';
+    protected string $name = 'gamespy';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "GameSpy Server";
+    protected string $name_long = "GameSpy Server";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * Process the response for this protocol
      *
-     * @return array
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Holds the processed packets so we can sort them in case they come in an unordered
         $processed = [];
@@ -84,13 +73,13 @@ class Gamespy extends Protocol
         foreach ($this->packets_response as $response) {
             // Check to see if we had a preg_match error
             if (($match = preg_match("#^(.*)\\\\queryid\\\\([^\\\\]+)(\\\\|$)#", $response, $matches)) === false
-                || $match != 1
+                || $match !== 1
             ) {
                 throw new Exception(__METHOD__ . " An error occurred while parsing the packets for 'queryid'");
             }
 
             // Multiply so we move the decimal point out of the way, if there is one
-            $key = (int)(floatval($matches[2]) * 1000);
+            $key = (int)((float)$matches[2] * 1000);
 
             // Add this packet to the processed
             $processed[$key] = $matches[1];
@@ -110,8 +99,6 @@ class Gamespy extends Protocol
     /**
      * Handle processing the status buffer
      *
-     * @param Buffer $buffer
-     *
      * @return array
      */
     protected function processStatus(Buffer $buffer)
@@ -123,16 +110,13 @@ class Gamespy extends Protocol
         $result->add('dedicated', 1);
 
         // Lets peek and see if the data starts with a \
-        if ($buffer->lookAhead(1) == '\\') {
+        if ($buffer->lookAhead() === '\\') {
             // Burn the first one
-            $buffer->skip(1);
+            $buffer->skip();
         }
 
         // Explode the data
         $data = explode('\\', $buffer->getBuffer());
-
-        // No longer needed
-        unset($buffer);
 
         // Init some vars
         $numPlayers = 0;
@@ -151,15 +135,15 @@ class Gamespy extends Protocol
                 // Check for <variable>_<count> variable (i.e players)
                 if (($suffix = strrpos($key, '_')) !== false && is_numeric(substr($key, $suffix + 1))) {
                     // See if this is a team designation
-                    if (substr($key, 0, $suffix) == 'teamname') {
+                    if (str_starts_with($key, 'teamname')) {
                         $result->addTeam('teamname', $val);
                         $numTeams++;
                     } else {
                         // Its a player
-                        if (substr($key, 0, $suffix) == 'playername') {
+                        if (str_starts_with($key, 'playername')) {
                             $numPlayers++;
                         }
-                        $result->addPlayer(substr($key, 0, $suffix), utf8_encode($val));
+                        $result->addPlayer(substr($key, 0, $suffix), $this->convertToUtf8($val));
                     }
                 } else {
                     // Regular variable so just add the value.

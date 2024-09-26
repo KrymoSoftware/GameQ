@@ -33,36 +33,36 @@ use GameQ\Result;
 class Arma3 extends Source
 {
     // Base DLC names
-    const BASE_DLC_KART      = 'Karts';
-    const BASE_DLC_MARKSMEN  = 'Marksmen';
-    const BASE_DLC_HELI      = 'Helicopters';
-    const BASE_DLC_CURATOR   = 'Curator';
-    const BASE_DLC_EXPANSION = 'Expansion';
-    const BASE_DLC_JETS      = 'Jets';
-    const BASE_DLC_ORANGE    = 'Laws of War';
-    const BASE_DLC_ARGO      = 'Malden';
-    const BASE_DLC_TACOPS    = 'Tac-Ops';
-    const BASE_DLC_TANKS     = 'Tanks';
-    const BASE_DLC_CONTACT   = 'Contact';
-    const BASE_DLC_ENOCH     = 'Contact (Platform)';
+    private const BASE_DLC_KART      = 'Karts';
+    private const BASE_DLC_MARKSMEN  = 'Marksmen';
+    private const BASE_DLC_HELI      = 'Helicopters';
+    private const BASE_DLC_CURATOR   = 'Curator';
+    private const BASE_DLC_EXPANSION = 'Expansion';
+    private const BASE_DLC_JETS      = 'Jets';
+    private const BASE_DLC_ORANGE    = 'Laws of War';
+    private const BASE_DLC_ARGO      = 'Malden';
+    private const BASE_DLC_TACOPS    = 'Tac-Ops';
+    private const BASE_DLC_TANKS     = 'Tanks';
+    private const BASE_DLC_CONTACT   = 'Contact';
+    private const BASE_DLC_ENOCH     = 'Contact (Platform)';
 
     // Special
-    const BASE_DLC_AOW       = 'Art of War';
+    private const BASE_DLC_AOW       = 'Art of War';
 
     // Creator DLC names
-    const CREATOR_DLC_GM     = 'Global Mobilization';
-    const CREATOR_DLC_VN     = 'S.O.G. Prairie Fire';
-    const CREATOR_DLC_CSLA   = 'ČSLA - Iron Curtain';
-    const CREATOR_DLC_WS     = 'Western Sahara';
+    /*
+    private const CREATOR_DLC_GM     = 'Global Mobilization';
+    private const CREATOR_DLC_VN     = 'S.O.G. Prairie Fire';
+    private const CREATOR_DLC_CSLA   = 'ČSLA - Iron Curtain';
+    private const CREATOR_DLC_WS     = 'Western Sahara';
+    */
 
     /**
      * DLC Flags/Bits as defined in the documentation.
      *
      * @see https://community.bistudio.com/wiki/Arma_3:_ServerBrowserProtocol3
-     *
-     * @var array
      */
-    protected $dlcFlags = [
+    protected array $dlcFlags = [
         0b0000000000000001 => self::BASE_DLC_KART,
         0b0000000000000010 => self::BASE_DLC_MARKSMEN,
         0b0000000000000100 => self::BASE_DLC_HELI,
@@ -83,29 +83,21 @@ class Arma3 extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'arma3';
+    protected string $name = 'arma3';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Arma3";
+    protected string $name_long = "Arma3";
 
     /**
      * Query port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 
     /**
      * Process the rules since Arma3 changed their response for rules
-     *
-     * @param Buffer $buffer
      *
      * @return array
      * @throws \GameQ\Exception\Protocol
@@ -133,8 +125,7 @@ class Arma3 extends Source
         // Make a new buffer with the reassembled data
         $responseBuffer = new Buffer($data);
 
-        // Kill the old buffer, should be empty
-        unset($buffer, $data);
+        unset($data);
 
         // Set the result to a new result instance
         $result = new Result();

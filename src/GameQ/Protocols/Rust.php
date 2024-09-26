@@ -31,22 +31,16 @@ class Rust extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'rust';
+    protected string $name = 'rust';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Rust";
+    protected string $name_long = "Rust";
     
     /**
      * Overload so we can get max players from mp of keywords and num players from cp keyword
-     *
-     * @param Buffer $buffer
      */
     protected function processDetails(Buffer $buffer)
     {

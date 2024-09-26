@@ -28,15 +28,11 @@ class Ut2004 extends Unreal2
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'ut2004';
+    protected string $name = 'ut2004';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Unreal Tournament 2004";
+    protected string $name_long = "Unreal Tournament 2004";
 }

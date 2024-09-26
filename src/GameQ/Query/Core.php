@@ -31,159 +31,116 @@ abstract class Core
      *
      * @type null|resource
      */
-    public $socket = null;
+    public $socket;
 
     /**
      * The transport type (udp, tcp, etc...)
      * See http://php.net/manual/en/transports.php for the supported list
-     *
-     * @type string
-     */
-    protected $transport = null;
+      */
+    protected ?string $transport;
 
     /**
      * Connection IP address
-     *
-     * @type string
      */
-    protected $ip = null;
+    protected ?string $ip = null;
 
     /**
      * Connection port
-     *
-     * @type int
      */
-    protected $port = null;
+    protected ?int $port = null;
 
     /**
      * The time in seconds to wait before timing out while connecting to the socket
-     *
-     * @type int
      */
-    protected $timeout = 3; // Seconds
+    protected int $timeout = 3; // Seconds
 
     /**
      * Socket is blocking?
-     *
-     * @type bool
      */
-    protected $blocking = false;
+    protected bool $blocking = false;
 
     /**
      * Called when the class is cloned
      */
     public function __clone()
     {
-
         // Reset the properties for this class when cloned
         $this->reset();
     }
 
     /**
      * Set the connection information for the socket
-     *
-     * @param string $transport
-     * @param string $ip
-     * @param int    $port
-     * @param int    $timeout seconds
-     * @param bool   $blocking
      */
-    public function set($transport, $ip, $port, $timeout = 3, $blocking = false)
+    public function set(?string $transport, string $ip, int $port, int $timeout = 3, bool $blocking = false): void
     {
-
         $this->transport = $transport;
-
         $this->ip = $ip;
-
         $this->port = $port;
-
         $this->timeout = $timeout;
-
         $this->blocking = $blocking;
     }
 
     /**
      * Reset this instance's properties
      */
-    public function reset()
+    public function reset(): void
     {
-
         $this->transport = null;
-
         $this->ip = null;
-
         $this->port = null;
-
         $this->timeout = 3;
-
         $this->blocking = false;
     }
 
-    public function getTransport()
+    public function getTransport(): ?string
     {
         return $this->transport;
     }
 
-    public function getIp()
+    public function getIp(): ?string
     {
         return $this->ip;
     }
 
-    public function getPort()
+    public function getPort(): ?int
     {
         return $this->port;
     }
 
-    public function getTimeout()
+    public function getTimeout(): int
     {
         return $this->timeout;
     }
 
-    public function getBlocking()
+    public function getBlocking(): bool
     {
         return $this->blocking;
     }
 
     /**
      * Create a new socket
-     *
-     * @return void
      */
-    abstract protected function create();
+    abstract protected function create(): void;
 
     /**
      * Get the socket
-     *
-     * @return mixed
      */
-    abstract public function get();
+    abstract public function get(): mixed;
 
     /**
      * Write data to the socket
      *
-     * @param string $data
-     *
      * @return int The number of bytes written
      */
-    abstract public function write($data);
+    abstract public function write(string|array $data): int;
 
     /**
      * Close the socket
-     *
-     * @return void
      */
-    abstract public function close();
+    abstract public function close(): void;
 
     /**
      * Read the responses from the socket(s)
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @param array $sockets
-     * @param int   $timeout
-     * @param int   $stream_timeout
-     *
-     * @return array
      */
-    abstract public function getResponses(array $sockets, $timeout, $stream_timeout);
+    abstract public function getResponses(array $sockets, int $timeout, int $stream_timeout): array;
 }

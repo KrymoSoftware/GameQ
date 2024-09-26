@@ -28,15 +28,11 @@ class Tf2 extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'tf2';
+    protected string $name = 'tf2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Team Fortress 2";
+    protected string $name_long = "Team Fortress 2";
 }

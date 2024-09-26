@@ -30,22 +30,16 @@ class Egs extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'egs';
+    protected string $name = 'egs';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Empyrion - Galactic Survival";
+    protected string $name_long = "Empyrion - Galactic Survival";
 
     /**
      * query_port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 }

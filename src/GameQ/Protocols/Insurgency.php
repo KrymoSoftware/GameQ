@@ -28,15 +28,11 @@ class Insurgency extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'insurgency';
+    protected string $name = 'insurgency';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Insurgency";
+    protected string $name_long = "Insurgency";
 }

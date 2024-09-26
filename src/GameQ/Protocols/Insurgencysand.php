@@ -28,22 +28,16 @@ class Insurgencysand extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'insurgencysand';
+    protected string $name = 'insurgencysand';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Insurgency: Sandstorm";
+    protected string $name_long = "Insurgency: Sandstorm";
 
     /**
      * query_port = client_port + 29
-     *
-     * @type int
      */
-    protected $port_diff = 29;
+    protected int $port_diff = 29;
 }

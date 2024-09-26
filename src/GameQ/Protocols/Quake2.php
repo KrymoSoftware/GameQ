@@ -20,56 +20,43 @@ class Quake2 extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "\xFF\xFF\xFF\xFFstatus\x00",
     ];
 
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\xFF\xFF\xFF\xFF\x70\x72\x69\x6e\x74" => 'processStatus',
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'quake2';
+    protected string $protocol = 'quake2';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'quake2';
+    protected string $name = 'quake2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Quake 2 Server";
+    protected string $name_long = "Quake 2 Server";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -95,7 +82,7 @@ class Quake2 extends Protocol
      * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Make a buffer
         $buffer = new Buffer(implode('', $this->packets_response));
@@ -108,13 +95,11 @@ class Quake2 extends Protocol
             throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
         }
 
-        return call_user_func_array([$this, $this->responses[$header]], [$buffer]);
+        return $this->{$this->responses[$header]}($buffer);
     }
 
     /**
      * Process the status response
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -123,21 +108,14 @@ class Quake2 extends Protocol
         // We need to split the data and offload
         $results = $this->processServerInfo(new Buffer($buffer->readString("\x0A")));
 
-        $results = array_merge_recursive(
+        return array_merge_recursive(
             $results,
             $this->processPlayers(new Buffer($buffer->getBuffer()))
         );
-
-        unset($buffer);
-
-        // Return results
-        return $results;
     }
 
     /**
      * Handle processing the server information
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -154,22 +132,18 @@ class Quake2 extends Protocol
             // Add result
             $result->add(
                 trim($buffer->readString('\\')),
-                utf8_encode(trim($buffer->readStringMulti(['\\', "\x0a"])))
+                $this->convertToUtf8(trim($buffer->readStringMulti(['\\', "\x0a"])))
             );
         }
 
         $result->add('password', 0);
         $result->add('mod', 0);
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
     /**
      * Handle processing of player data
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -191,10 +165,10 @@ class Quake2 extends Protocol
             $result->addPlayer('ping', $playerInfo->readString("\x20"));
 
             // Skip first "
-            $playerInfo->skip(1);
+            $playerInfo->skip();
 
             // Add player name, encoded
-            $result->addPlayer('name', utf8_encode(trim(($playerInfo->readString('"')))));
+            $result->addPlayer('name', $this->convertToUtf8(trim(($playerInfo->readString('"')))));
 
             // Skip first "
             $playerInfo->skip(2);
@@ -211,8 +185,7 @@ class Quake2 extends Protocol
 
         $result->add('clients', $playerCount);
 
-        // Clear
-        unset($buffer, $playerCount);
+        unset($playerCount);
 
         return $result->fetch();
     }

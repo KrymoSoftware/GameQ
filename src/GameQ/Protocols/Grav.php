@@ -28,15 +28,11 @@ class Grav extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'grav';
+    protected string $name = 'grav';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "GRAV Online";
+    protected string $name_long = "GRAV Online";
 }

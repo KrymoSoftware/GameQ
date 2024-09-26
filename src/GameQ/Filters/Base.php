@@ -30,34 +30,22 @@ abstract class Base
 
     /**
      * Holds the options for this instance of the filter
-     *
-     * @type array
      */
-    protected $options = [];
+    protected array $options = [];
 
-    /**
-     * Construct
-     *
-     * @param array $options
-     */
     public function __construct(array $options = [])
     {
 
         $this->options = $options;
     }
 
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
 
     /**
      * Apply the filter to the data
-     *
-     * @param array         $result
-     * @param \GameQ\Server $server
-     *
-     * @return mixed
      */
-    abstract public function apply(array $result, Server $server);
+    abstract public function apply(array $result, Server $server): mixed;
 }

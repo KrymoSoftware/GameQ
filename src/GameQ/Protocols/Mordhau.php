@@ -29,25 +29,11 @@ class Mordhau extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'mordhau';
+    protected string $name = 'mordhau';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "MORDHAU";
-
-    #protected $port = 7777;
-
-    /**
-     * query_port = client_port + 19238
-     * 27015 = 7777 + 19238
-     *
-     * @type int
-     */
-    #protected $port_diff = 19238;
+    protected string $name_long = "MORDHAU";
 }

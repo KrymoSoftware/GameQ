@@ -36,52 +36,40 @@ class Raknet extends Protocol
     /**
      * The magic string that is sent to get access to the server information
      */
-    const OFFLINE_MESSAGE_DATA_ID = "\x00\xFF\xFF\x00\xFE\xFE\xFE\xFE\xFD\xFD\xFD\xFD\x12\x34\x56\x78";
+    public const OFFLINE_MESSAGE_DATA_ID = "\x00\xFF\xFF\x00\xFE\xFE\xFE\xFE\xFD\xFD\xFD\xFD\x12\x34\x56\x78";
 
     /**
      * Expected first part of the response from the server after query
      */
-    const ID_UNCONNECTED_PONG = "\x1C";
+    public const ID_UNCONNECTED_PONG = "\x1C";
 
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "\x01%s%s\x02\x00\x00\x00\x00\x00\x00\x00", // Format time, magic,
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'raknet';
+    protected string $protocol = 'raknet';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'raknet';
+    protected string $name = 'raknet';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Raknet Server";
+    protected string $name_long = "Raknet Server";
 
     /**
      * Do some work to build the packet we need to send out to query
-     *
-     * @param Server $server
-     *
-     * @return void
      */
-    public function beforeSend(Server $server)
+    public function beforeSend(Server $server): void
     {
         // Update the server status packet before it is sent
         $this->packets[self::PACKET_STATUS] = sprintf(
@@ -94,16 +82,16 @@ class Raknet extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Merge the response array into a buffer. Unknown if this protocol does split packets or not
         $buffer = new Buffer(implode($this->packets_response));
 
         // Read first character from response. It should match below
-        $header = $buffer->read(1);
+        $header = $buffer->read();
 
         // Check first character to make sure the header matches
         if ($header !== self::ID_UNCONNECTED_PONG) {

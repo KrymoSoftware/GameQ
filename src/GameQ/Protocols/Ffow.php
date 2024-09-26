@@ -23,10 +23,8 @@ class Ffow extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_CHALLENGE => "\xFF\xFF\xFF\xFF\x57",
         self::PACKET_RULES     => "\xFF\xFF\xFF\xFF\x56%s",
         self::PACKET_PLAYERS   => "\xFF\xFF\xFF\xFF\x55%s",
@@ -36,9 +34,8 @@ class Ffow extends Protocol
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\xFF\xFF\xFF\xFF\x49\x02" => 'processInfo', // I
         "\xFF\xFF\xFF\xFF\x45\x00" => 'processRules', // E
         "\xFF\xFF\xFF\xFF\x44\x00" => 'processPlayers', // D
@@ -46,45 +43,33 @@ class Ffow extends Protocol
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'ffow';
+    protected string $protocol = 'ffow';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'ffow';
+    protected string $name = 'ffow';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Frontlines Fuel of War";
+    protected string $name_long = "Frontlines Fuel of War";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * query_port = client_port + 2
-     *
-     * @type int
      */
-    protected $port_diff = 2;
+    protected int $port_diff = 2;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -107,12 +92,9 @@ class Ffow extends Protocol
     /**
      * Parse the challenge response and apply it to all the packet types
      *
-     * @param \GameQ\Buffer $challenge_buffer
-     *
-     * @return bool
      * @throws \GameQ\Exception\Protocol
      */
-    public function challengeParseAndApply(Buffer $challenge_buffer)
+    public function challengeParseAndApply(Buffer $challenge_buffer): bool
     {
         // Burn padding
         $challenge_buffer->skip(5);
@@ -127,7 +109,7 @@ class Ffow extends Protocol
      * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Init results
         $results = [];
@@ -158,8 +140,6 @@ class Ffow extends Protocol
     /**
      * Handle processing the server information
      *
-     * @param Buffer $buffer
-     *
      * @return array
      */
     protected function processInfo(Buffer $buffer)
@@ -185,15 +165,11 @@ class Ffow extends Protocol
         $result->add('max_rounds', $buffer->readInt8());
         $result->add('time_left', $buffer->readInt16());
 
-        unset($buffer);
-
         return $result->fetch();
     }
 
     /**
      * Handle processing the server rules
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -203,21 +179,19 @@ class Ffow extends Protocol
         $result = new Result();
 
         // Burn extra header
-        $buffer->skip(1);
+        $buffer->skip();
 
         // Read rules until we run out of buffer
         while ($buffer->getLength()) {
             $key = $buffer->readString();
             // Check for map
-            if (strstr($key, "Map:")) {
+            if (str_contains($key, "Map:")) {
                 $result->addSub("maplist", "name", $buffer->readString());
             } else // Regular rule
             {
                 $result->add($key, $buffer->readString());
             }
         }
-
-        unset($buffer);
 
         return $result->fetch();
     }
@@ -227,17 +201,10 @@ class Ffow extends Protocol
      *
      * @todo: Build this out when there is a server with players to test against
      *
-     * @param Buffer $buffer
-     *
      * @return array
      */
     protected function processPlayers(Buffer $buffer)
     {
-        // Set the result to a new result instance
-        $result = new Result();
-
-        unset($buffer);
-
-        return $result->fetch();
+        return (new Result())->fetch();
     }
 }

@@ -31,23 +31,17 @@ class Squad extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'squad';
+    protected string $name = 'squad';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Squad";
+    protected string $name_long = "Squad";
 
     /**
      * query_port = client_port + 19378
      * 27165 = 7787 + 19378
-     *
-     * @type int
      */
-    protected $port_diff = 19378;
+    protected int $port_diff = 19378;
 }

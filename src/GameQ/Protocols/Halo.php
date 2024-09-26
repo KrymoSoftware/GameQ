@@ -28,15 +28,11 @@ class Halo extends Gamespy2
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'halo';
+    protected string $name = 'halo';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Halo: Combat Evolved";
+    protected string $name_long = "Halo: Combat Evolved";
 }

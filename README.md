@@ -7,7 +7,7 @@ GameQ is a PHP library that allows you to query multiple types of multiplayer ga
 This repository is a maintained fork of [Austinb/GameQ](https://github.com/Austinb/GameQ).
 
 ## Requirements
-* PHP 5.6.40+ - [Tested](https://github.com/KrymoSoftware/GameQ/actions/workflows/Tests.yml) in PHP 5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0, 8.1 & 8.2-dev
+* PHP 8.1+ - [Tested](https://github.com/KrymoSoftware/GameQ/actions/workflows/Tests.yml) in PHP 8.1, 8.2 and 8.3
 * [Bzip2](http://www.php.net/manual/en/book.bzip2.php) - Used for A2S compressed responses
 
 ## Installation

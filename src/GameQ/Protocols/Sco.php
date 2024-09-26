@@ -29,22 +29,16 @@ class Sco extends Source
 {
     /**
      * Sven Co-op protocol class
-     *
-     * @type string
      */
-    protected $name = 'sco';
+    protected string $name = 'sco';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Sven Co-op";
+    protected string $name_long = "Sven Co-op";
 
     /**
      * query_port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 }

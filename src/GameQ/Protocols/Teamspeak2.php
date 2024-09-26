@@ -40,10 +40,8 @@ class Teamspeak2 extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_DETAILS  => "sel %d\x0asi\x0a",
         self::PACKET_CHANNELS => "sel %d\x0acl\x0a",
         self::PACKET_PLAYERS  => "sel %d\x0apl\x0a",
@@ -51,45 +49,33 @@ class Teamspeak2 extends Protocol
 
     /**
      * The transport mode for this protocol is TCP
-     *
-     * @type string
-     */
-    protected $transport = self::TRANSPORT_TCP;
+      */
+    protected string $transport = self::TRANSPORT_TCP;
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'teamspeak2';
+    protected string $protocol = 'teamspeak2';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'teamspeak2';
+    protected string $name = 'teamspeak2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Teamspeak 2";
+    protected string $name_long = "Teamspeak 2";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "teamspeak://%s:%d/";
+    protected ?string $join_link = "teamspeak://%s:%d/";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             'dedicated'  => 'dedicated',
@@ -114,11 +100,9 @@ class Teamspeak2 extends Protocol
     /**
      * Before we send off the queries we need to update the packets
      *
-     * @param \GameQ\Server $server
-     *
      * @throws \GameQ\Exception\Protocol
      */
-    public function beforeSend(Server $server)
+    public function beforeSend(Server $server): void
     {
 
         // Check to make sure we have a query_port because it is required
@@ -138,10 +122,10 @@ class Teamspeak2 extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         // Make a new buffer out of all of the packets
@@ -149,11 +133,11 @@ class Teamspeak2 extends Protocol
 
         // Check the header [TS]
         if (($header = trim($buffer->readString("\n"))) !== '[TS]') {
-            throw new Exception(__METHOD__ . " Expected header '{$header}' does not match expected '[TS]'.");
+            throw new Exception(__METHOD__ . " Expected header '$header' does not match expected '[TS]'.");
         }
 
         // Split this buffer as the data blocks are bound by "OK" and drop any empty values
-        $sections = array_filter(explode("OK", $buffer->getBuffer()), function ($value) {
+        $sections = array_filter(explode("OK", $buffer->getBuffer()), static function ($value) {
 
             $value = trim($value);
 
@@ -172,19 +156,19 @@ class Teamspeak2 extends Protocol
             $check = substr($section, 0, 7);
 
             // Offload to the proper method
-            if ($check == 'server_') {
+            if ($check === 'server_') {
                 // Server settings and info
                 $this->processDetails($section, $result);
-            } elseif ($check == "id\tcode") {
+            } elseif ($check === "id\tcode") {
                 // Channel info
                 $this->processChannels($section, $result);
-            } elseif ($check == "p_id\tc_") {
+            } elseif ($check === "p_id\tc_") {
                 // Player info
                 $this->processPlayers($section, $result);
             }
         }
 
-        unset($buffer, $sections, $section, $check);
+        unset($buffer, $sections, $check);
 
         return $result->fetch();
     }
@@ -196,13 +180,9 @@ class Teamspeak2 extends Protocol
 
     /**
      * Handles processing the details data into a usable format
-     *
-     * @param string        $data
-     * @param \GameQ\Result $result
      */
-    protected function processDetails($data, Result &$result)
+    protected function processDetails(string $data, Result $result)
     {
-
         // Create a buffer
         $buffer = new Buffer($data);
 
@@ -218,19 +198,16 @@ class Teamspeak2 extends Protocol
             list($key, $value) = explode('=', $row, 2);
 
             // Add this to the result
-            $result->add($key, utf8_encode($value));
+            $result->add($key, $this->convertToUtf8($value));
         }
 
-        unset($data, $buffer, $row, $key, $value);
+        unset($buffer, $row, $key, $value);
     }
 
     /**
      * Process the channel listing
-     *
-     * @param string        $data
-     * @param \GameQ\Result $result
      */
-    protected function processChannels($data, Result &$result)
+    protected function processChannels(string $data, Result $result)
     {
 
         // Create a buffer
@@ -249,20 +226,17 @@ class Teamspeak2 extends Protocol
 
             foreach ($data as $key => $value) {
                 // Now add the data to the result
-                $result->addTeam($key, utf8_encode($value));
+                $result->addTeam($key, $this->convertToUtf8($value));
             }
         }
 
-        unset($data, $buffer, $row, $columns, $key, $value);
+        unset($buffer, $row, $columns, $key, $value);
     }
 
     /**
      * Process the user listing
-     *
-     * @param string        $data
-     * @param \GameQ\Result $result
      */
-    protected function processPlayers($data, Result &$result)
+    protected function processPlayers(string $data, Result $result)
     {
 
         // Create a buffer
@@ -281,10 +255,10 @@ class Teamspeak2 extends Protocol
 
             foreach ($data as $key => $value) {
                 // Now add the data to the result
-                $result->addPlayer($key, utf8_encode($value));
+                $result->addPlayer($key, $this->convertToUtf8($value));
             }
         }
 
-        unset($data, $buffer, $row, $columns, $key, $value);
+        unset($buffer, $row, $columns, $key, $value);
     }
 }

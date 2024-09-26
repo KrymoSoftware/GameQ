@@ -34,10 +34,8 @@ class Unreal2 extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_DETAILS => "\x79\x00\x00\x00\x00",
         self::PACKET_RULES   => "\x79\x00\x00\x00\x01",
         self::PACKET_PLAYERS => "\x79\x00\x00\x00\x02",
@@ -46,9 +44,8 @@ class Unreal2 extends Protocol
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\x80\x00\x00\x00\x00" => "processDetails", // 0
         "\x80\x00\x00\x00\x01" => "processRules", // 1
         "\x80\x00\x00\x00\x02" => "processPlayers", // 2
@@ -56,31 +53,23 @@ class Unreal2 extends Protocol
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'unreal2';
+    protected string $protocol = 'unreal2';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'unreal2';
+    protected string $name = 'unreal2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Unreal 2";
+    protected string $name_long = "Unreal 2";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -102,10 +91,10 @@ class Unreal2 extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         // Will hold the packets after sorting
@@ -151,10 +140,9 @@ class Unreal2 extends Protocol
 
     /**
      * Handles processing the details data into a usable format
+
      *
-     * @param \GameQ\Buffer $buffer
-     *
-     * @return mixed
+     * @return array
      * @throws \GameQ\Exception\Protocol
      */
     protected function processDetails(Buffer $buffer)
@@ -167,24 +155,21 @@ class Unreal2 extends Protocol
         $result->add('serverip', $buffer->readPascalString(1)); // empty
         $result->add('gameport', $buffer->readInt32());
         $result->add('queryport', $buffer->readInt32()); // 0
-        $result->add('servername', utf8_encode($buffer->readPascalString(1)));
-        $result->add('mapname', utf8_encode($buffer->readPascalString(1)));
+        $result->add('servername', $this->convertToUtf8($buffer->readPascalString(1)));
+        $result->add('mapname', $this->convertToUtf8($buffer->readPascalString(1)));
         $result->add('gametype', $buffer->readPascalString(1));
         $result->add('numplayers', $buffer->readInt32());
         $result->add('maxplayers', $buffer->readInt32());
         $result->add('ping', $buffer->readInt32()); // 0
-
-        unset($buffer);
 
         return $result->fetch();
     }
 
     /**
      * Handles processing the player data into a usable format
+
      *
-     * @param \GameQ\Buffer $buffer
-     *
-     * @return mixed
+     * @return array
      */
     protected function processPlayers(Buffer $buffer)
     {
@@ -198,7 +183,7 @@ class Unreal2 extends Protocol
             if (($id = $buffer->readInt32()) !== 0) {
                 // Add the results
                 $result->addPlayer('id', $id);
-                $result->addPlayer('name', utf8_encode($buffer->readPascalString(1)));
+                $result->addPlayer('name', $this->convertToUtf8($buffer->readPascalString(1)));
                 $result->addPlayer('ping', $buffer->readInt32());
                 $result->addPlayer('score', $buffer->readInt32());
 
@@ -207,7 +192,7 @@ class Unreal2 extends Protocol
             }
         }
 
-        unset($buffer, $id);
+        unset($id);
 
         return $result->fetch();
     }
@@ -215,9 +200,7 @@ class Unreal2 extends Protocol
     /**
      * Handles processing the rules data into a usable format
      *
-     * @param \GameQ\Buffer $buffer
-     *
-     * @return mixed
+     * @return array
      */
     protected function processRules(Buffer $buffer)
     {
@@ -236,10 +219,8 @@ class Unreal2 extends Protocol
                 $key .= ++$inc;
             }
 
-            $result->add(strtolower($key), utf8_encode($buffer->readPascalString(1)));
+            $result->add(strtolower($key), $this->convertToUtf8($buffer->readPascalString(1)));
         }
-
-        unset($buffer);
 
         return $result->fetch();
     }

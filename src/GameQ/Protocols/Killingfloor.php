@@ -32,36 +32,27 @@ class Killingfloor extends Unreal2
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'killing floor';
+    protected string $name = 'killing floor';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Killing Floor";
+    protected string $name_long = "Killing Floor";
 
     /**
      * query_port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "steam://connect/%s:%d/";
+    protected ?string $join_link = "steam://connect/%s:%d/";
 
     /**
      * Overload the default detail process since this version is different
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      */
@@ -77,19 +68,17 @@ class Killingfloor extends Unreal2
         $result->add('queryport', $buffer->readInt32()); // 0
 
         // We burn the first char since it is not always correct with the hostname
-        $buffer->skip(1);
+        $buffer->skip();
 
         // Read as a regular string since the length is incorrect (what we skipped earlier)
-        $result->add('servername', utf8_encode($buffer->readString()));
+        $result->add('servername', $this->convertToUtf8($buffer->readString()));
 
         // The rest is read as normal
-        $result->add('mapname', utf8_encode($buffer->readPascalString(1)));
+        $result->add('mapname', $this->convertToUtf8($buffer->readPascalString(1)));
         $result->add('gametype', $buffer->readPascalString(1));
         $result->add('numplayers', $buffer->readInt32());
         $result->add('maxplayers', $buffer->readInt32());
         $result->add('currentwave', $buffer->readInt32());
-
-        unset($buffer);
 
         return $result->fetch();
     }

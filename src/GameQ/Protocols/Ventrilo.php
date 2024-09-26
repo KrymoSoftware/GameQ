@@ -40,48 +40,36 @@ class Ventrilo extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_ALL =>
             "V\xc8\xf4\xf9`\xa2\x1e\xa5M\xfb\x03\xccQN\xa1\x10\x95\xaf\xb2g\x17g\x812\xfbW\xfd\x8e\xd2\x22r\x034z\xbb\x98",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'ventrilo';
+    protected string $protocol = 'ventrilo';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'ventrilo';
+    protected string $name = 'ventrilo';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Ventrilo";
+    protected string $name_long = "Ventrilo";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "ventrilo://%s:%d/";
+    protected ?string $join_link = "ventrilo://%s:%d/";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             'dedicated'  => 'dedicated',
@@ -633,10 +621,10 @@ class Ventrilo extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         // We need to decrypt the packets
@@ -645,7 +633,7 @@ class Ventrilo extends Protocol
         // Now let us convert special characters from hex to ascii all at once
         $decrypted = preg_replace_callback(
             '|%([0-9A-F]{2})|',
-            function ($matches) {
+            static function ($matches) {
 
                 // Pack this into ascii
                 return pack('H*', $matches[1]);
@@ -672,7 +660,7 @@ class Ventrilo extends Protocol
             $line = trim($line);
 
             // We dont have anything in this line
-            if (strlen($line) == 0) {
+            if ($line === '') {
                 continue;
             }
 
@@ -723,7 +711,7 @@ class Ventrilo extends Protocol
 
                     // By default we just add they key as an item
                     default:
-                        $result->add($key, utf8_encode($value));
+                        $result->add($key, $this->convertToUtf8($value));
                         break;
                 }
             }
@@ -740,10 +728,6 @@ class Ventrilo extends Protocol
 
     /**
      * Decrypt the incoming packets
-     *
-     * @codeCoverageIgnore
-     *
-     * @param array $packets
      *
      * @return string
      * @throws \GameQ\Exception\Protocol
@@ -810,21 +794,23 @@ class Ventrilo extends Protocol
             $a1 = $header_items['datakey'] & 0xFF;
             $a2 = $header_items['datakey'] >> 8;
 
-            if ($a1 == 0) {
+            if ($a1 === 0) {
                 throw new Exception(__METHOD__ . ": Data key is invalid");
             }
 
             $chars = unpack("C*", substr($packet, 20));
-            $data = "";
-            $characterCount = count($chars);
+            if ($chars !== false) {
+                $data = "";
+                $characterCount = count($chars);
 
-            for ($index = 1; $index <= $characterCount; $index++) {
-                $chars[$index] -= ($table[$a2] + (($index - 1) % 72)) & 0xFF;
-                $a2 = ($a2 + $a1) & 0xFF;
-                $data .= chr($chars[$index]);
+                for ($index = 1; $index <= $characterCount; $index++) {
+                    $chars[$index] -= ($table[$a2] + (($index - 1) % 72)) & 0xFF;
+                    $a2 = ($a2 + $a1) & 0xFF;
+                    $data .= chr($chars[$index]);
+                }
+                //@todo: Check CRC ???
+                $decrypted[$header_items['pck']] = $data;
             }
-            //@todo: Check CRC ???
-            $decrypted[$header_items['pck']] = $data;
         }
 
         // Return the decrypted packets as one string
@@ -833,12 +819,8 @@ class Ventrilo extends Protocol
 
     /**
      * Process the channel listing
-     *
-     * @param string        $data
-     * @param int           $fieldCount
-     * @param \GameQ\Result $result
      */
-    protected function processChannel($data, $fieldCount, Result &$result)
+    protected function processChannel(string $data, int $fieldCount, Result $result)
     {
 
         // Split the items on the comma
@@ -849,18 +831,14 @@ class Ventrilo extends Protocol
             // Split the key=value pair
             list($key, $value) = explode("=", $item, 2);
 
-            $result->addTeam(strtolower($key), utf8_encode($value));
+            $result->addTeam(strtolower($key), $this->convertToUtf8($value));
         }
     }
 
     /**
      * Process the user listing
-     *
-     * @param string        $data
-     * @param int           $fieldCount
-     * @param \GameQ\Result $result
      */
-    protected function processPlayer($data, $fieldCount, Result &$result)
+    protected function processPlayer(string $data, int $fieldCount, Result $result)
     {
 
         // Split the items on the comma
@@ -871,7 +849,7 @@ class Ventrilo extends Protocol
             // Split the key=value pair
             list($key, $value) = explode("=", $item, 2);
 
-            $result->addPlayer(strtolower($key), utf8_encode($value));
+            $result->addPlayer(strtolower($key), $this->convertToUtf8($value));
         }
     }
 }

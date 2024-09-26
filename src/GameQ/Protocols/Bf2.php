@@ -29,48 +29,38 @@ class Bf2 extends Gamespy3
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'bf2';
+    protected string $name = 'bf2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Battlefield 2";
+    protected string $name_long = "Battlefield 2";
 
     /**
      * query_port = client_port + 8433
      * 29900 = 16567 + 13333
-     *
-     * @type int
      */
-    protected $port_diff = 13333;
+    protected int $port_diff = 13333;
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "bf2://%s:%d";
+    protected ?string $join_link = "bf2://%s:%d";
 
     /**
      * BF2 has a different query packet to send than "normal" Gamespy 3
      *
      * @var array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_ALL => "\xFE\xFD\x00\x10\x20\x30\x40\xFF\xFF\xFF\x01",
     ];
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source

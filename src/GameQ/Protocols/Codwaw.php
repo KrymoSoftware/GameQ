@@ -29,15 +29,11 @@ class Codwaw extends Quake3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'codwaw';
+    protected string $name = 'codwaw';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Call of Duty: World at War";
+    protected string $name_long = "Call of Duty: World at War";
 }

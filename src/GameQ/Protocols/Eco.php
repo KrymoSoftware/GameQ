@@ -33,51 +33,43 @@ class Eco extends Http
      *
      * @var array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "GET /frontpage HTTP/1.0\r\nAccept: */*\r\n\r\n",
     ];
 
     /**
      * Http protocol is SSL
      *
-     * @var string
      */
-    protected $transport = self::TRANSPORT_TCP;
+    protected string $transport = self::TRANSPORT_TCP;
 
     /**
      * The protocol being used
      *
-     * @var string
      */
-    protected $protocol = 'eco';
+    protected string $protocol = 'eco';
 
     /**
      * String name of this protocol class
      *
-     * @var string
      */
-    protected $name = 'eco';
+    protected string $name = 'eco';
 
     /**
      * Longer string name of this protocol class
      *
-     * @var string
      */
-    protected $name_long = "ECO Global Survival";
+    protected string $name_long = "ECO Global Survival";
 
     /**
      * query_port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 
     /**
      * Normalize some items
-     *
-     * @var array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -92,10 +84,10 @@ class Eco extends Http
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         if (empty($this->packets_response)) {
             return [];

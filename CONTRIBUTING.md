@@ -5,33 +5,30 @@ Contributions are **welcome** and will be fully **credited**.
 ## Pull Requests
 
 - **Document any change in behavior** - Make sure the `README.md` and any other relevant documentation are kept up-to-date.
-
 - **Create feature branches** - Don't ask us to pull from your master branch.
-
 - **One pull request per feature** - If you want to do more than one thing, send multiple pull requests.
 
 ## Coding Standard
 
 - The **[PSR-2 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)** is to be used for all code. 
-- **[PHPMD](http://phpmd.org/)** is used to help keep the code clean but exceptions can exist. 
-
+- **[PHPStan](https://phpstan.org/)** is used to help keep the code clean. At the moment, PHPStan level 5 is enforced.
 - Use the following commands to check your code before committing it:
 
 ```sh
-$ vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --report=checkstyle --report-file=build/logs/checkstyle.xml --standard=build/config/phpcs.xml -v
-$ vendor/bin/phpmd src,tests xml build/config/phpmd.xml
+$ composer phpcs
+$ composer phpstan
 ```
 
 ## Tests
 
 - **Add tests!** - Your patch won't be accepted if it doesn't have tests.
+- Use the following command to run the tests:
 
-- Run tests by calling `phpunit`
 ```sh
-$ vendor/bin/phpunit
+$ composer phpunit
 ```
 
-The coding standard, mess detection and tests are validated by [GitHub Actions](.github).
+The code quality is validated by [GitHub Actions](.github).
 
 # Can't Contribute?
 

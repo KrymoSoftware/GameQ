@@ -29,22 +29,16 @@ class Stormworks extends Source
 {
     /**
      * Stormworks protocol class
-     *
-     * @type string
      */
-    protected $name = 'stormworks';
+    protected string $name = 'stormworks';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Stormworks";
+    protected string $name_long = "Stormworks";
 
     /**
      * query_port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 }

@@ -29,15 +29,11 @@ class Coduo extends Quake3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'coduo';
+    protected string $name = 'coduo';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Call of Duty: United Offensive";
+    protected string $name_long = "Call of Duty: United Offensive";
 }

@@ -32,16 +32,10 @@ class Test extends Base
     /**
      * Apply the filter.  For this we just return whatever is sent
      *
-     * @SuppressWarnings(PHPMD)
-     *
-     * @param array         $result
-     * @param \GameQ\Server $server
-     *
-     * @return array
+     * @return mixed
      */
-    public function apply(array $result, Server $server)
+    public function apply(array $result, Server $server): mixed
     {
-
         return $result;
     }
 }

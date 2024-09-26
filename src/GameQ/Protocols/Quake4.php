@@ -32,22 +32,17 @@ class Quake4 extends Doom3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'quake4';
+    protected string $name = 'quake4';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Quake 4";
+    protected string $name_long = "Quake 4";
 
     /**
      * Handle processing of player data
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      */
@@ -67,7 +62,7 @@ class Quake4 extends Doom3
             $result->addPlayer('ping', $buffer->readInt16());
             $result->addPlayer('rate', $buffer->readInt32());
             // Add player name, encoded
-            $result->addPlayer('name', utf8_encode(trim($buffer->readString())));
+            $result->addPlayer('name', $this->convertToUtf8(trim($buffer->readString())));
             $result->addPlayer('clantag', $buffer->readString());
             // Increment
             $playerCount++;
@@ -76,8 +71,7 @@ class Quake4 extends Doom3
         // Add the number of players to the result
         $result->add('numplayers', $playerCount);
 
-        // Clear
-        unset($buffer, $playerCount);
+        unset($playerCount);
 
         return $result->fetch();
     }

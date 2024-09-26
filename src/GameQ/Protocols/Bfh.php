@@ -29,15 +29,11 @@ class Bfh extends Bf4
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'bfh';
+    protected string $name = 'bfh';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Battlefield Hardline";
+    protected string $name_long = "Battlefield Hardline";
 }
