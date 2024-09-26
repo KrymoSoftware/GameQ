@@ -201,7 +201,7 @@ class M2mp extends Protocol
 
             // Only player name information is available
             // Add player name, encoded
-            $result->addPlayer('name', utf8_encode(trim($buffer->readPascalString(1, true))));
+            $result->addPlayer('name', $this->convertToUtf8(trim($buffer->readPascalString(1, true))));
         }
 
         // Clear

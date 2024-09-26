@@ -218,7 +218,7 @@ class Teamspeak2 extends Protocol
             list($key, $value) = explode('=', $row, 2);
 
             // Add this to the result
-            $result->add($key, utf8_encode($value));
+            $result->add($key, $this->convertToUtf8($value));
         }
 
         unset($data, $buffer, $row, $key, $value);
@@ -249,7 +249,7 @@ class Teamspeak2 extends Protocol
 
             foreach ($data as $key => $value) {
                 // Now add the data to the result
-                $result->addTeam($key, utf8_encode($value));
+                $result->addTeam($key, $this->convertToUtf8($value));
             }
         }
 
@@ -281,7 +281,7 @@ class Teamspeak2 extends Protocol
 
             foreach ($data as $key => $value) {
                 // Now add the data to the result
-                $result->addPlayer($key, utf8_encode($value));
+                $result->addPlayer($key, $this->convertToUtf8($value));
             }
         }
 

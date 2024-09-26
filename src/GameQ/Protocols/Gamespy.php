@@ -156,7 +156,7 @@ class Gamespy extends Protocol
                         if (substr($key, 0, $suffix) == 'playername') {
                             $numPlayers++;
                         }
-                        $result->addPlayer(substr($key, 0, $suffix), utf8_encode($val));
+                        $result->addPlayer(substr($key, 0, $suffix), $this->convertToUtf8($val));
                     }
                 } else {
                     // Regular variable so just add the value.

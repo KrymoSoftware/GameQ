@@ -462,6 +462,40 @@ abstract class Protocol
     }
 
     /**
+     * Converts a string from ISO-8859-1 to UTF-8.
+     * This is a replacement for PHP's utf8_encode function that was deprecated with PHP 8.2.
+     *
+     * Source: symfony/polyfill-php72
+     * See https://github.com/symfony/polyfill-php72/blob/bf44a9fd41feaac72b074de600314a93e2ae78e2/Php72.php#L24-L38
+     *
+     * @author Nicolas Grekas <p@tchwork.com>
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com
+     */
+    public function convertToUtf8(string $s): string
+    {
+        $s .= $s;
+        $len = \strlen($s);
+
+        for ($i = $len >> 1, $j = 0; $i < $len; ++$i, ++$j) {
+            switch (true) {
+                case $s[$i] < "\x80":
+                    $s[$j] = $s[$i];
+                    break;
+                case $s[$i] < "\xC0":
+                    $s[$j] = "\xC2";
+                    $s[++$j] = $s[$i];
+                    break;
+                default:
+                    $s[$j] = "\xC3";
+                    $s[++$j] = \chr(\ord($s[$i]) - 64);
+                    break;
+            }
+        }
+
+        return substr($s, 0, $j);
+    }
+
+    /**
      * Get the normalize settings for the protocol
      *
      * @return array

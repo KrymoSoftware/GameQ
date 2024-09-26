@@ -200,8 +200,8 @@ class Cs2d extends Protocol
         $result->add('lua_scripts', (int)$this->readFlag($serverFlags, 6));
 
         // Read the rest of the buffer data
-        $result->add('servername', utf8_encode($buffer->readPascalString(0)));
-        $result->add('mapname', utf8_encode($buffer->readPascalString(0)));
+        $result->add('servername', $this->convertToUtf8($buffer->readPascalString(0)));
+        $result->add('mapname', $this->convertToUtf8($buffer->readPascalString(0)));
         $result->add('num_players', $buffer->readInt8());
         $result->add('max_players', $buffer->readInt8());
         $result->add('game_mode', $buffer->readInt8());
@@ -234,7 +234,7 @@ class Cs2d extends Protocol
             if (($id = $buffer->readInt8()) !== 0) {
                 // Add the results
                 $result->addPlayer('id', $id);
-                $result->addPlayer('name', utf8_encode($buffer->readPascalString(0)));
+                $result->addPlayer('name', $this->convertToUtf8($buffer->readPascalString(0)));
                 $result->addPlayer('team', $buffer->readInt8());
                 $result->addPlayer('score', $buffer->readInt32());
                 $result->addPlayer('deaths', $buffer->readInt32());

@@ -167,8 +167,8 @@ class Unreal2 extends Protocol
         $result->add('serverip', $buffer->readPascalString(1)); // empty
         $result->add('gameport', $buffer->readInt32());
         $result->add('queryport', $buffer->readInt32()); // 0
-        $result->add('servername', utf8_encode($buffer->readPascalString(1)));
-        $result->add('mapname', utf8_encode($buffer->readPascalString(1)));
+        $result->add('servername', $this->convertToUtf8($buffer->readPascalString(1)));
+        $result->add('mapname', $this->convertToUtf8($buffer->readPascalString(1)));
         $result->add('gametype', $buffer->readPascalString(1));
         $result->add('numplayers', $buffer->readInt32());
         $result->add('maxplayers', $buffer->readInt32());
@@ -196,7 +196,7 @@ class Unreal2 extends Protocol
             if (($id = $buffer->readInt32()) !== 0) {
                 // Add the results
                 $result->addPlayer('id', $id);
-                $result->addPlayer('name', utf8_encode($buffer->readPascalString(1)));
+                $result->addPlayer('name', $this->convertToUtf8($buffer->readPascalString(1)));
                 $result->addPlayer('ping', $buffer->readInt32());
                 $result->addPlayer('score', $buffer->readInt32());
 
@@ -234,7 +234,7 @@ class Unreal2 extends Protocol
                 $key .= ++$inc;
             }
 
-            $result->add(strtolower($key), utf8_encode($buffer->readPascalString(1)));
+            $result->add(strtolower($key), $this->convertToUtf8($buffer->readPascalString(1)));
         }
 
         return $result->fetch();

@@ -182,7 +182,7 @@ class Gamespy2 extends Protocol
             if (strlen($key) == 0) {
                 break;
             }
-            $result->add($key, utf8_encode($buffer->readString()));
+            $result->add($key, $this->convertToUtf8($buffer->readString()));
         }
 
         return $result->fetch();
@@ -252,7 +252,7 @@ class Gamespy2 extends Protocol
         // Get the values
         while ($buffer->getLength() > 4) {
             foreach ($varNames as $varName) {
-                $result->addSub($dataType, utf8_encode($varName), utf8_encode($buffer->readString()));
+                $result->addSub($dataType, $this->convertToUtf8($varName), $this->convertToUtf8($buffer->readString()));
             }
             if ($buffer->lookAhead() === "\x00") {
                 $buffer->skip();
