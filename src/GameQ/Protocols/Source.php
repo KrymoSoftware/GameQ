@@ -120,7 +120,12 @@ class Source extends Protocol
     {
 
         // Skip the header
-        $challenge_buffer->skip(5);
+        $challenge_buffer->skip(4);
+
+        if ($challenge_buffer->read() !== "\x41") {
+            // Response is not a challenge response
+            return true;
+        }
 
         // Apply the challenge and return
         return $this->challengeApply($challenge_buffer->read(4));
