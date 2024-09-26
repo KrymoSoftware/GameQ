@@ -4,9 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - v1
-      - v2
-      - v3
+      - main
 
 jobs:
   CI:
