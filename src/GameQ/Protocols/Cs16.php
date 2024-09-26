@@ -29,17 +29,13 @@ class Cs16 extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'cs16';
+    protected string $name = 'cs16';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Counter-Strike 1.6";
+    protected string $name_long = "Counter-Strike 1.6";
 
     /**
      * In the case of cs 1.6 we offload split packets here because the split packet response for rules is in

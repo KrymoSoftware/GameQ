@@ -36,47 +36,35 @@ class Openttd extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_ALL => "\x03\x00\x00",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'openttd';
+    protected string $protocol = 'openttd';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'openttd';
+    protected string $name = 'openttd';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Open Transport Tycoon Deluxe";
+    protected string $name_long = "Open Transport Tycoon Deluxe";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -95,7 +83,7 @@ class Openttd extends Protocol
      * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Make a buffer
         $buffer = new Buffer(implode('', $this->packets_response));
@@ -106,7 +94,7 @@ class Openttd extends Protocol
         // Grab the header
         $length = $buffer->readInt16();
         //$type = $buffer->readInt8();
-        $buffer->skip(1); // Skip the "$type" as its not used in the code.
+        $buffer->skip(); // Skip the "$type" as its not used in the code.
 
         // Header
         // Figure out which packet response this is
@@ -119,8 +107,6 @@ class Openttd extends Protocol
 
     /**
      * Handle processing the server information
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */

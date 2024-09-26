@@ -40,63 +40,48 @@ class M2mp extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_ALL => "M2MP",
     ];
 
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "M2MP" => 'processStatus',
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'm2mp';
+    protected string $protocol = 'm2mp';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'm2mp';
+    protected string $name = 'm2mp';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Mafia 2 Multiplayer";
+    protected string $name_long = "Mafia 2 Multiplayer";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * The difference between the client port and query port
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -118,7 +103,7 @@ class M2mp extends Protocol
      * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Make a buffer
         $buffer = new Buffer(implode('', $this->packets_response));
@@ -138,8 +123,6 @@ class M2mp extends Protocol
     /**
      * Process the status response
      *
-     * @param Buffer $buffer
-     *
      * @return array
      */
     protected function processStatus(Buffer $buffer)
@@ -155,8 +138,6 @@ class M2mp extends Protocol
 
     /**
      * Handle processing the server information
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -182,8 +163,6 @@ class M2mp extends Protocol
     /**
      * Handle processing of player data
      *
-     * @param Buffer $buffer
-     *
      * @return array
      */
     protected function processPlayers(Buffer $buffer)
@@ -203,9 +182,6 @@ class M2mp extends Protocol
             // Add player name, encoded
             $result->addPlayer('name', $this->convertToUtf8(trim($buffer->readPascalString(1, true))));
         }
-
-        // Clear
-        unset($buffer);
 
         return $result->fetch();
     }

@@ -32,22 +32,17 @@ class Quake4 extends Doom3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'quake4';
+    protected string $name = 'quake4';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Quake 4";
+    protected string $name_long = "Quake 4";
 
     /**
      * Handle processing of player data
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      */

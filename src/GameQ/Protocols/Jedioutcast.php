@@ -28,15 +28,11 @@ class Jedioutcast extends Quake3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'jedioutcast';
+    protected string $name = 'jedioutcast';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Star Wars Jedi Knight II: Jedi Outcast";
+    protected string $name_long = "Star Wars Jedi Knight II: Jedi Outcast";
 }

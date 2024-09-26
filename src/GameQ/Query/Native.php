@@ -30,10 +30,10 @@ class Native extends Core
     /**
      * Get the current socket or create one and return
      *
-     * @return resource|null
+     * @return mixed
      * @throws \GameQ\Exception\Query
      */
-    public function get()
+    public function get(): mixed
     {
 
         // No socket for this server, make one
@@ -47,12 +47,12 @@ class Native extends Core
     /**
      * Write data to the socket
      *
-     * @param string $data
+     * @param string|array $data
      *
      * @return int The number of bytes written
      * @throws \GameQ\Exception\Query
      */
-    public function write($data)
+    public function write(string|array $data): int
     {
 
         try {
@@ -71,7 +71,7 @@ class Native extends Core
     /**
      * Close the current socket
      */
-    public function close()
+    public function close(): void
     {
 
         if ($this->socket) {
@@ -85,7 +85,7 @@ class Native extends Core
      *
      * @throws \GameQ\Exception\Query
      */
-    protected function create()
+    protected function create(): void
     {
 
         // Create the remote address
@@ -132,14 +132,8 @@ class Native extends Core
 
     /**
      * Pull the responses out of the stream
-     *
-     * @param array $sockets
-     * @param int   $timeout
-     * @param int   $stream_timeout
-     *
-     * @return array Raw responses
      */
-    public function getResponses(array $sockets, $timeout, $stream_timeout)
+    public function getResponses(array $sockets, int $timeout, int $stream_timeout): array
     {
         // Will hold the responses read from the sockets
         $responses = [];
@@ -197,7 +191,7 @@ class Native extends Core
                 }
 
                 // Check to see if the response is empty, if so we are done with this server
-                if (strlen($response) == 0) {
+                if ($response === '') {
                     // Remove this server from any future read loops
                     unset($sockets_tmp[(int)$socket]);
                     continue;

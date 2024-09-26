@@ -40,37 +40,32 @@ class Tshock extends Http
      *
      * @var array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "GET /v2/server/status?players=true&rules=true HTTP/1.0\r\nAccept: */*\r\n\r\n",
     ];
 
     /**
      * The protocol being used
      *
-     * @var string
      */
-    protected $protocol = 'tshock';
+    protected string $protocol = 'tshock';
 
     /**
      * String name of this protocol class
      *
-     * @var string
      */
-    protected $name = 'tshock';
+    protected string $name = 'tshock';
 
     /**
      * Longer string name of this protocol class
      *
-     * @var string
      */
-    protected $name_long = "Tshock";
+    protected string $name_long = "Tshock";
 
     /**
      * Normalize some items
-     *
-     * @var array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -91,10 +86,10 @@ class Tshock extends Http
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         if (empty($this->packets_response)) {
             return [];

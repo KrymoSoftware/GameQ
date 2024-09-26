@@ -28,23 +28,17 @@ class Rf2 extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'rf2';
+    protected string $name = 'rf2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "rFactor 2";
+    protected string $name_long = "rFactor 2";
 
     /**
      * query_port = client_port + 2
      * 64092 = 64090 + 2
-     *
-     * @type int
      */
-    protected $port_diff = 2;
+    protected int $port_diff = 2;
 }

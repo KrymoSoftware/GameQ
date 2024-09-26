@@ -29,15 +29,11 @@ class Ffe extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'ffe';
+    protected string $name = 'ffe';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Fortress Forever";
+    protected string $name_long = "Fortress Forever";
 }

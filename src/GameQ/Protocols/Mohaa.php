@@ -29,24 +29,18 @@ class Mohaa extends Gamespy
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'mohaa';
+    protected string $name = 'mohaa';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Medal of honor: Allied Assault";
+    protected string $name_long = "Medal of honor: Allied Assault";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         'general' => [
             // target       => source
             'dedicated'  => 'dedicated',
@@ -67,12 +61,8 @@ class Mohaa extends Gamespy
 
     /**
      * Query port is always the client port + 97 in MOHAA
-     *
-     * @param int $clientPort
-     *
-     * @return int
      */
-    public function findQueryPort($clientPort)
+    public function findQueryPort(int $clientPort): int
     {
         return $clientPort + 97;
     }

@@ -28,15 +28,11 @@ class Dods extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'dods';
+    protected string $name = 'dods';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Day of Defeat: Source";
+    protected string $name_long = "Day of Defeat: Source";
 }

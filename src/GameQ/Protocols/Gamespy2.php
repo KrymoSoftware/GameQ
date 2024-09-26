@@ -37,18 +37,14 @@ class Gamespy2 extends Protocol
 
     /**
      * Define the state of this class
-     *
-     * @type int
      */
-    protected $state = self::STATE_BETA;
+    protected int $state = self::STATE_BETA;
 
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_DETAILS => "\xFE\xFD\x00\x43\x4F\x52\x59\xFF\x00\x00",
         self::PACKET_PLAYERS => "\xFE\xFD\x00\x43\x4F\x52\x58\x00\xFF\xFF",
     ];
@@ -56,47 +52,36 @@ class Gamespy2 extends Protocol
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\x00\x43\x4F\x52\x59" => "processDetails",
         "\x00\x43\x4F\x52\x58" => "processPlayers",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'gamespy2';
+    protected string $protocol = 'gamespy2';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'gamespy2';
+    protected string $name = 'gamespy2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "GameSpy2 Server";
+    protected string $name_long = "GameSpy2 Server";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -115,10 +100,10 @@ class Gamespy2 extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         // Will hold the packets after sorting
@@ -164,8 +149,7 @@ class Gamespy2 extends Protocol
 
     /**
      * Handles processing the details data into a usable format
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      * @throws Exception
@@ -179,7 +163,7 @@ class Gamespy2 extends Protocol
         // We go until we hit an empty key
         while ($buffer->getLength()) {
             $key = $buffer->readString();
-            if (strlen($key) == 0) {
+            if ($key === '') {
                 break;
             }
             $result->add($key, $this->convertToUtf8($buffer->readString()));
@@ -190,8 +174,7 @@ class Gamespy2 extends Protocol
 
     /**
      * Handles processing the players data into a usable format
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      * @throws Exception
@@ -203,7 +186,7 @@ class Gamespy2 extends Protocol
         $result = new Result();
 
         // Skip the header
-        $buffer->skip(1);
+        $buffer->skip();
 
         // Players are first
         $this->parsePlayerTeam('players', $buffer, $result);
@@ -217,13 +200,9 @@ class Gamespy2 extends Protocol
     /**
      * Parse the player/team info returned from the player call
      *
-     * @param string        $dataType
-     * @param \GameQ\Buffer $buffer
-     * @param \GameQ\Result $result
-     *
      * @throws Exception
      */
-    protected function parsePlayerTeam($dataType, Buffer $buffer, Result $result)
+    protected function parsePlayerTeam(string $dataType, Buffer $buffer, Result $result)
     {
 
         // Do count

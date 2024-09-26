@@ -28,15 +28,11 @@ class Css extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'css';
+    protected string $name = 'css';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Counter-Strike: Source";
+    protected string $name_long = "Counter-Strike: Source";
 }

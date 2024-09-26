@@ -36,10 +36,8 @@ class Cs2d extends Protocol
 
     /**
      * Array of packets we want to query.
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS  => "\x01\x00\xFB\x01",
         //self::PACKET_STATUS => "\x01\x00\x03\x10\x21\xFB\x01\x75\x00",
         self::PACKET_PLAYERS => "\x01\x00\xFB\x05",
@@ -48,47 +46,36 @@ class Cs2d extends Protocol
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\x01\x00\xFB\x01" => "processDetails",
         "\x01\x00\xFB\x05" => "processPlayers",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'cs2d';
+    protected string $protocol = 'cs2d';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'cs2d';
+    protected string $name = 'cs2d';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Counter-Strike 2d";
+    protected string $name_long = "Counter-Strike 2d";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "cs2d://%s:%d/";
+    protected ?string $join_link = "cs2d://%s:%d/";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -112,10 +99,10 @@ class Cs2d extends Protocol
     /**
      * Process the response for the Tibia server
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         // We have a merged packet, try to split it back up
@@ -178,8 +165,6 @@ class Cs2d extends Protocol
     /**
      * Handles processing the details data into a usable format
      *
-     * @param Buffer $buffer
-     *
      * @return array
      * @throws Exception
      */
@@ -200,8 +185,8 @@ class Cs2d extends Protocol
         $result->add('lua_scripts', (int)$this->readFlag($serverFlags, 6));
 
         // Read the rest of the buffer data
-        $result->add('servername', $this->convertToUtf8($buffer->readPascalString(0)));
-        $result->add('mapname', $this->convertToUtf8($buffer->readPascalString(0)));
+        $result->add('servername', $this->convertToUtf8($buffer->readPascalString()));
+        $result->add('mapname', $this->convertToUtf8($buffer->readPascalString()));
         $result->add('num_players', $buffer->readInt8());
         $result->add('max_players', $buffer->readInt8());
         $result->add('game_mode', $buffer->readInt8());
@@ -213,8 +198,6 @@ class Cs2d extends Protocol
 
     /**
      * Handles processing the player data into a usable format
-     *
-     * @param Buffer $buffer
      *
      * @return array
      * @throws Exception
@@ -234,7 +217,7 @@ class Cs2d extends Protocol
             if (($id = $buffer->readInt8()) !== 0) {
                 // Add the results
                 $result->addPlayer('id', $id);
-                $result->addPlayer('name', $this->convertToUtf8($buffer->readPascalString(0)));
+                $result->addPlayer('name', $this->convertToUtf8($buffer->readPascalString()));
                 $result->addPlayer('team', $buffer->readInt8());
                 $result->addPlayer('score', $buffer->readInt32());
                 $result->addPlayer('deaths', $buffer->readInt32());
@@ -256,6 +239,6 @@ class Cs2d extends Protocol
      */
     protected function readFlag($flags, $offset)
     {
-        return !!($flags & (1 << $offset));
+        return (bool)($flags & (1 << $offset));
     }
 }

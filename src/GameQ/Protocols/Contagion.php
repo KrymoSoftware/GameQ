@@ -29,14 +29,10 @@ class Contagion extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'contagion';
+    protected string $name = 'contagion';
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Contagion";
+    protected string $name_long = "Contagion";
 }

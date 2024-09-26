@@ -29,31 +29,23 @@ class Batt1944 extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'batt1944';
+    protected string $name = 'batt1944';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Battalion 1944";
+    protected string $name_long = "Battalion 1944";
 
     /**
      * query_port = client_port + 3
-     *
-     * @type int
      */
-    protected $port_diff = 3;
+    protected int $port_diff = 3;
 
     /**
      * Normalize main fields
-     *
-     * @var array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target    => source

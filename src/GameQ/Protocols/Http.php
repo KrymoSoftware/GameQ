@@ -32,36 +32,26 @@ abstract class Http extends Protocol
 {
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'http';
+    protected string $protocol = 'http';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'http';
+    protected string $name = 'http';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Generic HTTP protocol";
+    protected string $name_long = "Generic HTTP protocol";
 
     /**
      * Http protocol is TCP
-     *
-     * @var string
      */
-    protected $transport = self::TRANSPORT_TCP;
+    protected string $transport = self::TRANSPORT_TCP;
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 }

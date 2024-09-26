@@ -32,36 +32,27 @@ class Killingfloor extends Unreal2
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'killing floor';
+    protected string $name = 'killing floor';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Killing Floor";
+    protected string $name_long = "Killing Floor";
 
     /**
      * query_port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "steam://connect/%s:%d/";
+    protected ?string $join_link = "steam://connect/%s:%d/";
 
     /**
      * Overload the default detail process since this version is different
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      */
@@ -77,7 +68,7 @@ class Killingfloor extends Unreal2
         $result->add('queryport', $buffer->readInt32()); // 0
 
         // We burn the first char since it is not always correct with the hostname
-        $buffer->skip(1);
+        $buffer->skip();
 
         // Read as a regular string since the length is incorrect (what we skipped earlier)
         $result->add('servername', $this->convertToUtf8($buffer->readString()));

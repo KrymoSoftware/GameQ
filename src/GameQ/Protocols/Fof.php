@@ -29,15 +29,11 @@ class Fof extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'fof';
+    protected string $name = 'fof';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Fistful of Frags";
+    protected string $name_long = "Fistful of Frags";
 }

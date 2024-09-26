@@ -39,47 +39,31 @@ class Buffer
     /**
      * Constants for the byte code types we need to read as
      */
-    const NUMBER_TYPE_BIGENDIAN = 'be',
-        NUMBER_TYPE_LITTLEENDIAN = 'le',
-        NUMBER_TYPE_MACHINE = 'm';
+    public const NUMBER_TYPE_BIGENDIAN = 'be';
+    public const NUMBER_TYPE_LITTLEENDIAN = 'le';
 
     /**
      * The number type we use for reading integers.  Defaults to little endian
-     *
-     * @type string
      */
-    private $number_type;
+    private string $number_type;
 
     /**
      * The original data
-     *
-     * @type string
      */
-    private $data;
+    private string $data;
 
     /**
      * The original data
-     *
-     * @type int
      */
-    private $length;
+    private int $length;
 
     /**
      * Position of pointer
-     *
-     * @type int
      */
-    private $index = 0;
+    private int $index = 0;
 
-    /**
-     * Constructor
-     *
-     * @param string $data
-     * @param string $number_type
-     */
-    public function __construct($data, $number_type = self::NUMBER_TYPE_LITTLEENDIAN)
+    public function __construct(string $data, string $number_type = self::NUMBER_TYPE_LITTLEENDIAN)
     {
-
         $this->number_type = $number_type;
         $this->data = $data;
         $this->length = strlen($data);
@@ -87,10 +71,8 @@ class Buffer
 
     /**
      * Return all the data
-     *
-     * @return  string    The data
      */
-    public function getData()
+    public function getData(): string
     {
 
         return $this->data;
@@ -98,10 +80,8 @@ class Buffer
 
     /**
      * Return data currently in the buffer
-     *
-     * @return  string    The data currently in the buffer
      */
-    public function getBuffer()
+    public function getBuffer(): string
     {
 
         return substr($this->data, $this->index);
@@ -109,10 +89,8 @@ class Buffer
 
     /**
      * Returns the number of bytes in the buffer
-     *
-     * @return  int  Length of the buffer
      */
-    public function getLength()
+    public function getLength(): int
     {
 
         return max($this->length - $this->index, 0);
@@ -121,12 +99,9 @@ class Buffer
     /**
      * Read from the buffer
      *
-     * @param int $length
-     *
-     * @return string
      * @throws \GameQ\Exception\Protocol
      */
-    public function read($length = 1)
+    public function read(int $length = 1): string
     {
 
         if (($length + $this->index) > $this->length) {
@@ -144,28 +119,22 @@ class Buffer
      *
      * Unlike the other read functions, this function actually removes
      * the character from the buffer.
-     *
-     * @return string
      */
-    public function readLast()
+    public function readLast(): string
     {
 
         $len = strlen($this->data);
         $string = $this->data[strlen($this->data) - 1];
         $this->data = substr($this->data, 0, $len - 1);
-        $this->length -= 1;
+        --$this->length;
 
         return $string;
     }
 
     /**
      * Look at the buffer, but don't remove
-     *
-     * @param int $length
-     *
-     * @return string
      */
-    public function lookAhead($length = 1)
+    public function lookAhead(int $length = 1): string
     {
 
         return substr($this->data, $this->index, $length);
@@ -173,10 +142,8 @@ class Buffer
 
     /**
      * Skip forward in the buffer
-     *
-     * @param int $length
      */
-    public function skip($length = 1)
+    public function skip(int $length = 1): void
     {
 
         $this->index += $length;
@@ -185,10 +152,8 @@ class Buffer
     /**
      * Jump to a specific position in the buffer,
      * will not jump past end of buffer
-     *
-     * @param $index
      */
-    public function jumpto($index)
+    public function jumpto(int $index): void
     {
 
         $this->index = min($index, $this->length - 1);
@@ -196,10 +161,8 @@ class Buffer
 
     /**
      * Get the current pointer position
-     *
-     * @return int
      */
-    public function getPosition()
+    public function getPosition(): int
     {
 
         return $this->index;
@@ -210,14 +173,10 @@ class Buffer
      *
      * If not found, return everything
      *
-     * @param string $delim
-     *
-     * @return string
      * @throws \GameQ\Exception\Protocol
      */
-    public function readString($delim = "\x00")
+    public function readString(string $delim = "\x00"): string
     {
-
         // Get position of delimiter
         $len = strpos($this->data, $delim, min($this->index, $this->length));
 
@@ -239,10 +198,9 @@ class Buffer
      * @param int  $offset      Number of bits to cut off the end
      * @param bool $read_offset True if the data after the offset is to be read
      *
-     * @return string
      * @throws \GameQ\Exception\Protocol
      */
-    public function readPascalString($offset = 0, $read_offset = false)
+    public function readPascalString(int $offset = 0, bool $read_offset = false): string
     {
 
         // Get the proper offset
@@ -252,9 +210,9 @@ class Buffer
         // Read the data
         if ($read_offset) {
             return $this->read($offset);
-        } else {
-            return substr($this->read($len), 0, $offset);
         }
+
+        return substr($this->read($len), 0, $offset);
     }
 
     /**
@@ -262,15 +220,11 @@ class Buffer
      *
      * If not found, return everything
      *
-     * @param              $delims
-     * @param null|string &$delimfound
-     *
-     * @return string
      * @throws \GameQ\Exception\Protocol
      *
      * @todo: Check to see if this is even used anymore
      */
-    public function readStringMulti($delims, &$delimfound = null)
+    public function readStringMulti(array $delims, ?string &$delimfound = null): string
     {
 
         // Get position of delimiters
@@ -297,13 +251,12 @@ class Buffer
     /**
      * Read an 8-bit unsigned integer
      *
-     * @return int
      * @throws \GameQ\Exception\Protocol
      */
-    public function readInt8()
+    public function readInt8(): int
     {
 
-        $int = unpack('Cint', $this->read(1));
+        $int = unpack('Cint', $this->read());
 
         return $int['int'];
     }
@@ -311,13 +264,12 @@ class Buffer
     /**
      * Read and 8-bit signed integer
      *
-     * @return int
      * @throws \GameQ\Exception\Protocol
      */
-    public function readInt8Signed()
+    public function readInt8Signed(): int
     {
 
-        $int = unpack('cint', $this->read(1));
+        $int = unpack('cint', $this->read());
 
         return $int['int'];
     }
@@ -325,10 +277,9 @@ class Buffer
     /**
      * Read a 16-bit unsigned integer
      *
-     * @return int
      * @throws \GameQ\Exception\Protocol
      */
-    public function readInt16()
+    public function readInt16(): int
     {
 
         // Change the integer type we are looking up
@@ -346,17 +297,16 @@ class Buffer
     /**
      * Read a 16-bit signed integer
      *
-     * @return int
      * @throws \GameQ\Exception\Protocol
      */
-    public function readInt16Signed()
+    public function readInt16Signed(): int
     {
 
         // Read the data into a string
         $string = $this->read(2);
 
         // For big endian we need to reverse the bytes
-        if ($this->number_type == self::NUMBER_TYPE_BIGENDIAN) {
+        if ($this->number_type === self::NUMBER_TYPE_BIGENDIAN) {
             $string = strrev($string);
         }
 
@@ -370,10 +320,9 @@ class Buffer
     /**
      * Read a 32-bit unsigned integer
      *
-     * @return int
      * @throws \GameQ\Exception\Protocol
      */
-    public function readInt32($length = 4)
+    public function readInt32($length = 4): int
     {
         // Change the integer type we are looking up
         $littleEndian = null;
@@ -404,17 +353,16 @@ class Buffer
     /**
      * Read a 32-bit signed integer
      *
-     * @return int
      * @throws \GameQ\Exception\Protocol
      */
-    public function readInt32Signed()
+    public function readInt32Signed(): int
     {
 
         // Read the data into a string
         $string = $this->read(4);
 
         // For big endian we need to reverse the bytes
-        if ($this->number_type == self::NUMBER_TYPE_BIGENDIAN) {
+        if ($this->number_type === self::NUMBER_TYPE_BIGENDIAN) {
             $string = strrev($string);
         }
 
@@ -428,14 +376,13 @@ class Buffer
     /**
      * Read a 64-bit unsigned integer
      *
-     * @return int
      * @throws \GameQ\Exception\Protocol
      */
-    public function readInt64()
+    public function readInt64(): int
     {
 
         // We have the pack 64-bit codes available. See: http://php.net/manual/en/function.pack.php
-        if (version_compare(PHP_VERSION, '5.6.3') >= 0 && PHP_INT_SIZE === 8) {
+        if (PHP_INT_SIZE === 8 && version_compare(PHP_VERSION, '5.6.3') >= 0) {
             // Change the integer type we are looking up
             $type = match ($this->number_type) {
                 self::NUMBER_TYPE_BIGENDIAN => 'Jint',
@@ -469,17 +416,16 @@ class Buffer
     /**
      * Read a 32-bit float
      *
-     * @return float
      * @throws \GameQ\Exception\Protocol
      */
-    public function readFloat32()
+    public function readFloat32(): float
     {
 
         // Read the data into a string
         $string = $this->read(4);
 
         // For big endian we need to reverse the bytes
-        if ($this->number_type == self::NUMBER_TYPE_BIGENDIAN) {
+        if ($this->number_type === self::NUMBER_TYPE_BIGENDIAN) {
             $string = strrev($string);
         }
 
@@ -490,7 +436,7 @@ class Buffer
         return $float['float'];
     }
 
-    private static function extendBinaryString($input, $length = 4, $littleEndian = null)
+    private static function extendBinaryString(string $input, int $length = 4, $littleEndian = null): string
     {
         if (is_null($littleEndian)) {
             $littleEndian = self::isLittleEndian();
@@ -500,12 +446,12 @@ class Buffer
 
         if ($littleEndian) {
             return $input . $extension;
-        } else {
-            return $extension . $input;
         }
+
+        return $extension . $input;
     }
 
-    private static function isLittleEndian()
+    private static function isLittleEndian(): bool
     {
         return 0x00FF === current(unpack('v', pack('S', 0x00FF)));
     }

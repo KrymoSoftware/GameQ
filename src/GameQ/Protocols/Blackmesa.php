@@ -28,15 +28,11 @@ class Blackmesa extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'blackmesa';
+    protected string $name = 'blackmesa';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Black Mesa";
+    protected string $name_long = "Black Mesa";
 }

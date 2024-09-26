@@ -29,15 +29,11 @@ class Crysis2 extends Gamespy3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'crysis2';
+    protected string $name = 'crysis2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Crysis 2";
+    protected string $name_long = "Crysis 2";
 }

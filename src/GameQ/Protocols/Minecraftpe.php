@@ -30,15 +30,11 @@ class Minecraftpe extends Minecraft
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'minecraftpe';
+    protected string $name = 'minecraftpe';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "MinecraftPE";
+    protected string $name_long = "MinecraftPE";
 }

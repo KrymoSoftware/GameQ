@@ -28,23 +28,17 @@ class Redorchestra2 extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'redorchestra2';
+    protected string $name = 'redorchestra2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Red Orchestra 2";
+    protected string $name_long = "Red Orchestra 2";
 
     /**
      * query_port = client_port + 19238
      * 27015 = 7777 + 19238
-     *
-     * @type int
      */
-    protected $port_diff = 19238;
+    protected int $port_diff = 19238;
 }

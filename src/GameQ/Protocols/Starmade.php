@@ -37,54 +37,40 @@ class Starmade extends Protocol
 
     /**
      * Array of packets we want to query.
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "\x00\x00\x00\x09\x2a\xff\xff\x01\x6f\x00\x00\x00\x00",
     ];
 
     /**
      * The transport mode for this protocol is TCP
-     *
-     * @type string
-     */
-    protected $transport = self::TRANSPORT_TCP;
+      */
+    protected string $transport = self::TRANSPORT_TCP;
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'starmade';
+    protected string $protocol = 'starmade';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'starmade';
+    protected string $name = 'starmade';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "StarMade";
+    protected string $name_long = "StarMade";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -99,10 +85,10 @@ class Starmade extends Protocol
     /**
      * Process the response for the StarMade server
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         // Implode the packets, not sure if there is any split logic for multiple packets
@@ -150,8 +136,7 @@ class Starmade extends Protocol
 
     /**
      * Parse the server response parameters
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      * @throws \GameQ\Exception\Protocol

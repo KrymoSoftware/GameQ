@@ -31,15 +31,11 @@ class Dod extends Cs16
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'dod';
+    protected string $name = 'dod';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Day of Defeat";
+    protected string $name_long = "Day of Defeat";
 }

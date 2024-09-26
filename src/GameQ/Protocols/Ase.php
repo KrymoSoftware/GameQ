@@ -34,47 +34,35 @@ class Ase extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_ALL => "s",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'ase';
+    protected string $protocol = 'ase';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'ase';
+    protected string $name = 'ase';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "All-Seeing Eye";
+    protected string $name_long = "All-Seeing Eye";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -100,10 +88,10 @@ class Ase extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Create a new buffer
         $buffer = new Buffer(implode('', $this->packets_response));
@@ -153,13 +141,9 @@ class Ase extends Protocol
 
     /**
      * Handles processing the extra key/value pairs for server settings
-     *
-     * @param \GameQ\Buffer $buffer
-     * @param \GameQ\Result $result
      */
     protected function processKeyValuePairs(Buffer $buffer, Result $result)
     {
-
         // Key / value pairs
         while ($buffer->getLength()) {
             $key = $buffer->readPascalString(1, true);
@@ -181,13 +165,9 @@ class Ase extends Protocol
 
     /**
      * Handles processing the player and team data into a usable format
-     *
-     * @param \GameQ\Buffer $buffer
-     * @param \GameQ\Result $result
      */
     protected function processPlayersAndTeams(Buffer $buffer, Result $result)
     {
-
         // Players and team info
         while ($buffer->getLength()) {
             // Get the flags

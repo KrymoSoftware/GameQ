@@ -28,15 +28,11 @@ class Zomboid extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'zomboid';
+    protected string $name = 'zomboid';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Project Zomboid";
+    protected string $name_long = "Project Zomboid";
 }

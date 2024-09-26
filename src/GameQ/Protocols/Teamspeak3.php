@@ -40,10 +40,8 @@ class Teamspeak3 extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_DETAILS  => "use port=%d\x0Aserverinfo\x0A",
         self::PACKET_PLAYERS  => "use port=%d\x0Aclientlist\x0A",
         self::PACKET_CHANNELS => "use port=%d\x0Achannellist -topic\x0A",
@@ -51,45 +49,33 @@ class Teamspeak3 extends Protocol
 
     /**
      * The transport mode for this protocol is TCP
-     *
-     * @type string
-     */
-    protected $transport = self::TRANSPORT_TCP;
+      */
+    protected string $transport = self::TRANSPORT_TCP;
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'teamspeak3';
+    protected string $protocol = 'teamspeak3';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'teamspeak3';
+    protected string $name = 'teamspeak3';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Teamspeak 3";
+    protected string $name_long = "Teamspeak 3";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "ts3server://%s?port=%d";
+    protected ?string $join_link = "ts3server://%s?port=%d";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             'dedicated'  => 'dedicated',
@@ -114,11 +100,9 @@ class Teamspeak3 extends Protocol
     /**
      * Before we send off the queries we need to update the packets
      *
-     * @param \GameQ\Server $server
-     *
      * @throws \GameQ\Exception\Protocol
      */
-    public function beforeSend(Server $server)
+    public function beforeSend(Server $server): void
     {
 
         // Check to make sure we have a query_port because it is required
@@ -138,10 +122,10 @@ class Teamspeak3 extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         // Make a new buffer out of all of the packets
@@ -166,7 +150,7 @@ class Teamspeak3 extends Protocol
         );
 
         // Explode the sections and filter to remove empty, junk ones
-        $sections = array_filter(explode("\n", $raw), function ($value) {
+        $sections = array_filter(explode("\n", $raw), static function ($value) {
 
             $value = trim($value);
 
@@ -186,13 +170,13 @@ class Teamspeak3 extends Protocol
             $check = substr(trim($section), 0, 4);
 
             // Use the first part of the response to figure out where we need to go
-            if ($check == 'virt') {
+            if ($check === 'virt') {
                 // Server info
                 $this->processDetails($section, $result);
-            } elseif ($check == 'cid=') {
+            } elseif ($check === 'cid=') {
                 // Channels
                 $this->processChannels($section, $result);
-            } elseif ($check == 'clid') {
+            } elseif ($check === 'clid') {
                 // Clients (players)
                 $this->processPlayers($section, $result);
             }
@@ -247,11 +231,8 @@ class Teamspeak3 extends Protocol
 
     /**
      * Handles processing the details data into a usable format
-     *
-     * @param string        $data
-     * @param \GameQ\Result $result
      */
-    protected function processDetails($data, Result $result)
+    protected function processDetails(string $data, Result $result)
     {
 
         // Offload the parsing for these values
@@ -271,16 +252,13 @@ class Teamspeak3 extends Protocol
             ($properties['virtualserver_clientsonline'] - $properties['virtualserver_queryclientsonline'])
         );
 
-        unset($data, $properties, $key, $value);
+        unset($properties, $key, $value);
     }
 
     /**
      * Process the channel listing
-     *
-     * @param string        $data
-     * @param \GameQ\Result $result
      */
-    protected function processChannels($data, Result $result)
+    protected function processChannels(string $data, Result $result)
     {
 
         // We need to split the data at the pipe
@@ -297,16 +275,13 @@ class Teamspeak3 extends Protocol
             }
         }
 
-        unset($data, $channel, $channels, $properties, $key, $value);
+        unset($channels, $properties, $key);
     }
 
     /**
      * Process the user listing
-     *
-     * @param string        $data
-     * @param \GameQ\Result $result
      */
-    protected function processPlayers($data, Result $result)
+    protected function processPlayers(string $data, Result $result)
     {
 
         // We need to split the data at the pipe
@@ -323,6 +298,6 @@ class Teamspeak3 extends Protocol
             }
         }
 
-        unset($data, $player, $players, $properties, $key, $value);
+        unset($players, $properties, $key);
     }
 }

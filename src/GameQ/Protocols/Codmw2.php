@@ -31,17 +31,13 @@ class Codmw2 extends Quake3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'codmw2';
+    protected string $name = 'codmw2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Call of Duty: Modern Warfare 2";
+    protected string $name_long = "Call of Duty: Modern Warfare 2";
     
     protected function processPlayers(Buffer $buffer)
     {
@@ -60,7 +56,7 @@ class Codmw2 extends Quake3
             ];
 
             // Skip first "
-            $playerInfo->skip(1);
+            $playerInfo->skip();
 
             // Add player name, encoded
             $player['name'] = $this->convertToUtf8(trim(($playerInfo->readString('"'))));

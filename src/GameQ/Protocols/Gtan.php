@@ -39,7 +39,7 @@ class Gtan extends Http
      *
      * @var array
      */
-    protected $packets = [
+    protected array $packets = [
         //self::PACKET_STATUS => "GET /apiservers HTTP/1.0\r\nHost: master.gtanet.work\r\nAccept: */*\r\n\r\n",
         self::PACKET_STATUS => "GET /gtan/api.php?ip=%s&raw HTTP/1.0\r\nHost: multiplayerhosting.info\r\nAccept: */*\r\n\r\n",
     ];
@@ -47,46 +47,41 @@ class Gtan extends Http
     /**
      * Http protocol is SSL
      *
-     * @var string
      */
-    protected $transport = self::TRANSPORT_SSL;
+    protected string $transport = self::TRANSPORT_SSL;
 
     /**
      * The protocol being used
      *
-     * @var string
      */
-    protected $protocol = 'gtan';
+    protected string $protocol = 'gtan';
 
     /**
      * String name of this protocol class
      *
-     * @var string
      */
-    protected $name = 'gtan';
+    protected string $name = 'gtan';
 
     /**
      * Longer string name of this protocol class
      *
-     * @var string
      */
-    protected $name_long = "Grand Theft Auto Network";
+    protected string $name_long = "Grand Theft Auto Network";
 
     /**
      * Holds the real ip so we can overwrite it back
-     *
-     * @var string
      */
-    protected $realIp = null;
+    protected ?string $realIp = null;
 
-    protected $realPortQuery = null;
+    /**
+     * Holds the real query port so we can overwrite it back
+     */
+    protected ?int $realPortQuery = null;
 
     /**
      * Normalize some items
-     *
-     * @var array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -100,7 +95,7 @@ class Gtan extends Http
         ],
     ];
 
-    public function beforeSend(Server $server)
+    public function beforeSend(Server $server): void
     {
         // Loop over the packets and update them
         foreach ($this->packets as $packetType => $packet) {
@@ -120,10 +115,10 @@ class Gtan extends Http
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // No response, assume offline
         if (empty($this->packets_response)) {

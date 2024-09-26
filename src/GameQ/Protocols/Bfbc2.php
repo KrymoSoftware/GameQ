@@ -39,10 +39,8 @@ class Bfbc2 extends Protocol
 
     /**
      * Array of packets we want to query.
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_VERSION => "\x00\x00\x00\x00\x18\x00\x00\x00\x01\x00\x00\x00\x07\x00\x00\x00version\x00",
         self::PACKET_STATUS  => "\x00\x00\x00\x00\x1b\x00\x00\x00\x01\x00\x00\x00\x0a\x00\x00\x00serverInfo\x00",
         self::PACKET_PLAYERS => "\x00\x00\x00\x00\x24\x00\x00\x00\x02\x00\x00\x00\x0b\x00\x00\x00listPlayers\x00\x03\x00\x00\x00\x61ll\x00",
@@ -51,9 +49,8 @@ class Bfbc2 extends Protocol
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "processVersion",
         "processDetails",
         "processPlayers",
@@ -61,53 +58,39 @@ class Bfbc2 extends Protocol
 
     /**
      * The transport mode for this protocol is TCP
-     *
-     * @type string
-     */
-    protected $transport = self::TRANSPORT_TCP;
+      */
+    protected string $transport = self::TRANSPORT_TCP;
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'bfbc2';
+    protected string $protocol = 'bfbc2';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'bfbc2';
+    protected string $name = 'bfbc2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Battlefield Bad Company 2";
+    protected string $name_long = "Battlefield Bad Company 2";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * query_port = client_port + 29321
      * 48888 = 19567 + 29321
-     *
-     * @type int
      */
-    protected $port_diff = 29321;
+    protected int $port_diff = 29321;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -131,10 +114,10 @@ class Bfbc2 extends Protocol
     /**
      * Process the response for the StarMade server
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         //print_r($this->packets_response);
@@ -178,8 +161,7 @@ class Bfbc2 extends Protocol
 
     /**
      * Decode the buffer into a usable format
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      */
@@ -205,8 +187,7 @@ class Bfbc2 extends Protocol
 
     /**
      * Process the server details
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      */
@@ -261,15 +242,14 @@ class Bfbc2 extends Protocol
         $result->add('join_queue', (($items[$index_current + 11] == 'true') ? 1 : 0));
         $result->add('region', $items[$index_current + 12]);
 
-        unset($items, $index_current, $teamCount, $buffer);
+        unset($items, $index_current, $teamCount);
 
         return $result->fetch();
     }
 
     /**
      * Process the server version
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      */
@@ -290,8 +270,7 @@ class Bfbc2 extends Protocol
 
     /**
      * Process the players
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      */

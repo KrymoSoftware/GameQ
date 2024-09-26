@@ -34,10 +34,8 @@ class Won extends Source
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_DETAILS => "\xFF\xFF\xFF\xFFdetails\x00",
         self::PACKET_PLAYERS => "\xFF\xFF\xFF\xFFplayers",
         self::PACKET_RULES   => "\xFF\xFF\xFF\xFFrules",
@@ -45,22 +43,16 @@ class Won extends Source
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'won';
+    protected string $protocol = 'won';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'won';
+    protected string $name = 'won';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "World Opponent Network";
+    protected string $name_long = "World Opponent Network";
 }

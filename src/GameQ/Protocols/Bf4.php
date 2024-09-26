@@ -34,22 +34,17 @@ class Bf4 extends Bf3
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'bf4';
+    protected string $name = 'bf4';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Battlefield 4";
+    protected string $name_long = "Battlefield 4";
 
     /**
      * Handle processing details since they are different than BF3
-     *
-     * @param \GameQ\Buffer $buffer
+
      *
      * @return array
      */
@@ -107,7 +102,7 @@ class Bf4 extends Bf3
         $result->add('blaze_player_count', (int) $items[$index_current + 13]);
         $result->add('blaze_game_state', (int) $items[$index_current + 14]);
 
-        unset($items, $index_current, $teamCount, $buffer);
+        unset($items, $index_current, $teamCount);
 
         return $result->fetch();
     }

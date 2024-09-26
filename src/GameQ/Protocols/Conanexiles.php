@@ -28,15 +28,11 @@ class Conanexiles extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'conanexiles';
+    protected string $name = 'conanexiles';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Conan Exiles";
+    protected string $name_long = "Conan Exiles";
 }

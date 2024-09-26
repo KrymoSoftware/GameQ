@@ -42,54 +42,43 @@ class Cfx extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "\xFF\xFF\xFF\xFFgetinfo xxx",
     ];
 
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\xFF\xFF\xFF\xFFinfoResponse" => "processStatus",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'cfx';
+    protected string $protocol = 'cfx';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'cfx';
+    protected string $name = 'cfx';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "CitizenFX";
+    protected string $name_long = "CitizenFX";
 
     /**
-     * Holds the Player list so we can overwrite it back
+     * Holds the player list so we can overwrite it back
      */
-    protected $PlayerList = [];
+    protected array $playerList = [];
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -106,7 +95,7 @@ class Cfx extends Protocol
     /**
      * Get FiveM players list using a sub query
      */
-    public function beforeSend(Server $server)
+    public function beforeSend(Server $server): void
     {
         $GameQ = new \GameQ\GameQ();
         $GameQ->addServer([
@@ -114,16 +103,16 @@ class Cfx extends Protocol
             'host' => "$server->ip:$server->port_query",
         ]);
         $results = $GameQ->process();
-        $this->PlayerList = $results[0][0] ?? [];
+        $this->playerList = $results[0][0] ?? [];
     }
 
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // In case it comes back as multiple packets (it shouldn't)
         $buffer = new Buffer(implode('', $this->packets_response));
@@ -147,8 +136,6 @@ class Cfx extends Protocol
     /**
      * Handle processing the status response
      *
-     * @param Buffer $buffer
-     *
      * @return array
      */
     protected function processStatus(Buffer $buffer)
@@ -157,9 +144,9 @@ class Cfx extends Protocol
         $result = new Result();
 
         // Lets peek and see if the data starts with a \
-        if ($buffer->lookAhead(1) == '\\') {
+        if ($buffer->lookAhead() === '\\') {
             // Burn the first one
-            $buffer->skip(1);
+            $buffer->skip();
         }
 
         // Explode the data
@@ -182,8 +169,8 @@ class Cfx extends Protocol
         }
 
         // Add result of sub http-protocol if available
-        if ($this->PlayerList) {
-            $result->add('players', $this->PlayerList);
+        if ($this->playerList) {
+            $result->add('players', $this->playerList);
         }
 
         return $result->fetch();

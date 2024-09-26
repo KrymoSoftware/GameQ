@@ -28,15 +28,11 @@ class Spaceengineers extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'spaceengineers';
+    protected string $name = 'spaceengineers';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Space Engineers";
+    protected string $name_long = "Space Engineers";
 }

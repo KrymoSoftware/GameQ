@@ -28,15 +28,11 @@ class Citadel extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'citadel';
+    protected string $name = 'citadel';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Citadel";
+    protected string $name_long = "Citadel";
 }

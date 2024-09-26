@@ -29,26 +29,18 @@ class Risingstorm2 extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'rising storm 2';
+    protected string $name = 'rising storm 2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Rising Storm 2";
+    protected string $name_long = "Rising Storm 2";
 
     /**
      * Query port is always 27015
-     *
-     * @param int $clientPort
-     *
-     * @return int
      */
-    public function findQueryPort($clientPort)
+    public function findQueryPort(int $clientPort): int
     {
         return 27015;
     }

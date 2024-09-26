@@ -29,22 +29,16 @@ class Justcause3 extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'justcause3';
+    protected string $name = 'justcause3';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Just Cause 3";
+    protected string $name_long = "Just Cause 3";
 
     /**
      * Query port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 }

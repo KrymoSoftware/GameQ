@@ -29,26 +29,18 @@ class Dayz extends Source
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'dayz';
+    protected string $name = 'dayz';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "DayZ Standalone";
+    protected string $name_long = "DayZ Standalone";
 
     /**
      * Overload the math used to guess at the Query Port
-     *
-     * @param int $clientPort
-     *
-     * @return int
      */
-    public function findQueryPort($clientPort)
+    public function findQueryPort(int $clientPort): int
     {
 
         /*

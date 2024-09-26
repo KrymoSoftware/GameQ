@@ -28,15 +28,11 @@ class Aapg extends Aa3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'aapg';
+    protected string $name = 'aapg';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "America's Army: Proving Grounds";
+    protected string $name_long = "America's Army: Proving Grounds";
 }

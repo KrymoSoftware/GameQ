@@ -38,10 +38,8 @@ class Samp extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS  => "SAMP%si",
         self::PACKET_PLAYERS => "SAMP%sd",
         self::PACKET_RULES   => "SAMP%sr",
@@ -50,9 +48,8 @@ class Samp extends Protocol
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\x69" => "processStatus", // i
         "\x64" => "processPlayers", // d
         "\x72" => "processRules", // r
@@ -60,45 +57,33 @@ class Samp extends Protocol
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'samp';
+    protected string $protocol = 'samp';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'samp';
+    protected string $name = 'samp';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "San Andreas Multiplayer";
+    protected string $name_long = "San Andreas Multiplayer";
 
     /**
      * Holds the calculated server code that is passed when querying for information
-     *
-     * @type string
      */
-    protected $server_code = null;
+    protected ?string $server_code = null;
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "samp://%s:%d/";
+    protected ?string $join_link = "samp://%s:%d/";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -119,10 +104,8 @@ class Samp extends Protocol
 
     /**
      * Handle some work before sending the packets out to the server
-     *
-     * @param \GameQ\Server $server
      */
-    public function beforeSend(Server $server)
+    public function beforeSend(Server $server): void
     {
         // Build the server code
         $ipNumbers = array_map('intval', explode('.', $server->ip()));
@@ -139,10 +122,10 @@ class Samp extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         // Results that will be returned
@@ -167,7 +150,7 @@ class Samp extends Protocol
             }
 
             // Figure out what packet response this is for
-            $response_type = $buffer->read(1);
+            $response_type = $buffer->read();
 
             // Figure out which packet response this is
             if (!array_key_exists($response_type, $this->responses)) {
@@ -192,8 +175,6 @@ class Samp extends Protocol
 
     /**
      * Handles processing the server status data
-     *
-     * @param \GameQ\Buffer $buffer
      *
      * @return array
      * @throws \GameQ\Exception\Protocol
@@ -223,8 +204,6 @@ class Samp extends Protocol
     /**
      * Handles processing the player data into a usable format
      *
-     * @param \GameQ\Buffer $buffer
-     *
      * @return array
      */
     protected function processPlayers(Buffer $buffer)
@@ -249,8 +228,6 @@ class Samp extends Protocol
 
     /**
      * Handles processing the rules data into a usable format
-     *
-     * @param \GameQ\Buffer $buffer
      *
      * @return array
      */

@@ -28,41 +28,17 @@ class Hll extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'hll';
+    protected string $name = 'hll';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Hell Let Loose";
+    protected string $name_long = "Hell Let Loose";
 
     /**
      * query_port = client_port + 15
      * 64015 = 64000 + 15
-     *
-     * @type int
      */
-    protected $port_diff = 15;
-
-    /**
-     * Normalize settings for this protocol
-     *
-     * @type array
-     */
-    /*protected $normalize = [
-        'general' => [
-            // target       => source
-            'dedicated'  => 'dedicated',
-            'gametype'   => 'gametype',
-            'servername'   => 'hostname',
-            'mapname'    => 'mapname',
-            'maxplayers' => 'maxplayers',
-            'numplayers' => 'numplayers',
-            'password'   => 'password',
-        ],
-    ];*/
+    protected int $port_diff = 15;
 }

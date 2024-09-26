@@ -36,56 +36,43 @@ class Doom3 extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_ALL => "\xFF\xFFgetInfo\x00PiNGPoNG\x00",
     ];
 
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\xFF\xFFinfoResponse" => 'processStatus',
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'doom3';
+    protected string $protocol = 'doom3';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'doom3';
+    protected string $name = 'doom3';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Doom 3";
+    protected string $name_long = "Doom 3";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -109,7 +96,7 @@ class Doom3 extends Protocol
      * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Make a buffer
         $buffer = new Buffer(implode('', $this->packets_response));
@@ -129,8 +116,6 @@ class Doom3 extends Protocol
     /**
      * Process the status response
      *
-     * @param Buffer $buffer
-     *
      * @return array
      */
     protected function processStatus(Buffer $buffer)
@@ -146,8 +131,6 @@ class Doom3 extends Protocol
 
     /**
      * Handle processing the server information
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */
@@ -176,8 +159,6 @@ class Doom3 extends Protocol
 
     /**
      * Handle processing of player data
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */

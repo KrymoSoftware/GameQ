@@ -36,10 +36,8 @@ class Lhmp extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_DETAILS => "LHMPo",
         self::PACKET_PLAYERS => "LHMPp",
     ];
@@ -47,47 +45,36 @@ class Lhmp extends Protocol
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "LHMPo" => "processDetails",
         "LHMPp" => "processPlayers",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'lhmp';
+    protected string $protocol = 'lhmp';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'lhmp';
+    protected string $name = 'lhmp';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Lost Heaven";
+    protected string $name_long = "Lost Heaven";
 
     /**
      * query_port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -107,10 +94,10 @@ class Lhmp extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws \GameQ\Exception\Protocol
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Will hold the packets after sorting
         $packets = [];
@@ -156,8 +143,6 @@ class Lhmp extends Protocol
     /**
      * Handles processing the details data into a usable format
      *
-     * @param Buffer $buffer
-     *
      * @return array
      * @throws Exception
      */
@@ -181,8 +166,6 @@ class Lhmp extends Protocol
 
     /**
      * Handles processing the player data into a usable format
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */

@@ -29,18 +29,13 @@ class Result
 
     /**
      * Formatted server response
-     *
-     * @var        array
      */
-    protected $result = [];
+    protected array $result = [];
 
     /**
      * Adds variable to results
-     *
-     * @param string                      $name  Variable name
-     * @param string|array|int|float|bool $value Variable value
      */
-    public function add($name, $value)
+    public function add(string $name, mixed $value): void
     {
 
         $this->result[$name] = $value;
@@ -48,11 +43,8 @@ class Result
 
     /**
      * Adds player variable to output
-     *
-     * @param string           $name  Variable name
-     * @param string|int|float $value Variable value
      */
-    public function addPlayer($name, $value)
+    public function addPlayer(string $name, mixed $value): void
     {
 
         $this->addSub('players', $name, $value);
@@ -60,11 +52,8 @@ class Result
 
     /**
      * Adds player variable to output
-     *
-     * @param string           $name  Variable name
-     * @param string|int|float $value Variable value
      */
-    public function addTeam($name, $value)
+    public function addTeam(string $name, mixed $value): void
     {
 
         $this->addSub('teams', $name, $value);
@@ -72,24 +61,20 @@ class Result
 
     /**
      * Add a variable to a category
-     *
-     * @param  $sub    string  The category
-     * @param  $key    string  The variable name
-     * @param  $value  string  The variable value
      */
-    public function addSub($sub, $key, $value)
+    public function addSub(string $sub, string $key, string $value): void
     {
 
         // Nothing of this type yet, set an empty array
-        if (!isset($this->result[$sub]) or !is_array($this->result[$sub])) {
+        if (!isset($this->result[$sub]) || !is_array($this->result[$sub])) {
             $this->result[$sub] = [];
         }
 
         // Find the first entry that doesn't have this variable
         $found = false;
         $count = count($this->result[$sub]);
-        for ($i = 0; $i != $count; $i++) {
-            if (!isset($this->result[$sub][$i][$key])) {
+        foreach ($this->result[$sub] as $i => $iValue) {
+            if (!isset($iValue[$key])) {
                 $this->result[$sub][$i][$key] = $value;
                 $found = true;
                 break;
@@ -106,10 +91,8 @@ class Result
 
     /**
      * Return all stored results
-     *
-     * @return  array  All results
      */
-    public function fetch()
+    public function fetch(): array
     {
 
         return $this->result;
@@ -117,12 +100,8 @@ class Result
 
     /**
      * Return a single variable
-     *
-     * @param string $var The variable name
-     *
-     * @return  mixed   The variable value
      */
-    public function get($var)
+    public function get(string $var): mixed
     {
 
         return $this->result[$var] ?? null;

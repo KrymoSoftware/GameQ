@@ -27,22 +27,16 @@ class Valheim extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'valheim';
+    protected string $name = 'valheim';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Valheim";
+    protected string $name_long = "Valheim";
 
     /**
      * query_port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 }

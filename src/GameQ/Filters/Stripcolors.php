@@ -33,12 +33,9 @@ class Stripcolors extends Base
     /**
      * Apply this filter
      *
-     * @param array         $result
-     * @param \GameQ\Server $server
-     *
-     * @return array
+     * @return mixed
      */
-    public function apply(array $result, Server $server)
+    public function apply(array $result, Server $server): mixed
     {
 
         // No result passed so just return
@@ -49,8 +46,13 @@ class Stripcolors extends Base
         //$data = [];
         //$data['raw'][ $server->id() ] = $result;
 
+        $protocol = $server->protocol();
+        if ($protocol === null) {
+            return $result;
+        }
+
         // Switch based on the base (not game) protocol
-        switch ($server->protocol()->getProtocol()) {
+        switch ($protocol->getProtocol()) {
             case 'quake2':
             case 'quake3':
             case 'gta5m':
@@ -84,30 +86,24 @@ class Stripcolors extends Base
 
     /**
      * Strip color codes from quake based games
-     *
-     * @param string $string
      */
-    protected function stripQuake(&$string)
+    protected function stripQuake(string &$string): void
     {
         $string = preg_replace('#(\^.)#', '', $string);
     }
 
     /**
      * Strip color codes from Source based games
-     *
-     * @param string $string
      */
-    protected function stripSource(&$string)
+    protected function stripSource(string &$string): void
     {
         $string = strip_tags($string);
     }
 
     /**
      * Strip color codes from Unreal based games
-     *
-     * @param string $string
      */
-    protected function stripUnreal(&$string)
+    protected function stripUnreal(string &$string): void
     {
         $string = preg_replace('/\x1b.../', '', $string);
     }

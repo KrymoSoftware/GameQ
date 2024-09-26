@@ -29,15 +29,11 @@ class Nmrih extends Source
 {
     /**
      * No More Room in Hell protocol class
-     *
-     * @type string
      */
-    protected $name = 'nmrih';
+    protected string $name = 'nmrih';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "No More Room in Hell";
+    protected string $name_long = "No More Room in Hell";
 }

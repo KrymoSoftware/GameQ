@@ -28,31 +28,23 @@ class Ut extends Gamespy
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'ut';
+    protected string $name = 'ut';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Unreal Tournament";
+    protected string $name_long = "Unreal Tournament";
 
     /**
      * query_port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source

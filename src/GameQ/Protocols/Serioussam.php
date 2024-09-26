@@ -28,31 +28,23 @@ class Serioussam extends Gamespy
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'serioussam';
+    protected string $name = 'serioussam';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Serious Sam";
+    protected string $name_long = "Serious Sam";
 
     /**
      * query_port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source

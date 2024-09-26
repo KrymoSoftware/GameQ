@@ -37,62 +37,45 @@ class Gamespy3 extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_CHALLENGE => "\xFE\xFD\x09\x10\x20\x30\x40",
         self::PACKET_ALL       => "\xFE\xFD\x00\x10\x20\x30\x40%s\xFF\xFF\xFF\x01",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'gamespy3';
+    protected string $protocol = 'gamespy3';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'gamespy3';
+    protected string $name = 'gamespy3';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "GameSpy3 Server";
+    protected string $name_long = "GameSpy3 Server";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = null;
+    protected ?string $join_link = null;
 
     /**
      * This defines the split between the server info and player/team info.
      * This value can vary by game. This value is the default split.
-     *
-     * @var string
      */
-    protected $packetSplit = "/\\x00\\x00\\x01/m";
+    protected string $packetsplit = "/\\x00\\x00\\x01/m";
 
     /**
      * Parse the challenge response and apply it to all the packet types
-     *
-     * @param \GameQ\Buffer $challenge_buffer
-     *
-     * @return bool
-     * @throws \GameQ\Exception\Protocol
      */
-    public function challengeParseAndApply(Buffer $challenge_buffer)
+    public function challengeParseAndApply(Buffer $challenge_buffer): bool
     {
         // Pull out the challenge
-        $challenge = substr(preg_replace("/[^0-9\-]/si", "", $challenge_buffer->getBuffer()), 1);
+        $challenge = substr(preg_replace("/[^0-9\-]/i", "", $challenge_buffer->getBuffer()), 1);
 
         // By default, no challenge result (see #197)
         $challenge_result = '';
@@ -116,10 +99,8 @@ class Gamespy3 extends Protocol
 
     /**
      * Process the response
-     *
-     * @return array
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
 
         // Holds the processed packets
@@ -143,7 +124,7 @@ class Gamespy3 extends Protocol
             $id = $buffer->readInt8();
 
             // Burn next byte not sure what it is used for
-            $buffer->skip(1);
+            $buffer->skip();
 
             // Add this packet to the processed
             $processed[$id] = $buffer->getBuffer();
@@ -158,7 +139,7 @@ class Gamespy3 extends Protocol
         $packets = $this->cleanPackets(array_values($processed));
 
         // Split the packets by type general and the rest (i.e. players & teams)
-        $split = preg_split($this->packetSplit, implode('', $packets));
+        $split = preg_split($this->packetsplit, implode('', $packets));
 
         // Create a new result
         $result = new Result();
@@ -186,12 +167,8 @@ class Gamespy3 extends Protocol
 
     /**
      * Handles cleaning up packets since the responses can be a bit "dirty"
-     *
-     * @param array $packets
-     *
-     * @return array
      */
-    protected function cleanPackets(array $packets = [])
+    protected function cleanPackets(array $packets = []): array
     {
 
         // Get the number of packets
@@ -224,7 +201,7 @@ class Gamespy3 extends Protocol
             $prefix = $buffer->readString();
 
             // Check to see if the return before has the same prefix present
-            if ($prefix !== null && str_contains($packets[($x - 1)], $prefix)
+            if (str_contains($packets[($x - 1)], $prefix)
             ) {
                 // Update the return by removing the prefix plus 2 chars
                 $packets[$x] = substr(str_replace($prefix, '', $packets[$x]), 2);
@@ -241,17 +218,13 @@ class Gamespy3 extends Protocol
 
     /**
      * Handles processing the details data into a usable format
-     *
-     * @param \GameQ\Buffer $buffer
-     * @param \GameQ\Result $result
      */
-    protected function processDetails(Buffer &$buffer, Result &$result)
+    protected function processDetails(Buffer $buffer, Result $result): void
     {
-
         // We go until we hit an empty key
         while ($buffer->getLength()) {
             $key = $buffer->readString();
-            if (strlen($key) == 0) {
+            if ($key === '') {
                 break;
             }
             $result->add($key, $this->convertToUtf8($buffer->readString()));
@@ -260,13 +233,9 @@ class Gamespy3 extends Protocol
 
     /**
      * Handles processing the player and team data into a usable format
-     *
-     * @param \GameQ\Buffer $buffer
-     * @param \GameQ\Result $result
      */
-    protected function processPlayersAndTeams(Buffer &$buffer, Result &$result)
+    protected function processPlayersAndTeams(Buffer $buffer, Result $result): void
     {
-
         /*
          * Explode the data into groups. First is player, next is team (item_t)
          * Each group should be as follows:
@@ -291,7 +260,7 @@ class Gamespy3 extends Protocol
             // Pull out the item
             $item = $data[$x];
             // If this is an empty item, move on
-            if ($item == '' || $item == "\x00") {
+            if ($item === '' || $item === "\x00") {
                 continue;
             }
             /*

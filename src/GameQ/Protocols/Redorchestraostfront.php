@@ -29,15 +29,11 @@ class Redorchestraostfront extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'redorchestraostfront';
+    protected string $name = 'redorchestraostfront';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Red Orchestra: Ostfront 41-45";
+    protected string $name_long = "Red Orchestra: Ostfront 41-45";
 }

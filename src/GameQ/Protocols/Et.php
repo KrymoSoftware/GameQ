@@ -29,15 +29,11 @@ class Et extends Quake3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'et';
+    protected string $name = 'et';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Wolfenstein Enemy Territory";
+    protected string $name_long = "Wolfenstein Enemy Territory";
 }

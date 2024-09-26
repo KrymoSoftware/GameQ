@@ -37,56 +37,33 @@ use GameQ\Exception\Protocol as Exception;
 class Cfxplayers extends Http
 {
     /**
-     * Holds the real ip so we can overwrite it back
-     *
-     * @var string
-     */
-    protected $realIp = null;
-
-    /**
-     * Holds the real port so we can overwrite it back
-     *
-     * @var int
-     */
-    protected $realPortQuery = null;
-
-    /**
      * Packets to send
-     *
-     * @var array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_STATUS => "GET /players.json HTTP/1.0\r\nAccept: */*\r\n\r\n", // Player List
     ];
 
     /**
      * The protocol being used
-     *
-     * @var string
      */
-    protected $protocol = 'cfxplayers';
+    protected string $protocol = 'cfxplayers';
 
     /**
      * String name of this protocol class
-     *
-     * @var string
      */
-    protected $name = 'cfxplayers';
+    protected string $name = 'cfxplayers';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @var string
      */
-    protected $name_long = "cfxplayers";
+    protected string $name_long = "cfxplayers";
 
     /**
      * Process the response
      *
-     * @return array
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Make sure we have any players
         if (empty($this->packets_response)) {

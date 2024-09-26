@@ -28,22 +28,16 @@ class Sof2 extends Quake3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'sof2';
+    protected string $name = 'sof2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Solder of Fortune II";
+    protected string $name_long = "Solder of Fortune II";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "sof2mp://%s:%d/";
+    protected ?string $join_link = "sof2mp://%s:%d/";
 }

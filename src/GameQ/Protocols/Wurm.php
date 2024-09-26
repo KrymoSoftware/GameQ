@@ -28,15 +28,11 @@ class Wurm extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'wurm';
+    protected string $name = 'wurm';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Wurm Unlimited";
+    protected string $name_long = "Wurm Unlimited";
 }

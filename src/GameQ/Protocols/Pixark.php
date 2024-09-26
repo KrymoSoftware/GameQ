@@ -29,22 +29,16 @@ class Pixark extends Arkse
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'pixark';
+    protected string $name = 'pixark';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "PixARK";
+    protected string $name_long = "PixARK";
 
     /**
      * Query port = client_port + 1
-     *
-     * @type int
      */
-    protected $port_diff = 1;
+    protected int $port_diff = 1;
 }

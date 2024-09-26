@@ -37,10 +37,8 @@ class Teeworlds extends Protocol
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
-     *
-     * @type array
      */
-    protected $packets = [
+    protected array $packets = [
         self::PACKET_ALL => "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\x67\x69\x65\x33\x05",
         // 0.5 Packet (not compatible, maybe some wants to implement "Teeworldsold")
         //self::PACKET_STATUS => "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFFgief",
@@ -49,46 +47,35 @@ class Teeworlds extends Protocol
     /**
      * Use the response flag to figure out what method to run
      *
-     * @type array
      */
-    protected $responses = [
+    protected array $responses = [
         "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xffinf35" => "processAll",
     ];
 
     /**
      * The query protocol used to make the call
-     *
-     * @type string
      */
-    protected $protocol = 'teeworlds';
+    protected string $protocol = 'teeworlds';
 
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'teeworlds';
+    protected string $name = 'teeworlds';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Teeworlds Server";
+    protected string $name_long = "Teeworlds Server";
 
     /**
      * The client join link
-     *
-     * @type string
      */
-    protected $join_link = "steam://connect/%s:%d/";
+    protected ?string $join_link = "steam://connect/%s:%d/";
 
     /**
      * Normalize settings for this protocol
-     *
-     * @type array
      */
-    protected $normalize = [
+    protected array $normalize = [
         // General
         'general' => [
             // target       => source
@@ -107,10 +94,10 @@ class Teeworlds extends Protocol
     /**
      * Process the response
      *
-     * @return array
+     * @return mixed
      * @throws Exception
      */
-    public function processResponse()
+    public function processResponse(): mixed
     {
         // Holds the results
         $results = [];
@@ -142,8 +129,6 @@ class Teeworlds extends Protocol
 
     /**
      * Handle processing all of the data returned
-     *
-     * @param Buffer $buffer
      *
      * @return array
      */

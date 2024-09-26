@@ -28,23 +28,17 @@ class Postscriptum extends Source
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'postscriptum';
+    protected string $name = 'postscriptum';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Post Scriptum";
+    protected string $name_long = "Post Scriptum";
 
     /**
      * query_port = client_port + 10
      * 64092 = 64090 + 10
-     *
-     * @type int
      */
-    protected $port_diff = 10;
+    protected int $port_diff = 10;
 }

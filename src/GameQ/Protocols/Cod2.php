@@ -28,15 +28,11 @@ class Cod2 extends Quake3
 {
     /**
      * String name of this protocol class
-     *
-     * @type string
      */
-    protected $name = 'cod2';
+    protected string $name = 'cod2';
 
     /**
      * Longer string name of this protocol class
-     *
-     * @type string
      */
-    protected $name_long = "Call of Duty 2";
+    protected string $name_long = "Call of Duty 2";
 }
