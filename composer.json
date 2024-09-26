@@ -1,6 +1,6 @@
 {
-  "name": "austinb/gameq",
-  "description": "GameQ Gameserver Library",
+  "name": "krymosoftware/gameq",
+  "description": "A maintained fork of the famous PHP Gameserver Status Query Library GameQ by Austinb",
   "keywords": [
     "gameq",
     "serverstatus"
@@ -13,6 +13,12 @@
       "email": "austin.bischoff@gmail.com",
       "role": "Packagist/Composer Maintainer, Developer",
       "homepage": "https://github.com/Austinb"
+    },
+    {
+      "name": "Krymo Software",
+      "email": "info@krymo.software",
+      "role": "Fork Maintainer, Developer",
+      "homepage": "https://krymo.software"
     },
     {
       "name": "Christoph Kretzschmar",
@@ -49,7 +55,7 @@
     }
   ],
   "support": {
-    "source": "https://github.com/Austinb/GameQ/v3",
+    "source": "https://github.com/KrymoSoftware/GameQ",
     "issues": "https://github.com/Austinb/GameQ/issues",
     "wiki": "https://github.com/Austinb/GameQ/wiki"
   },
