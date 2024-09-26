@@ -170,10 +170,9 @@ class Server
         } else {
             // We have IPv4 with a port defined
             if (str_contains($ip_address, ':')) {
-                list($this->ip, $this->port_client) = explode(':', $ip_address);
-
-                // Type case the port
-                $this->port_client = (int)$this->port_client;
+                $addressParts = explode(':', $ip_address);
+                $this->ip = $addressParts[0];
+                $this->port_client = (int)$addressParts[1];
             } else {
                 // No port, fail
                 throw new Exception(

@@ -26,7 +26,6 @@ namespace GameQ;
  */
 class Result
 {
-
     /**
      * Formatted server response
      */
@@ -37,7 +36,6 @@ class Result
      */
     public function add(string $name, mixed $value): void
     {
-
         $this->result[$name] = $value;
     }
 
@@ -46,7 +44,6 @@ class Result
      */
     public function addPlayer(string $name, mixed $value): void
     {
-
         $this->addSub('players', $name, $value);
     }
 
@@ -55,16 +52,14 @@ class Result
      */
     public function addTeam(string $name, mixed $value): void
     {
-
         $this->addSub('teams', $name, $value);
     }
 
     /**
      * Add a variable to a category
      */
-    public function addSub(string $sub, string $key, string $value): void
+    public function addSub(string $sub, string $key, mixed $value): void
     {
-
         // Nothing of this type yet, set an empty array
         if (!isset($this->result[$sub]) || !is_array($this->result[$sub])) {
             $this->result[$sub] = [];

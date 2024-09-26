@@ -20,6 +20,7 @@ namespace GameQ;
 
 use GameQ\Exception\Protocol as ProtocolException;
 use GameQ\Exception\Query as QueryException;
+use GameQ\Filters\Base;
 use GameQ\Query\Core;
 use GameQ\Query\Native;
 
@@ -563,8 +564,10 @@ class GameQ
                 // Create a new instance of the filter class specified
                 $filter = $class->newInstanceArgs([$filterOptions['options']]);
 
-                // Apply the filter to the data
-                $results = $filter?->apply($results, $server);
+                if ($filter instanceof Base) {
+                    // Apply the filter to the data
+                    $results = $filter->apply($results, $server);
+                }
             } catch (\ReflectionException) {
                 // Invalid, skip it
                 continue;

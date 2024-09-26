@@ -50,10 +50,12 @@ class Arma3 extends Source
     private const BASE_DLC_AOW       = 'Art of War';
 
     // Creator DLC names
+    /*
     private const CREATOR_DLC_GM     = 'Global Mobilization';
     private const CREATOR_DLC_VN     = 'S.O.G. Prairie Fire';
     private const CREATOR_DLC_CSLA   = 'ČSLA - Iron Curtain';
     private const CREATOR_DLC_WS     = 'Western Sahara';
+    */
 
     /**
      * DLC Flags/Bits as defined in the documentation.
