@@ -32,3 +32,7 @@ $ vendor/bin/phpunit
 ```
 
 The coding standard, mess detection and tests are validated by [GitHub Actions](.github).
+
+# Can't Contribute?
+
+If you do not feel comfortable writing your own changes, feel free open up a [new issue](https://github.com/KrymoSoftware/GameQ/issues/new) for to add a game or feature.
