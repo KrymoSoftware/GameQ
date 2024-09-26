@@ -3,11 +3,10 @@
 /.settings/*
 vendor
 /.idea
+.phpunit.result.cache
 composer.lock
 composer.phar
-coverage/
 !build/logs/.gitkeep
 build/logs/
 test.php
 *.iml
-/remotes/
