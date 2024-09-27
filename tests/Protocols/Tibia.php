@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Tibia extends Base
 {
     /**
@@ -78,7 +80,7 @@ class Tibia extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Tibia::processResponse Unable to load XML string.");
 
         // Read in a Tibia source file

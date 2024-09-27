@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Unreal2 extends Base
 {
     /**
@@ -80,7 +82,7 @@ class Unreal2 extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Unreal2::processResponse response type '8000000007' is not valid");
 
         // Read in a ut2004 source file

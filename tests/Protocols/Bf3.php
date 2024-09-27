@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Bf3 extends Base
 {
     /**
@@ -64,7 +66,7 @@ class Bf3 extends Base
      */
     public function testInvalidPacketLengthDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Bf3::processResponse packet length does not match expected length!");
 
         // Read in a css source file

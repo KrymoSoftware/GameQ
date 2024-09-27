@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Ffow extends Base
 {
     /**
@@ -101,7 +103,7 @@ class Ffow extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Ffow::processResponse response type 'ffffffff4802' is not valid");
 
         // Read in a ffow source file

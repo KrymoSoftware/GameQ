@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Samp extends Base
 {
     /**
@@ -63,7 +65,7 @@ class Samp extends Base
      */
     public function testPacketHeader()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Samp::processResponse header response 'SAMu' is not valid");
 
         // Read in a samp source file
@@ -81,7 +83,7 @@ class Samp extends Base
      */
     public function testServerCode()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Samp::processResponse code check failed.");
         // Read in a samp source file
         $source = file_get_contents(sprintf('%s/Providers/Samp/1_response.txt', __DIR__));
@@ -115,7 +117,7 @@ class Samp extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Samp::processResponse response type 'X' is not valid");
 
         // Read in a samp source file

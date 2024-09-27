@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Raknet extends Base
 {
     /**
@@ -83,7 +85,7 @@ class Raknet extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage(
             "GameQ\Protocols\Raknet::processResponse The header returned \"1d\" does not match the expected header of \"1c\""
         );
@@ -125,7 +127,7 @@ class Raknet extends Base
      */
     public function testInvalidMagicDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage(
             "GameQ\Protocols\Raknet::processResponse The magic value returned \"ffff00bc4d4350453bc2a772c2a761c2\" "
             . "does not match the expected value of \"00ffff00fefefefefdfdfdfd12345678\""
