@@ -17,7 +17,7 @@
  */
 namespace GameQ\Protocols;
 
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 use GameQ\Result;
 use GameQ\Server;
 
@@ -110,7 +110,7 @@ class Gtar extends Http
      * Process the response
      *
      * @return mixed
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -127,7 +127,7 @@ class Gtar extends Http
 
         // Return should be JSON, let's validate
         if (!isset($matches[0]) || ($json = json_decode($matches[0])) === null) {
-            throw new Exception("JSON response from Gtar protocol is invalid.");
+            throw new ProtocolException("JSON response from Gtar protocol is invalid.");
         }
 
         $address = $this->realIp.':'.$this->realPortQuery;

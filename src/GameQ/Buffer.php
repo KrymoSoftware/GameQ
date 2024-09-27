@@ -20,7 +20,7 @@
 
 namespace GameQ;
 
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * Class Buffer
@@ -99,13 +99,13 @@ class Buffer
     /**
      * Read from the buffer
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function read(int $length = 1): string
     {
 
         if (($length + $this->index) > $this->length) {
-            throw new Exception("Unable to read length=$length from buffer.  Bad protocol format or return?");
+            throw new ProtocolException("Unable to read length=$length from buffer. Bad protocol format or return?");
         }
 
         $string = substr($this->data, $this->index, $length);
@@ -173,7 +173,7 @@ class Buffer
      *
      * If not found, return everything
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function readString(string $delim = "\x00"): string
     {
@@ -198,7 +198,7 @@ class Buffer
      * @param int  $offset      Number of bits to cut off the end
      * @param bool $read_offset True if the data after the offset is to be read
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function readPascalString(int $offset = 0, bool $read_offset = false): string
     {
@@ -220,7 +220,7 @@ class Buffer
      *
      * If not found, return everything
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      *
      * @todo: Check to see if this is even used anymore
      */
@@ -251,7 +251,7 @@ class Buffer
     /**
      * Read an 8-bit unsigned integer
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function readInt8(): int
     {
@@ -264,7 +264,7 @@ class Buffer
     /**
      * Read and 8-bit signed integer
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function readInt8Signed(): int
     {
@@ -277,7 +277,7 @@ class Buffer
     /**
      * Read a 16-bit unsigned integer
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function readInt16(): int
     {
@@ -297,7 +297,7 @@ class Buffer
     /**
      * Read a 16-bit signed integer
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function readInt16Signed(): int
     {
@@ -320,7 +320,7 @@ class Buffer
     /**
      * Read a 32-bit unsigned integer
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function readInt32($length = 4): int
     {
@@ -353,7 +353,7 @@ class Buffer
     /**
      * Read a 32-bit signed integer
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function readInt32Signed(): int
     {
@@ -376,7 +376,7 @@ class Buffer
     /**
      * Read a 64-bit unsigned integer
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function readInt64(): int
     {
@@ -415,8 +415,6 @@ class Buffer
 
     /**
      * Read a 32-bit float
-     *
-     * @throws \GameQ\Exception\Protocol
      */
     public function readFloat32(): float
     {

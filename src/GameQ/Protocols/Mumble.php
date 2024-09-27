@@ -20,7 +20,8 @@ namespace GameQ\Protocols;
 
 use GameQ\Protocol;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
+use JsonException;
 
 /**
  * Mumble Protocol class
@@ -100,7 +101,7 @@ class Mumble extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException|JsonException
      */
     public function processResponse(): mixed
     {
@@ -112,7 +113,7 @@ class Mumble extends Protocol
         );
 
         if (!is_array($data)) {
-            throw new Exception('Failed to decode JSON response to array');
+            throw new ProtocolException('Failed to decode JSON response to array');
         }
 
         // Set the result to a new result instance

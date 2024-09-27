@@ -19,6 +19,7 @@
 namespace GameQ\Protocols;
 
 use GameQ\Buffer;
+use GameQ\Exception\ProtocolException;
 use GameQ\Result;
 
 /**
@@ -42,9 +43,9 @@ class Quake4 extends Doom3
 
     /**
      * Handle processing of player data
-
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {
@@ -55,8 +56,8 @@ class Quake4 extends Doom3
         $result = new Result();
 
         // Parse players
-        // Loop thru the buffer until we run out of data
-        while (($id = $buffer->readInt8()) != 32) {
+        // Loop through the buffer until we run out of data
+        while (($id = $buffer->readInt8()) !== 32) {
             // Add player info results
             $result->addPlayer('id', $id);
             $result->addPlayer('ping', $buffer->readInt16());

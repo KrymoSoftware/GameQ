@@ -18,10 +18,10 @@
 
 namespace GameQ\Protocols;
 
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
 
 /**
  * Doom3 Protocol Class
@@ -94,7 +94,7 @@ class Doom3 extends Protocol
      * Handle response from the server
      *
      * @return mixed
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -107,7 +107,7 @@ class Doom3 extends Protocol
         // Header
         // Figure out which packet response this is
         if (empty($header) || !array_key_exists($header, $this->responses)) {
-            throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
+            throw new ProtocolException(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
         }
 
         return $this->{$this->responses[$header]}($buffer);
@@ -117,6 +117,7 @@ class Doom3 extends Protocol
      * Process the status response
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processStatus(Buffer $buffer)
     {
@@ -133,6 +134,7 @@ class Doom3 extends Protocol
      * Handle processing the server information
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processServerInfo(Buffer $buffer)
     {
@@ -161,6 +163,7 @@ class Doom3 extends Protocol
      * Handle processing of player data
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {
@@ -171,8 +174,8 @@ class Doom3 extends Protocol
         $result = new Result();
 
         // Parse players
-        // Loop thru the buffer until we run out of data
-        while (($id = $buffer->readInt8()) != 32) {
+        // Loop through the buffer until we run out of data
+        while (($id = $buffer->readInt8()) !== 32) {
             // Add player info results
             $result->addPlayer('id', $id);
             $result->addPlayer('ping', $buffer->readInt16());

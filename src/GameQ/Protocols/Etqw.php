@@ -19,7 +19,7 @@
 namespace GameQ\Protocols;
 
 use GameQ\Buffer;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Result;
 
@@ -90,7 +90,7 @@ class Etqw extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -102,7 +102,7 @@ class Etqw extends Protocol
 
         // Figure out which packet response this is
         if (!array_key_exists($response_type, $this->responses)) {
-            throw new Exception(__METHOD__ . " response type '$response_type' is not valid");
+            throw new ProtocolException(__METHOD__ . " response type '$response_type' is not valid");
         }
 
         // Offload the call
@@ -117,6 +117,7 @@ class Etqw extends Protocol
      * Handle processing the status response
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processStatus(Buffer $buffer)
     {
@@ -150,7 +151,7 @@ class Etqw extends Protocol
         $result->add('servertype', $buffer->readInt8());
 
         // 0: regular server
-        if ($result->get('servertype') == 0) {
+        if ($result->get('servertype') === 0) {
             $result->add('interested_clients', $buffer->readInt8());
         } else {
             // 1: tv server
@@ -166,6 +167,8 @@ class Etqw extends Protocol
 
     /**
      * Parse players out of the status ex response
+     *
+     * @throws ProtocolException
      */
     protected function parsePlayers(Buffer $buffer, Result $result)
     {
@@ -192,11 +195,13 @@ class Etqw extends Protocol
 
     /**
      * Handle parsing extra player data
+     *
+     * @throws ProtocolException
      */
     protected function parsePlayersExtra(Buffer $buffer, Result $result)
     {
         // Iterate over the extra player info
-        while (($id = $buffer->readInt8()) != 32) {
+        while (($id = $buffer->readInt8()) !== 32) {
             $result->addPlayer('total_xp', $buffer->readFloat32());
             $result->addPlayer('teamname', $buffer->readString());
             $result->addPlayer('total_kills', $buffer->readInt32());

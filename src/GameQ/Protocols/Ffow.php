@@ -3,10 +3,10 @@
 
 namespace GameQ\Protocols;
 
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
 
 /**
  * Frontlines Fuel of War Protocol Class
@@ -92,7 +92,7 @@ class Ffow extends Protocol
     /**
      * Parse the challenge response and apply it to all the packet types
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function challengeParseAndApply(Buffer $challenge_buffer): bool
     {
@@ -107,7 +107,7 @@ class Ffow extends Protocol
      * Handle response from the server
      *
      * @return mixed
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -122,7 +122,7 @@ class Ffow extends Protocol
 
             // Figure out which packet response this is
             if (!array_key_exists($response_type, $this->responses)) {
-                throw new Exception(__METHOD__ . " response type '" . bin2hex($response_type) . "' is not valid");
+                throw new ProtocolException(__METHOD__ . " response type '" . bin2hex($response_type) . "' is not valid");
             }
 
             // Now we need to call the proper method
@@ -141,6 +141,7 @@ class Ffow extends Protocol
      * Handle processing the server information
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processInfo(Buffer $buffer)
     {
@@ -172,6 +173,7 @@ class Ffow extends Protocol
      * Handle processing the server rules
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processRules(Buffer $buffer)
     {

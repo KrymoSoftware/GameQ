@@ -18,7 +18,7 @@
 
 namespace GameQ\Protocols;
 
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 use GameQ\Result;
 
 /**
@@ -85,7 +85,7 @@ class Eco extends Http
      * Process the response
      *
      * @return mixed
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -98,7 +98,7 @@ class Eco extends Http
 
         // Return should be JSON, let's validate
         if (!isset($matches[0]) || ($json = json_decode($matches[0])) === null) {
-            throw new Exception("JSON response from Eco server is invalid.");
+            throw new ProtocolException("JSON response from Eco server is invalid.");
         }
 
         $result = new Result();

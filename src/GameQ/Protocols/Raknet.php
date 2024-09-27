@@ -19,7 +19,7 @@
 namespace GameQ\Protocols;
 
 use GameQ\Buffer;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Result;
 use GameQ\Server;
@@ -83,7 +83,7 @@ class Raknet extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -95,7 +95,7 @@ class Raknet extends Protocol
 
         // Check first character to make sure the header matches
         if ($header !== self::ID_UNCONNECTED_PONG) {
-            throw new Exception(sprintf(
+            throw new ProtocolException(sprintf(
                 '%s The header returned "%s" does not match the expected header of "%s"',
                 __METHOD__,
                 bin2hex($header),
@@ -114,7 +114,7 @@ class Raknet extends Protocol
 
         // Magic check fails
         if ($magicCheck !== self::OFFLINE_MESSAGE_DATA_ID) {
-            throw new Exception(sprintf(
+            throw new ProtocolException(sprintf(
                 '%s The magic value returned "%s" does not match the expected value of "%s"',
                 __METHOD__,
                 bin2hex($magicCheck),

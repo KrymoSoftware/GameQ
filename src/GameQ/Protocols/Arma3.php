@@ -19,6 +19,7 @@
 namespace GameQ\Protocols;
 
 use GameQ\Buffer;
+use GameQ\Exception\ProtocolException;
 use GameQ\Result;
 
 /**
@@ -100,7 +101,7 @@ class Arma3 extends Source
      * Process the rules since Arma3 changed their response for rules
      *
      * @return array
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     protected function processRules(Buffer $buffer)
     {

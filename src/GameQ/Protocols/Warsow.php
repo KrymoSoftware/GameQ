@@ -19,6 +19,7 @@
 namespace GameQ\Protocols;
 
 use GameQ\Buffer;
+use GameQ\Exception\ProtocolException;
 use GameQ\Result;
 
 /**
@@ -48,7 +49,7 @@ class Warsow extends Quake3
      * Handle player info, different than quake3 base
      *
      * @return array
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {

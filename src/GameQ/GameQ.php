@@ -18,8 +18,8 @@
 
 namespace GameQ;
 
-use GameQ\Exception\Protocol as ProtocolException;
-use GameQ\Exception\Query as QueryException;
+use GameQ\Exception\ProtocolException;
+use GameQ\Exception\QueryException;
 use GameQ\Filters\Base;
 use GameQ\Query\Core;
 use GameQ\Query\Native;
@@ -87,6 +87,8 @@ class GameQ
 
     /**
      * Array of servers being queried
+     *
+     * @var Server[] $servers
      */
     protected array $servers = [];
 
@@ -286,8 +288,6 @@ class GameQ
 
         // Now we should have some information to process for each server
         foreach ($this->servers as $server) {
-            /* @var $server \GameQ\Server */
-
             // Parse the responses for this server
             $result = $this->doParseResponse($server);
 
@@ -317,8 +317,6 @@ class GameQ
 
         // Do challenge packets
         foreach ($this->servers as $server_id => $server) {
-            /* @var $server \GameQ\Server */
-
             // This protocol has a challenge packet that needs to be sent
             if ($server->protocol()->hasChallenge()) {
                 // We have a challenge, set the flag
@@ -377,7 +375,6 @@ class GameQ
                 $challenge = new Buffer(implode('', $response));
 
                 // Grab the server instance
-                /* @var $server \GameQ\Server */
                 $server = $this->servers[$server_id];
 
                 // Apply the challenge
@@ -402,7 +399,7 @@ class GameQ
 
         // Iterate over the server list
         foreach ($this->servers as $server_id => $server) {
-            /* @var $server \GameQ\Server */
+            /* @var $server Server */
 
             // Invoke the beforeSend method
             $server->protocol()->beforeSend($server);
@@ -473,7 +470,6 @@ class GameQ
             $server_id = $sockets[$socket_id]['server_id'];
 
             // Grab the server instance
-            /* @var $server \GameQ\Server */
             $server = $this->servers[$server_id];
 
             // Save the response from this packet
@@ -484,7 +480,7 @@ class GameQ
 
         // Now we need to close all the sockets
         foreach ($sockets as $socketInfo) {
-            /* @var $socket \GameQ\Query\Core */
+            /* @var $socket Core */
             $socket = $socketInfo['socket'];
 
             // Close the socket

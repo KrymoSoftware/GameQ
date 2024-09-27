@@ -22,7 +22,7 @@ use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
 use GameQ\Server;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * Teamspeak 3 Protocol Class
@@ -100,7 +100,7 @@ class Teamspeak3 extends Protocol
     /**
      * Before we send off the queries we need to update the packets
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function beforeSend(Server $server): void
     {
@@ -109,7 +109,7 @@ class Teamspeak3 extends Protocol
         if (!isset($this->options[Server::SERVER_OPTIONS_QUERY_PORT])
             || empty($this->options[Server::SERVER_OPTIONS_QUERY_PORT])
         ) {
-            throw new Exception(__METHOD__ . " Missing required setting '" . Server::SERVER_OPTIONS_QUERY_PORT . "'.");
+            throw new ProtocolException(__METHOD__ . " Missing required setting '" . Server::SERVER_OPTIONS_QUERY_PORT . "'.");
         }
 
         // Let's loop the packets and set the proper pieces
@@ -123,7 +123,7 @@ class Teamspeak3 extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -133,7 +133,7 @@ class Teamspeak3 extends Protocol
 
         // Check the header TS3
         if (($header = trim($buffer->readString("\n"))) !== 'TS3') {
-            throw new Exception(__METHOD__ . " Expected header '$header' does not match expected 'TS3'.");
+            throw new ProtocolException(__METHOD__ . " Expected header '$header' does not match expected 'TS3'.");
         }
 
         // Convert all the escaped characters
@@ -212,7 +212,7 @@ class Teamspeak3 extends Protocol
         // Iterate over the items
         foreach ($items as $item) {
             // Explode and make sure we always have 2 items in the array
-            list($key, $value) = array_pad(explode('=', $item, 2), 2, '');
+            [$key, $value] = array_pad(explode('=', $item, 2), 2, '');
 
             // Convert spaces and other character changes
             $properties[$key] = $this->convertToUtf8(str_replace(
@@ -234,7 +234,6 @@ class Teamspeak3 extends Protocol
      */
     protected function processDetails(string $data, Result $result)
     {
-
         // Offload the parsing for these values
         $properties = $this->processProperties($data);
 
@@ -260,7 +259,6 @@ class Teamspeak3 extends Protocol
      */
     protected function processChannels(string $data, Result $result)
     {
-
         // We need to split the data at the pipe
         $channels = explode('|', $data);
 
@@ -283,7 +281,6 @@ class Teamspeak3 extends Protocol
      */
     protected function processPlayers(string $data, Result $result)
     {
-
         // We need to split the data at the pipe
         $players = explode('|', $data);
 

@@ -18,9 +18,9 @@
 
 namespace GameQ\Protocols;
 
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
 
 /**
  * Ventrilo Protocol Class
@@ -622,7 +622,7 @@ class Ventrilo extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -681,7 +681,7 @@ class Ventrilo extends Protocol
             // Check to see if we have a colon, every line should
             if (($colon_pos = strpos($line, ":")) !== false && $colon_pos > 0) {
                 // Split the line into key/value pairs
-                list($key, $value) = explode(':', $line, 2);
+                [$key, $value] = explode(':', $line, 2);
 
                 // Lower the font of the key
                 $key = strtolower($key);
@@ -730,7 +730,7 @@ class Ventrilo extends Protocol
      * Decrypt the incoming packets
      *
      * @return string
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     protected function decryptPackets(array $packets = [])
     {
@@ -753,8 +753,8 @@ class Ventrilo extends Protocol
             $a1 = $key & 0xFF;
             $a2 = $key >> 8;
 
-            if ($a1 == 0) {
-                throw new Exception(__METHOD__ . ": Header key is invalid");
+            if ($a1 === 0) {
+                throw new ProtocolException(__METHOD__ . ": Header key is invalid");
             }
 
             $table = $this->head_encrypt_table;
@@ -765,7 +765,7 @@ class Ventrilo extends Protocol
             for ($index = 1; $index <= $characterCount; $index++) {
                 $chars[$index] -= ($table[$a2] + (($index - 1) % 5)) & 0xFF;
                 $a2 = ($a2 + $a1) & 0xFF;
-                if (($index % 2) == 0) {
+                if (($index % 2) === 0) {
                     $short_array = unpack("n1", pack("C2", $chars[$index - 1], $chars[$index]));
                     $header_items[$key] = $short_array[1];
                     ++$key;
@@ -785,8 +785,8 @@ class Ventrilo extends Protocol
             ], $header_items);
 
             // Check to make sure the number of packets match
-            if ($header_items['totpck'] != count($packets)) {
-                throw new Exception(__METHOD__ . ": Too few packets received");
+            if ($header_items['totpck'] !== count($packets)) {
+                throw new ProtocolException(__METHOD__ . ": Too few packets received");
             }
 
             # Data :
@@ -795,7 +795,7 @@ class Ventrilo extends Protocol
             $a2 = $header_items['datakey'] >> 8;
 
             if ($a1 === 0) {
-                throw new Exception(__METHOD__ . ": Data key is invalid");
+                throw new ProtocolException(__METHOD__ . ": Data key is invalid");
             }
 
             $chars = unpack("C*", substr($packet, 20));

@@ -21,10 +21,8 @@
 namespace GameQ\Exception;
 
 /**
- * Exception
- *
  * @author Austin Bischoff <austin@codebeard.com>
  */
-class Server extends \Exception
+class QueryException extends \Exception
 {
 }

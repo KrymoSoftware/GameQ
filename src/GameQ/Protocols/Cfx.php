@@ -19,7 +19,7 @@
 namespace GameQ\Protocols;
 
 use GameQ\Buffer;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Result;
 use GameQ\Server;
@@ -110,7 +110,7 @@ class Cfx extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -122,7 +122,7 @@ class Cfx extends Protocol
 
         // Figure out which packet response this is
         if (empty($response_type) || !array_key_exists($response_type, $this->responses)) {
-            throw new Exception(__METHOD__ . " response type '$response_type' is not valid");
+            throw new ProtocolException(__METHOD__ . " response type '$response_type' is not valid");
         }
 
         // Offload the call

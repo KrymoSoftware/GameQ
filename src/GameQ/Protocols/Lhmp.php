@@ -21,7 +21,7 @@ namespace GameQ\Protocols;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * Lost Heaven Protocol class
@@ -95,7 +95,7 @@ class Lhmp extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -121,7 +121,7 @@ class Lhmp extends Protocol
         foreach ($packets as $header => $packetGroup) {
             // Figure out which packet response this is
             if (!array_key_exists($header, $this->responses)) {
-                throw new Exception(__METHOD__ . " response type '$header' is not valid");
+                throw new ProtocolException(__METHOD__ . " response type '$header' is not valid");
             }
 
             // Now we need to call the proper method
@@ -144,7 +144,7 @@ class Lhmp extends Protocol
      * Handles processing the details data into a usable format
      *
      * @return array
-     * @throws Exception
+     * @throws ProtocolException
      */
     protected function processDetails(Buffer $buffer)
     {
@@ -168,6 +168,7 @@ class Lhmp extends Protocol
      * Handles processing the player data into a usable format
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {

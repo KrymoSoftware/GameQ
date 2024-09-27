@@ -18,6 +18,7 @@
 
 namespace GameQ\Protocols;
 
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
@@ -89,7 +90,7 @@ class Ase extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -98,7 +99,7 @@ class Ase extends Protocol
 
         // Check for valid response
         if ($buffer->getLength() < 4) {
-            throw new \GameQ\Exception\Protocol(sprintf('%s The response from the server was empty.', __METHOD__));
+            throw new ProtocolException(sprintf('%s The response from the server was empty.', __METHOD__));
         }
 
         // Read the header
@@ -106,7 +107,7 @@ class Ase extends Protocol
 
         // Verify header
         if ($header !== 'EYE1') {
-            throw new \GameQ\Exception\Protocol(sprintf('%s The response header "%s" does not match expected "EYE1"', __METHOD__, $header));
+            throw new ProtocolException(sprintf('%s The response header "%s" does not match expected "EYE1"', __METHOD__, $header));
         }
 
         // Create a new result
@@ -141,6 +142,8 @@ class Ase extends Protocol
 
     /**
      * Handles processing the extra key/value pairs for server settings
+     *
+     * @throws ProtocolException
      */
     protected function processKeyValuePairs(Buffer $buffer, Result $result)
     {
@@ -165,6 +168,8 @@ class Ase extends Protocol
 
     /**
      * Handles processing the player and team data into a usable format
+     *
+     * @throws ProtocolException
      */
     protected function processPlayersAndTeams(Buffer $buffer, Result $result)
     {

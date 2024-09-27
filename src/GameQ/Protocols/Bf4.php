@@ -44,7 +44,6 @@ class Bf4 extends Bf3
 
     /**
      * Handle processing details since they are different than BF3
-
      *
      * @return array
      */

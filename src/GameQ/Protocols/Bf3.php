@@ -18,10 +18,10 @@
 
 namespace GameQ\Protocols;
 
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
 
 /**
  * Battlefield 3 Protocol Class
@@ -113,7 +113,7 @@ class Bf3 extends Protocol
      * Process the response for the StarMade server
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -160,7 +160,7 @@ class Bf3 extends Protocol
             // Check to make sure the expected length matches the real length
             // Subtract 4 for the sequence_id pulled out earlier
             if ($packetLength !== ($buffer->readInt32() - 4)) {
-                throw new Exception(__METHOD__ . " packet length does not match expected length!");
+                throw new ProtocolException(__METHOD__ . " packet length does not match expected length!");
             }
 
             // Now we need to call the proper method
@@ -179,9 +179,9 @@ class Bf3 extends Protocol
 
     /**
      * Decode the buffer into a usable format
-
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function decode(Buffer $buffer)
     {
@@ -205,9 +205,9 @@ class Bf3 extends Protocol
 
     /**
      * Process the server details
-
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processDetails(Buffer $buffer)
     {
@@ -270,9 +270,9 @@ class Bf3 extends Protocol
 
     /**
      * Process the server version
-
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processVersion(Buffer $buffer)
     {
@@ -292,9 +292,9 @@ class Bf3 extends Protocol
 
     /**
      * Process the players
-
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {

@@ -18,10 +18,10 @@
 
 namespace GameQ\Protocols;
 
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
 
 /**
  * Battlefield Bad Company 2 Protocol Class
@@ -115,13 +115,10 @@ class Bfbc2 extends Protocol
      * Process the response for the StarMade server
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
-
-        //print_r($this->packets_response);
-
         // Holds the results sent back
         $results = [];
 
@@ -140,7 +137,7 @@ class Bfbc2 extends Protocol
             // Check to make sure the expected length matches the real length
             // Subtract 4 for the header burn
             if ($packetLength !== ($buffer->readInt32() - 4)) {
-                throw new Exception(__METHOD__ . " packet length does not match expected length!");
+                throw new ProtocolException(__METHOD__ . " packet length does not match expected length!");
             }
 
             // We assume the packets are coming back in the same order as sent, this maybe incorrect...
@@ -161,9 +158,9 @@ class Bfbc2 extends Protocol
 
     /**
      * Decode the buffer into a usable format
-
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function decode(Buffer $buffer)
     {
@@ -187,7 +184,6 @@ class Bfbc2 extends Protocol
 
     /**
      * Process the server details
-
      *
      * @return array
      */
@@ -249,7 +245,6 @@ class Bfbc2 extends Protocol
 
     /**
      * Process the server version
-
      *
      * @return array
      */
@@ -270,7 +265,6 @@ class Bfbc2 extends Protocol
 
     /**
      * Process the players
-
      *
      * @return array
      */

@@ -18,7 +18,7 @@
 
 namespace GameQ\Query;
 
-use GameQ\Exception\Query as Exception;
+use GameQ\Exception\QueryException;
 
 /**
  * Native way of querying servers
@@ -31,7 +31,7 @@ class Native extends Core
      * Get the current socket or create one and return
      *
      * @return mixed
-     * @throws \GameQ\Exception\Query
+     * @throws QueryException
      */
     public function get(): mixed
     {
@@ -50,7 +50,7 @@ class Native extends Core
      * @param string|array $data
      *
      * @return int The number of bytes written
-     * @throws \GameQ\Exception\Query
+     * @throws QueryException
      */
     public function write(string|array $data): int
     {
@@ -64,7 +64,7 @@ class Native extends Core
             // Send the packet
             return fwrite($this->socket, $data);
         } catch (\Exception $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new QueryException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -83,7 +83,7 @@ class Native extends Core
     /**
      * Create a new socket for this query
      *
-     * @throws \GameQ\Exception\Query
+     * @throws QueryException
      */
     protected function create(): void
     {
@@ -123,7 +123,7 @@ class Native extends Core
             $this->socket = null;
 
             // Something bad happened, throw query exception
-            throw new Exception(
+            throw new QueryException(
                 __METHOD__ . " - Error creating socket to server $this->ip:$this->port. Error: " . $errstr,
                 $errno
             );
@@ -144,7 +144,7 @@ class Native extends Core
         // Loop and pull out all the actual sockets we need to listen on
         foreach ($sockets as $socket_id => $socket_data) {
             // Get the socket
-            /* @var $socket \GameQ\Query\Core */
+            /* @var $socket Core */
             $socket = $socket_data['socket'];
 
             // Append the actual socket we are listening to
