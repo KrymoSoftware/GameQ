@@ -18,6 +18,8 @@
 
 namespace GameQ\Query;
 
+use GameQ\Exception\QueryException;
+
 /**
  * Core for the query mechanisms
  *
@@ -124,6 +126,8 @@ abstract class Core
 
     /**
      * Get the socket
+     *
+     * @throws QueryException
      */
     abstract public function get(): mixed;
 
@@ -131,6 +135,7 @@ abstract class Core
      * Write data to the socket
      *
      * @return int The number of bytes written
+     * @throws QueryException
      */
     abstract public function write(string|array $data): int;
 

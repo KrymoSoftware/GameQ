@@ -345,7 +345,7 @@ class GameQ
                 } catch (QueryException $exception) {
                     // Check to see if we are in debug, if so bubble up the exception
                     if ($this->debug) {
-                        throw new \Exception($exception->getMessage(), $exception->getCode(), $exception);
+                        throw $exception;
                     }
                 }
 
@@ -446,7 +446,7 @@ class GameQ
             } catch (QueryException $exception) {
                 // Check to see if we are in debug, if so bubble up the exception
                 if ($this->debug) {
-                    throw new \Exception($exception->getMessage(), $exception->getCode(), $exception);
+                    throw $exception;
                 }
 
                 continue;
@@ -495,7 +495,7 @@ class GameQ
     /**
      * Parse the response for a specific server
      *
-     * @throws \Exception
+     * @throws ProtocolException
      */
     protected function doParseResponse(Server $server): array
     {
@@ -516,7 +516,7 @@ class GameQ
         } catch (ProtocolException $e) {
             // Check to see if we are in debug, if so bubble up the exception
             if ($this->debug) {
-                throw new \Exception($e->getMessage(), $e->getCode(), $e);
+                throw $e;
             }
 
             // We ignore this server
