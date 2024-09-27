@@ -205,6 +205,7 @@ class Samp extends Protocol
      * Handles processing the player data into a usable format
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {
@@ -230,6 +231,7 @@ class Samp extends Protocol
      * Handles processing the rules data into a usable format
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processRules(Buffer $buffer)
     {
