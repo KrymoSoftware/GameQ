@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Cs2d extends Base
 {
     /**
@@ -79,7 +81,7 @@ class Cs2d extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Cs2d::processResponse response type '80000000' is not valid");
 
         // Read in a ut2004 source file

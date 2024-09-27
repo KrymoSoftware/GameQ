@@ -20,6 +20,8 @@
 
 namespace GameQ;
 
+use GameQ\Exception\ProtocolException;
+
 /**
  * Handles the core functionality for the protocols
  *
@@ -413,6 +415,8 @@ abstract class Protocol
 
     /**
      * Method called to process query response data.  Each extending class has to have one of these functions.
+     *
+     * @throws ProtocolException
      */
     abstract public function processResponse(): mixed;
 }

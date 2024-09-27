@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests;
 
+use GameQ\Exception\ServerException;
+
 /**
  * Server testing class
  *
@@ -30,7 +32,7 @@ class Server extends TestBase
      */
     public function testMissingServerType()
     {
-        $this->expectException(\GameQ\Exception\Server::class);
+        $this->expectException(ServerException::class);
         $this->expectExceptionMessage("Missing server info key 'type'!");
 
         // Create a mock server should throw exception
@@ -42,7 +44,7 @@ class Server extends TestBase
      */
     public function testMissingHost()
     {
-        $this->expectException(\GameQ\Exception\Server::class);
+        $this->expectException(ServerException::class);
         $this->expectExceptionMessage("Missing server info key 'host'!");
 
         // Create a mock server Create a mock server should throw exception
@@ -115,7 +117,7 @@ class Server extends TestBase
      */
     public function testIpv4NoPort()
     {
-        $this->expectException(\GameQ\Exception\Server::class);
+        $this->expectException(ServerException::class);
         $this->expectExceptionMessage("The host address '127.0.0.1' is missing the port. All servers must have a port defined!");
 
         // Create a mock server
@@ -130,7 +132,7 @@ class Server extends TestBase
      */
     public function testIpv4UnresovlableHostname()
     {
-        $this->expectException(\GameQ\Exception\Server::class);
+        $this->expectException(ServerException::class);
         $this->expectExceptionMessage("Unable to resolve the host 'some.unresolable.domain' to an IP address.");
 
         // Create a mock server
@@ -159,7 +161,7 @@ class Server extends TestBase
      */
     public function testIpv6NoPort()
     {
-        $this->expectException(\GameQ\Exception\Server::class);
+        $this->expectException(ServerException::class);
         $this->expectExceptionMessage("The host address '[::1]' is missing the port.  All servers must have a port defined!");
 
         // Create a mock server
@@ -174,7 +176,7 @@ class Server extends TestBase
      */
     public function testIpv6Invalid()
     {
-        $this->expectException(\GameQ\Exception\Server::class);
+        $this->expectException(ServerException::class);
         $this->expectExceptionMessage("The IPv6 address '[:0:1]' is invalid.");
 
         // Create a mock server
@@ -189,7 +191,7 @@ class Server extends TestBase
      */
     public function testInvalidProtocol()
     {
-        $this->expectException(\GameQ\Exception\Server::class);
+        $this->expectException(ServerException::class);
         $this->expectExceptionMessage("Unable to locate Protocols class for 'doesnotexist'!");
 
         // Create a mock server

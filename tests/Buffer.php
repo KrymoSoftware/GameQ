@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests;
 
+use GameQ\Exception\ProtocolException;
+
 /**
  * Buffer test class
  *
@@ -94,7 +96,7 @@ class Buffer extends TestBase
         ];
 
         // We are on 64-bit os
-        if (PHP_INT_SIZE == 8) {
+        if (PHP_INT_SIZE === 8) {
             // Add 64-bit tests
             $dataSet[] = [ 'readInt64', 'm', sprintf('%s/64bitunsigned_1.txt', $basePath), 90094348778156039 ];
             $dataSet[] = [ 'readInt64', 'm', sprintf('%s/64bitunsigned_2.txt', $basePath), 240 ];
@@ -194,8 +196,8 @@ class Buffer extends TestBase
      */
     public function testReadException()
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage("Unable to read length=6 from buffer.  Bad protocol format or return?");
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage("Unable to read length=6 from buffer. Bad protocol format or return?");
 
         $buffer = $this->buildBuffer("12345");
 

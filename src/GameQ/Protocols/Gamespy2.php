@@ -18,7 +18,7 @@
 
 namespace GameQ\Protocols;
 
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
@@ -101,7 +101,7 @@ class Gamespy2 extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -128,7 +128,7 @@ class Gamespy2 extends Protocol
         foreach ($packets as $header => $packetGroup) {
             // Figure out which packet response this is
             if (!array_key_exists($header, $this->responses)) {
-                throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
+                throw new ProtocolException(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
             }
 
             // Now we need to call the proper method
@@ -152,7 +152,7 @@ class Gamespy2 extends Protocol
 
      *
      * @return array
-     * @throws Exception
+     * @throws ProtocolException
      */
     protected function processDetails(Buffer $buffer)
     {
@@ -177,7 +177,7 @@ class Gamespy2 extends Protocol
 
      *
      * @return array
-     * @throws Exception
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {
@@ -200,7 +200,7 @@ class Gamespy2 extends Protocol
     /**
      * Parse the player/team info returned from the player call
      *
-     * @throws Exception
+     * @throws ProtocolException
      */
     protected function parsePlayerTeam(string $dataType, Buffer $buffer, Result $result)
     {

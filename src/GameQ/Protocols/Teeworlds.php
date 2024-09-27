@@ -21,7 +21,7 @@ namespace GameQ\Protocols;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * Teeworlds Protocol class
@@ -95,7 +95,7 @@ class Teeworlds extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -112,7 +112,7 @@ class Teeworlds extends Protocol
 
             // Figure out which packet response this is
             if (!array_key_exists($header, $this->responses)) {
-                throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
+                throw new ProtocolException(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
             }
 
             // Now we need to call the proper method

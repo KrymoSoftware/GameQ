@@ -21,7 +21,7 @@ namespace GameQ\Protocols;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * Mafia 2 Multiplayer Protocol Class
@@ -101,7 +101,7 @@ class M2mp extends Protocol
      * Handle response from the server
      *
      * @return mixed
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -114,7 +114,7 @@ class M2mp extends Protocol
         // Header
         // Figure out which packet response this is
         if ($header !== "M2MP") {
-            throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
+            throw new ProtocolException(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
         }
 
         return $this->{$this->responses[$header]}($buffer);
@@ -140,6 +140,7 @@ class M2mp extends Protocol
      * Handle processing the server information
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processServerInfo(Buffer $buffer)
     {
@@ -164,6 +165,7 @@ class M2mp extends Protocol
      * Handle processing of player data
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {

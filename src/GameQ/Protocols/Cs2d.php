@@ -18,10 +18,10 @@
 
 namespace GameQ\Protocols;
 
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
 
 /**
  * Counter-Strike 2d Protocol Class
@@ -100,13 +100,13 @@ class Cs2d extends Protocol
      * Process the response for the Tibia server
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
 
         // We have a merged packet, try to split it back up
-        if (count($this->packets_response) == 1) {
+        if (count($this->packets_response) === 1) {
             // Temp buffer to make string manipulation easier
             $buffer = new Buffer($this->packets_response[0]);
 
@@ -147,7 +147,7 @@ class Cs2d extends Protocol
         foreach ($packets as $header => $packetGroup) {
             // Figure out which packet response this is
             if (!array_key_exists($header, $this->responses)) {
-                throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
+                throw new ProtocolException(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
             }
 
             // Now we need to call the proper method
@@ -166,7 +166,7 @@ class Cs2d extends Protocol
      * Handles processing the details data into a usable format
      *
      * @return array
-     * @throws Exception
+     * @throws ProtocolException
      */
     protected function processDetails(Buffer $buffer)
     {
@@ -200,7 +200,7 @@ class Cs2d extends Protocol
      * Handles processing the player data into a usable format
      *
      * @return array
-     * @throws Exception
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {
@@ -237,7 +237,7 @@ class Cs2d extends Protocol
      *
      * @return bool
      */
-    protected function readFlag($flags, $offset)
+    protected function readFlag($flags, $offset): bool
     {
         return (bool)($flags & (1 << $offset));
     }

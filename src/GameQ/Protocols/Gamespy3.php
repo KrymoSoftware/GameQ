@@ -18,6 +18,7 @@
 
 namespace GameQ\Protocols;
 
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
@@ -218,6 +219,8 @@ class Gamespy3 extends Protocol
 
     /**
      * Handles processing the details data into a usable format
+     *
+     * @throws ProtocolException
      */
     protected function processDetails(Buffer $buffer, Result $result): void
     {
@@ -233,6 +236,8 @@ class Gamespy3 extends Protocol
 
     /**
      * Handles processing the player and team data into a usable format
+     *
+     * @throws ProtocolException
      */
     protected function processPlayersAndTeams(Buffer $buffer, Result $result): void
     {
@@ -246,7 +251,7 @@ class Gamespy3 extends Protocol
          */
         $data = explode("\x00\x00", $buffer->getBuffer());
 
-        // By default item_group is blank, this will be set for each loop thru the data
+        // By default item_group is blank, this will be set for each loop through the data
         $item_group = '';
 
         // By default the item_type is blank, this will be set on each loop

@@ -18,6 +18,8 @@
 
 namespace GameQ\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 /**
  * Class Cs16
  *
@@ -45,7 +47,7 @@ class Cs16 extends Source
      * @param array $packets
      *
      * @return string
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     protected function processPackets($packet_id, array $packets = [])
     {

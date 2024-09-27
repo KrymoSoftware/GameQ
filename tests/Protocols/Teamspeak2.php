@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 /**
  * Test Class for Teamspeak2
  *
@@ -68,7 +70,7 @@ class Teamspeak2 extends Base
      */
     public function testMissingQueryPort()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Teamspeak2::beforeSend Missing required setting 'query_port'.");
         $client_port = 8767;
         $query_port = 51234;
@@ -129,7 +131,7 @@ class Teamspeak2 extends Base
      */
     public function testInvalidHeader()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Teamspeak2::processResponse Expected header 'BadH' does not match expected '[TS]'.");
 
         $client_port = 8767;

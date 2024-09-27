@@ -21,10 +21,8 @@
 namespace GameQ\Exception;
 
 /**
- * Exception
- *
  * @author Austin Bischoff <austin@codebeard.com>
  */
-class Query extends \Exception
+class ProtocolException extends \Exception
 {
 }

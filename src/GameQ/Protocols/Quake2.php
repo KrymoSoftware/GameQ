@@ -6,7 +6,7 @@ namespace GameQ\Protocols;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * Quake2 Protocol Class
@@ -80,7 +80,7 @@ class Quake2 extends Protocol
      * Handle response from the server
      *
      * @return mixed
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -92,7 +92,7 @@ class Quake2 extends Protocol
 
         // Figure out which packet response this is
         if (empty($header) || !array_key_exists($header, $this->responses)) {
-            throw new Exception(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
+            throw new ProtocolException(__METHOD__ . " response type '" . bin2hex($header) . "' is not valid");
         }
 
         return $this->{$this->responses[$header]}($buffer);
@@ -102,6 +102,7 @@ class Quake2 extends Protocol
      * Process the status response
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processStatus(Buffer $buffer)
     {
@@ -118,6 +119,7 @@ class Quake2 extends Protocol
      * Handle processing the server information
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processServerInfo(Buffer $buffer)
     {
@@ -146,6 +148,7 @@ class Quake2 extends Protocol
      * Handle processing of player data
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {

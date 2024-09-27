@@ -22,7 +22,7 @@ use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
 use GameQ\Server;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * Teamspeak 2 Protocol Class
@@ -100,7 +100,7 @@ class Teamspeak2 extends Protocol
     /**
      * Before we send off the queries we need to update the packets
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function beforeSend(Server $server): void
     {
@@ -109,7 +109,7 @@ class Teamspeak2 extends Protocol
         if (!isset($this->options[Server::SERVER_OPTIONS_QUERY_PORT])
             || empty($this->options[Server::SERVER_OPTIONS_QUERY_PORT])
         ) {
-            throw new Exception(__METHOD__ . " Missing required setting '" . Server::SERVER_OPTIONS_QUERY_PORT . "'.");
+            throw new ProtocolException(__METHOD__ . " Missing required setting '" . Server::SERVER_OPTIONS_QUERY_PORT . "'.");
         }
 
         // Let's loop the packets and set the proper pieces
@@ -123,7 +123,7 @@ class Teamspeak2 extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -133,7 +133,7 @@ class Teamspeak2 extends Protocol
 
         // Check the header [TS]
         if (($header = trim($buffer->readString("\n"))) !== '[TS]') {
-            throw new Exception(__METHOD__ . " Expected header '$header' does not match expected '[TS]'.");
+            throw new ProtocolException(__METHOD__ . " Expected header '$header' does not match expected '[TS]'.");
         }
 
         // Split this buffer as the data blocks are bound by "OK" and drop any empty values
@@ -180,6 +180,8 @@ class Teamspeak2 extends Protocol
 
     /**
      * Handles processing the details data into a usable format
+     *
+     * @throws ProtocolException
      */
     protected function processDetails(string $data, Result $result)
     {
@@ -206,10 +208,11 @@ class Teamspeak2 extends Protocol
 
     /**
      * Process the channel listing
+     *
+     * @throws ProtocolException
      */
     protected function processChannels(string $data, Result $result)
     {
-
         // Create a buffer
         $buffer = new Buffer($data);
 
@@ -235,10 +238,11 @@ class Teamspeak2 extends Protocol
 
     /**
      * Process the user listing
+     *
+     * @throws ProtocolException
      */
     protected function processPlayers(string $data, Result $result)
     {
-
         // Create a buffer
         $buffer = new Buffer($data);
 

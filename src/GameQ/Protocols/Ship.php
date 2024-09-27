@@ -19,6 +19,7 @@
 namespace GameQ\Protocols;
 
 use GameQ\Buffer;
+use GameQ\Exception\ProtocolException;
 use GameQ\Result;
 
 /**
@@ -46,9 +47,9 @@ class Ship extends Source
      * Specific player parse for The Ship
      *
      * Player response has unknown data after the last real player
-
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {
@@ -63,7 +64,7 @@ class Ship extends Source
         $result->add('num_players', $num_players);
 
         // No players, no work
-        if ($num_players == 0) {
+        if ($num_players === 0) {
             return $result->fetch();
         }
 

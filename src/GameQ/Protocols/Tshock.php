@@ -17,7 +17,7 @@
  */
 namespace GameQ\Protocols;
 
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 use GameQ\Result;
 
 /**
@@ -87,7 +87,7 @@ class Tshock extends Http
      * Process the response
      *
      * @return mixed
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -105,12 +105,12 @@ class Tshock extends Http
             512,
             JSON_THROW_ON_ERROR
         )) === null) {
-            throw new Exception("JSON response from Tshock protocol is invalid.");
+            throw new ProtocolException("JSON response from Tshock protocol is invalid.");
         }
 
         // Check the status response
         if ($json->status !== '200') {
-            throw new Exception("JSON status from Tshock protocol response was '$json->status', expected '200'.");
+            throw new ProtocolException("JSON status from Tshock protocol response was '$json->status', expected '200'.");
         }
 
         $result = new Result();

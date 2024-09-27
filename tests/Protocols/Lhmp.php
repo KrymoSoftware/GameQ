@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Lhmp extends Base
 {
     /**
@@ -79,7 +81,7 @@ class Lhmp extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Lhmp::processResponse response type 'LHMPz' is not valid");
 
         // Read in a lhmp source file

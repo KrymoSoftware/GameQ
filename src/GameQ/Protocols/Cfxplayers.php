@@ -19,7 +19,7 @@
 
 namespace GameQ\Protocols;
 
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * GTA Five M Protocol Class
@@ -61,7 +61,7 @@ class Cfxplayers extends Http
     /**
      * Process the response
      *
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -75,7 +75,7 @@ class Cfxplayers extends Http
 
         // Return should be JSON, let's validate
         if (!isset($matches[0]) || ($json = json_decode($matches[0], true)) === null) {
-            throw new Exception(__METHOD__ . " JSON response from Stationeers protocol is invalid.");
+            throw new ProtocolException(__METHOD__ . " JSON response from Stationeers protocol is invalid.");
         }
 
         // Return json as it should already be well formed

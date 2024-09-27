@@ -21,7 +21,7 @@ namespace GameQ\Protocols;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * StarMade Protocol Class
@@ -86,7 +86,7 @@ class Starmade extends Protocol
      * Process the response for the StarMade server
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -136,10 +136,9 @@ class Starmade extends Protocol
 
     /**
      * Parse the server response parameters
-
-     *
+ *
      * @return array
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     protected function parseServerParameters(Buffer $buffer)
     {
@@ -200,7 +199,7 @@ class Starmade extends Protocol
                 // Array
                 case 8:
                     // Not implemented
-                    throw new Exception("StarMade array parsing is not implemented!");
+                    throw new ProtocolException("StarMade array parsing is not implemented!");
             }
         }
 

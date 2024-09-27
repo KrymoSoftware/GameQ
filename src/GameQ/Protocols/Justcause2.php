@@ -19,6 +19,7 @@
 namespace GameQ\Protocols;
 
 use GameQ\Buffer;
+use GameQ\Exception\ProtocolException;
 use GameQ\Result;
 
 /**
@@ -97,6 +98,7 @@ class Justcause2 extends Gamespy4
     /**
      * Override the parent, this protocol is returned differently
      *
+     * @throws ProtocolException
      * @see Gamespy3::processPlayersAndTeams()
      */
     protected function processPlayersAndTeams(Buffer $buffer, Result $result): void

@@ -20,7 +20,7 @@ namespace GameQ\Protocols;
 
 use GameQ\Protocol;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * Tibia Protocol Class
@@ -88,7 +88,7 @@ class Tibia extends Protocol
      * Process the response for the Tibia server
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -97,7 +97,7 @@ class Tibia extends Protocol
 
         // Check to make sure this is will decode into a valid XML Document
         if (($xmlDoc = @simplexml_load_string($xmlString)) === false) {
-            throw new Exception(__METHOD__ . " Unable to load XML string.");
+            throw new ProtocolException(__METHOD__ . " Unable to load XML string.");
         }
 
         // Set the result to a new result instance

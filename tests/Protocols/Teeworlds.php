@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 /**
  * Test Class for Teeworlds
  *
@@ -92,7 +94,7 @@ class Teeworlds extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage(
             "GameQ\Protocols\Teeworlds::processResponse response type 'ffffffffffffffffffff696e663336' is not valid"
         );

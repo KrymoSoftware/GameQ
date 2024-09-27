@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Quake2 extends Base
 {
 
@@ -82,7 +84,7 @@ class Quake2 extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Quake2::processResponse response type 'ffffffff7072696e7473' is not valid");
 
         // Read in a quake 2 source file

@@ -19,7 +19,7 @@
 namespace GameQ\Protocols;
 
 use GameQ\Buffer;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 use GameQ\Protocol;
 use GameQ\Result;
 
@@ -114,7 +114,7 @@ class Source extends Protocol
     /**
      * Parse the challenge response and apply it to all the packet types
      *
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function challengeParseAndApply(Buffer $challenge_buffer): bool
     {
@@ -135,7 +135,7 @@ class Source extends Protocol
      * Process the response
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -172,7 +172,7 @@ class Source extends Protocol
         }
 
         // Free up memory
-        unset($response, $packet_id, $buffer, $header);
+        unset($packet_id, $buffer, $header);
 
         // Now that we have the packets sorted we need to iterate and process them
         foreach ($packets as $packet_id => $packet) {
@@ -188,7 +188,7 @@ class Source extends Protocol
 
             // Figure out which packet response this is
             if (!array_key_exists($response_type, $this->responses)) {
-                throw new Exception(__METHOD__ . " response type '$response_type' is not valid");
+                throw new ProtocolException(__METHOD__ . " response type '$response_type' is not valid");
             }
 
             // Now we need to call the proper method
@@ -217,7 +217,7 @@ class Source extends Protocol
      * @param array $packets
      *
      * @return string
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     protected function processPackets($packet_id, array $packets = [])
     {
@@ -254,7 +254,7 @@ class Source extends Protocol
                 if ($packet_id & 0x80000000) {
                     // Check to see if we have Bzip2 installed
                     if (!function_exists('bzdecompress')) {
-                        throw new Exception(
+                        throw new ProtocolException(
                             'Bzip2 is not installed.  See http://www.php.net/manual/en/book.bzip2.php for more info.',
                             0
                         );
@@ -271,7 +271,7 @@ class Source extends Protocol
 
                     // Now verify the length
                     if (strlen($result) !== $packet_length) {
-                        throw new Exception(
+                        throw new ProtocolException(
                             "Checksum for compressed packet failed! Length expected: $packet_length, length
                             returned: " . strlen($result)
                         );
@@ -312,7 +312,7 @@ class Source extends Protocol
      * Handles processing the details data into a usable format
      *
      * @return mixed
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     protected function processDetails(Buffer $buffer)
     {
@@ -379,10 +379,9 @@ class Source extends Protocol
 
     /**
      * Handles processing the server details from goldsource response
-
-     *
+ *
      * @return array
-     * @throws \GameQ\Exception\Protocol
+     * @throws ProtocolException
      */
     protected function processDetailsGoldSource(Buffer $buffer)
     {
@@ -426,6 +425,7 @@ class Source extends Protocol
      * Handles processing the player data into a usable format
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processPlayers(Buffer $buffer)
     {
@@ -459,6 +459,7 @@ class Source extends Protocol
      * Handles processing the rules data into a usable format
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processRules(Buffer $buffer)
     {

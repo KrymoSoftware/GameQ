@@ -21,7 +21,7 @@ namespace GameQ\Protocols;
 use GameQ\Protocol;
 use GameQ\Buffer;
 use GameQ\Result;
-use GameQ\Exception\Protocol as Exception;
+use GameQ\Exception\ProtocolException;
 
 /**
  * OpenTTD Protocol Class
@@ -81,7 +81,7 @@ class Openttd extends Protocol
      * Handle response from the server
      *
      * @return mixed
-     * @throws Exception
+     * @throws ProtocolException
      */
     public function processResponse(): mixed
     {
@@ -99,7 +99,9 @@ class Openttd extends Protocol
         // Header
         // Figure out which packet response this is
         if ($packetLength !== $length) {
-            throw new Exception(__METHOD__ . " header length '" .$length . "' does not match packet length '" . $packetLength . "'.");
+            throw new ProtocolException(
+                __METHOD__ . " header length '" .$length . "' does not match packet length '" . $packetLength . "'."
+            );
         }
 
         return $this->processServerInfo($buffer);
@@ -109,6 +111,7 @@ class Openttd extends Protocol
      * Handle processing the server information
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processServerInfo(Buffer $buffer)
     {

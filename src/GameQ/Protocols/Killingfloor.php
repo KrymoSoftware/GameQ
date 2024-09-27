@@ -19,6 +19,7 @@
 namespace GameQ\Protocols;
 
 use GameQ\Buffer;
+use GameQ\Exception\ProtocolException;
 use GameQ\Result;
 
 /**
@@ -52,9 +53,9 @@ class Killingfloor extends Unreal2
 
     /**
      * Overload the default detail process since this version is different
-
      *
      * @return array
+     * @throws ProtocolException
      */
     protected function processDetails(Buffer $buffer)
     {

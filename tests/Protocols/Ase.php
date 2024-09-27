@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Ase extends Base
 {
     /**
@@ -78,7 +80,7 @@ class Ase extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Ase::processResponse The response header \"Some\" does not match expected \"EYE1\"");
 
         // Read in a css source file
@@ -107,7 +109,7 @@ class Ase extends Base
      */
     public function testEmptyServerResponseDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Ase::processResponse The response from the server was empty.");
 
         // Should fail out

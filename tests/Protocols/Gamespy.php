@@ -18,6 +18,8 @@
 
 namespace GameQ\Tests\Protocols;
 
+use GameQ\Exception\ProtocolException;
+
 class Gamespy extends Base
 {
     /**
@@ -78,7 +80,7 @@ class Gamespy extends Base
      */
     public function testInvalidPacketTypeDebug()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage("GameQ\Protocols\Gamespy::processResponse An error occurred while parsing the packets for 'queryid'");
 
         // Read in a css source file
