@@ -17,6 +17,9 @@ jobs:
         ocular: [^1.9]
         experimental: [false]
         composer-extra: ['']
+        include:
+          - php: 8.4
+            experimental: true
     env:
       PHP_VERSION: ${{ matrix.php }}
     name: PHP ${{ matrix.php }}
