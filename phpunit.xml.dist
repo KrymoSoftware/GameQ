@@ -9,7 +9,7 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="GameQ v3 Test Suite">
+        <testsuite name="GameQ Test Suite">
             <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>

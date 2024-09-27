@@ -1,10 +1,11 @@
-# GameQ Version 3
+# GameQ Fork by Krymo Software
 [![CI](https://github.com/KrymoSoftware/GameQ/actions/workflows/Tests.yml/badge.svg)](https://github.com/KrymoSoftware/GameQ/actions/workflows/Tests.yml)
 [![License](https://img.shields.io/badge/license-LGPL-blue.svg?style=flat)](https://packagist.org/packages/krymosoftware/gameq)
 
 GameQ is a PHP library that allows you to query multiple types of multiplayer game & voice servers at the same time.
 
-This repository is a maintained fork of [Austinb/GameQ](https://github.com/Austinb/GameQ).
+This repository is a maintained fork of [Austinb/GameQ](https://github.com/Austinb/GameQ) by [Krymo Software](https://krymo.software).
+While we don't plan to add new games for now, we'll ensure compatibility with the latest PHP versions and fix issues as they arise.
 
 ## Requirements
 * PHP 8.1+ - [Tested](https://github.com/KrymoSoftware/GameQ/actions/workflows/Tests.yml) in PHP 8.1, 8.2 and 8.3
@@ -12,10 +13,10 @@ This repository is a maintained fork of [Austinb/GameQ](https://github.com/Austi
 
 ## Installation
 #### [Composer](https://getcomposer.org/)
-This method assumes you already have composer [installed](https://getcomposer.org/doc/00-intro.md) and working properly. Add `krymosoftware/gameq` as a requirement to composer.json by using `composer require krymosoftware/gameq:~3.1` or by manually adding the following to the *composer.json* file in the **require** section:
+This method assumes you already have composer [installed](https://getcomposer.org/doc/00-intro.md) and working properly. Add `krymosoftware/gameq` as a requirement to composer.json by using `composer require krymosoftware/gameq:^4.0.0` or by manually adding the following to the *composer.json* file in the **require** section:
 
 ```json
-"krymosoftware/gameq": "~3.1"
+"krymosoftware/gameq": "^4.0.0"
 ```
 
 Update your packages with `composer update` or install with `composer install`.
