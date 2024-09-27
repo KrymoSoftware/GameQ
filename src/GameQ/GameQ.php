@@ -513,10 +513,10 @@ class GameQ
 
             // Check for online before we do anything else
             $results['gq_online'] = (count($results) > 0);
-        } catch (ProtocolException $e) {
+        } catch (ProtocolException $exception) {
             // Check to see if we are in debug, if so bubble up the exception
             if ($this->debug) {
-                throw $e;
+                throw $exception;
             }
 
             // We ignore this server

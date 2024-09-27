@@ -63,8 +63,8 @@ class Native extends Core
 
             // Send the packet
             return fwrite($this->socket, $data);
-        } catch (\Exception $e) {
-            throw new QueryException($e->getMessage(), $e->getCode(), $e);
+        } catch (\Exception $exception) {
+            throw new QueryException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
