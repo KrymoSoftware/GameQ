@@ -11,7 +11,7 @@ This repository is the maintained [SoftCreatR Media fork](https://github.com/Sof
 
 ## Highlights
 
-- 170 game, voice-server, and generic protocol identifiers.
+- 171 game, voice-server, and generic protocol identifiers.
 - Concurrent mixed-protocol queries with configurable batch and response limits.
 - Normalized `gq_*` fields plus protocol-native data, players, teams, and join links.
 - Broad coverage through established families such as Source and GoldSource, GameSpy, Quake, Unreal, Doom 3, Frostbite, RakNet, and dedicated voice-server protocols.

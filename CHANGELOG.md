@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## [5.0.2] - 2026-08-12
+
+### Added
+
+- Beta Metin2 TCP channel-status queries with strict parsing for the canonical and known extended response layouts.
+- Optional, read-only Metin2 `IS_SERVER_UP` and `USER_COUNT` queries for server owners who explicitly allow the GameQ host through `ADMINPAGE_IP`.
+
 ## [5.0.1] - 2026-08-03
 
 ### Changed
@@ -78,5 +85,7 @@ All notable changes to this project are documented in this file.
 - Version 5.0 includes deliberate public and protected API changes; consumers extending GameQ should review the 4.x migration guide.
 - PHP 8.1 or newer is now required.
 
+[Unreleased]: https://github.com/SoftCreatRMedia/GameQ/compare/5.0.2...HEAD
+[5.0.2]: https://github.com/SoftCreatRMedia/GameQ/compare/5.0.1...5.0.2
 [5.0.1]: https://github.com/SoftCreatRMedia/GameQ/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/SoftCreatRMedia/GameQ/compare/4.0.0...5.0.0
