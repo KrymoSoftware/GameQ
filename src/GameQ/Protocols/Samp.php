@@ -35,6 +35,8 @@ use GameQ\Server;
  */
 class Samp extends Protocol
 {
+    protected string $responseMagicHeader = 'SAMP';
+
     /**
      * Array of packets we want to look up.
      * Each key should correspond to a defined method in this or a parent class
@@ -110,7 +112,7 @@ class Samp extends Protocol
         // Build the server code
         $ipNumbers = array_map('intval', explode('.', $server->ip()));
         $this->server_code = implode('', array_map('chr', $ipNumbers))
-            . pack("S", $server->portClient());
+            . pack('v', $server->portQuery());
 
         // Loop over the packets and update them
         foreach ($this->packets as $packetType => $packet) {
@@ -142,8 +144,8 @@ class Samp extends Protocol
             // Make new buffer
             $buffer = new Buffer($response);
 
-            // Check the header, should be SAMP
-            if (($header = $buffer->read(4)) !== 'SAMP') {
+            // Validate the protocol-specific response magic (SAMP or MP04)
+            if (($header = $buffer->read(4)) !== $this->responseMagicHeader) {
                 throw new ProtocolException(__METHOD__ . " header response '$header' is not valid");
             }
 

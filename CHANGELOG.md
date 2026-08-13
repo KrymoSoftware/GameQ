@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented in this file.
 
+## [5.1.0] - 2026-08-13
+
+### Added
+
+- Native, specification-backed queries for Mindustry, open.mp, Vice City Multiplayer, and Sonic Robo Blast 2.
+- JSON status support for Build and Shoot/piqueserver and Kerbal Space Program DarkMultiPlayer servers.
+- Official server-directory support for Luanti/Minetest, Vintage Story, Renegade X, and OpenRCT2, including protocol-native metadata exposed by those directories.
+
+### Changed
+
+- SA-MP-family query packets now serialize the configured query port explicitly as little-endian bytes.
+- Official-directory responses are restricted to HTTPS, bounded to 16 MiB even for chunked responses, required to return valid JSON with HTTP status 200, and reused across servers querying the same directory.
+
 ## [5.0.2] - 2026-08-12
 
 ### Added
@@ -85,7 +98,8 @@ All notable changes to this project are documented in this file.
 - Version 5.0 includes deliberate public and protected API changes; consumers extending GameQ should review the 4.x migration guide.
 - PHP 8.1 or newer is now required.
 
-[Unreleased]: https://github.com/SoftCreatRMedia/GameQ/compare/5.0.2...HEAD
+[Unreleased]: https://github.com/SoftCreatRMedia/GameQ/compare/5.1.0...HEAD
+[5.1.0]: https://github.com/SoftCreatRMedia/GameQ/compare/5.0.2...5.1.0
 [5.0.2]: https://github.com/SoftCreatRMedia/GameQ/compare/5.0.1...5.0.2
 [5.0.1]: https://github.com/SoftCreatRMedia/GameQ/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/SoftCreatRMedia/GameQ/compare/4.0.0...5.0.0

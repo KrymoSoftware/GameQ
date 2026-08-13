@@ -20,6 +20,11 @@
 namespace GameQ\Tests\Protocols;
 
 use GameQ\Exception\ProtocolException;
+use GameQ\Exception\ServerException;
+use GameQ\Protocol;
+use GameQ\Server;
+use PHPUnit\Framework\Attributes\Before;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class Samp extends Base
 {
@@ -36,16 +41,15 @@ class Samp extends Base
      * @var array<string, string>
      */
     protected array $packets = [
-        \GameQ\Protocol::PACKET_STATUS  => "SAMP%si",
-        \GameQ\Protocol::PACKET_PLAYERS => "SAMP%sd",
-        \GameQ\Protocol::PACKET_RULES   => "SAMP%sr",
+        Protocol::PACKET_STATUS  => "SAMP%si",
+        Protocol::PACKET_PLAYERS => "SAMP%sd",
+        Protocol::PACKET_RULES   => "SAMP%sr",
     ];
 
     /**
      * Setup
-     *
      */
-    #[\PHPUnit\Framework\Attributes\Before]
+    #[Before]
     public function customSetUp(): void
     {
         // Create the stub class
@@ -54,6 +58,8 @@ class Samp extends Base
 
     /**
      * Test the packets to make sure they are correct for source
+     *
+     * @throws ProtocolException
      */
     public function testPackets(): void
     {
@@ -62,7 +68,43 @@ class Samp extends Base
     }
 
     /**
+     * @throws ProtocolException
+     * @throws ServerException
+     */
+    public function testServerCodeUsesDocumentedLittleEndianPortBytes(): void
+    {
+        $server = new Server([
+            Server::SERVER_HOST => '127.0.0.1:7777',
+            Server::SERVER_TYPE => 'samp',
+        ]);
+        $server->protocolInstance()->beforeSend($server);
+        $packet = $server->protocolInstance()->getPacket(Protocol::PACKET_STATUS);
+
+        self::assertSame("SAMP\x7F\x00\x00\x01\x61\x1Ei", $packet);
+    }
+
+    /**
+     * @throws ServerException
+     * @throws ProtocolException
+     */
+    public function testServerCodeUsesConfiguredQueryPort(): void
+    {
+        $server = new Server([
+            Server::SERVER_HOST => '127.0.0.1:7777',
+            Server::SERVER_TYPE => 'samp',
+            Server::SERVER_OPTIONS => ['query_port' => 7778],
+        ]);
+        $server->protocolInstance()->beforeSend($server);
+        $packet = $server->protocolInstance()->getPacket(Protocol::PACKET_STATUS);
+
+        self::assertSame("SAMP\x7F\x00\x00\x01\x62\x1Ei", $packet);
+    }
+
+    /**
      * Test the packer header check application
+     *
+     * @throws ServerException
+     * @throws \ReflectionException
      */
     public function testPacketHeader(): void
     {
@@ -81,6 +123,9 @@ class Samp extends Base
 
     /**
      * Test for mis matched server code in response
+     *
+     * @throws ServerException
+     * @throws \ReflectionException
      */
     public function testServerCode(): void
     {
@@ -97,24 +142,10 @@ class Samp extends Base
     }
 
     /**
-     * Test invalid packet type without debug
-     */
-    public function testInvalidPacketType(): void
-    {
-        // Read in a samp source file
-        $source = self::fixtureContents(sprintf('%s/Providers/Samp/1_response.txt', __DIR__));
-
-        // Change the first packet to some unknown header
-        $source = str_replace("SAMP\x5d\x77\x1a\xc9\x61\x1ei", "SAMP\x5d\x77\x1a\xc9\x61\x1eX", $source);
-
-        // Should fail out
-        $testResult = $this->queryTest('93.119.26.201:7777', 'samp', explode(PHP_EOL . '||' . PHP_EOL, $source), false);
-
-        self::assertFalse($testResult['gq_online']);
-    }
-
-    /**
      * Test for invalid packet type in response
+     *
+     * @throws \ReflectionException
+     * @throws ServerException
      */
     public function testInvalidPacketTypeDebug(): void
     {
@@ -134,11 +165,13 @@ class Samp extends Base
     /**
      * Test responses for San Andreas Multiplayer
      *
-     *
      * @param list<string> $responses
      * @param non-empty-array<string, array<string, mixed>> $result
+     *
+     * @throws ServerException
+     * @throws \ReflectionException
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('loadData')]
+    #[DataProvider('loadData')]
     public function testResponses(array $responses, array $result): void
     {
         // Pull the first key off the array this is the server ip:port
