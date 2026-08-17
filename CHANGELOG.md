@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [5.1.0] - 2026-08-17
+
+### Added
+
+- Beta support for Windrose servers running the documented [Windrose+](https://github.com/HumanGenome/WindrosePlus) status API. Vanilla Windrose does not expose a standard status-query protocol.
+
 ## [5.1.0] - 2026-08-13
 
 ### Added
@@ -99,6 +105,7 @@ All notable changes to this project are documented in this file.
 - PHP 8.1 or newer is now required.
 
 [Unreleased]: https://github.com/SoftCreatRMedia/GameQ/compare/5.1.0...HEAD
+[5.1.1]: https://github.com/SoftCreatRMedia/GameQ/compare/5.1.0...5.1.1
 [5.1.0]: https://github.com/SoftCreatRMedia/GameQ/compare/5.0.2...5.1.0
 [5.0.2]: https://github.com/SoftCreatRMedia/GameQ/compare/5.0.1...5.0.2
 [5.0.1]: https://github.com/SoftCreatRMedia/GameQ/compare/5.0.0...5.0.1
