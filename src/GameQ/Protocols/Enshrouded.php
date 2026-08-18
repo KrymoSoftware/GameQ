@@ -30,5 +30,24 @@ class Enshrouded extends Source
 
     protected string $name_long = 'Enshrouded';
 
+    /**
+     * Retained with its original default value for 5.x extension compatibility.
+     */
     protected int $port_diff = 1;
+
+    /**
+     * The official dedicated server uses its configured query port directly.
+     */
+    public function portDiff(): int
+    {
+        return 0;
+    }
+
+    /**
+     * The official dedicated server advertises its query port as the game port.
+     */
+    public function findQueryPort(int $clientPort): int
+    {
+        return $clientPort;
+    }
 }

@@ -36,7 +36,7 @@ class SourceAliases extends Base
         yield 'American Truck Simulator' => ['ats', 27015, 27016, 'American Truck Simulator'];
         yield 'Euro Truck Simulator 2' => ['ets2', 27015, 27016, 'Euro Truck Simulator 2'];
         yield 'Counter-Strike 2' => ['cs2', 27015, 27015, 'Counter-Strike 2'];
-        yield 'Enshrouded' => ['enshrouded', 15636, 15637, 'Enshrouded'];
+        yield 'Enshrouded' => ['enshrouded', 15637, 15637, 'Enshrouded'];
         yield 'Nova-Life' => ['novalife', 7777, 27015, 'Nova-Life: Amboise'];
         yield 'Arma Reforger' => ['armareforger', 2001, 17777, 'Arma Reforger'];
         yield 'Wreckfest' => ['wreckfest', 33540, 27016, 'Wreckfest'];
@@ -54,5 +54,16 @@ class SourceAliases extends Base
         self::assertSame($type, (string) $server->protocolInstance());
         self::assertSame($name, $server->protocolInstance()->nameLong());
         self::assertSame($queryPort, $server->portQuery());
+    }
+
+    public function testEnshroudedUsesItsConfiguredPortDirectly(): void
+    {
+        $server = new Server([
+            Server::SERVER_TYPE => 'enshrouded',
+            Server::SERVER_HOST => '127.0.0.1:15637',
+        ]);
+
+        self::assertSame(0, $server->protocolInstance()->portDiff());
+        self::assertSame(15637, $server->portQuery());
     }
 }

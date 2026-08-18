@@ -2,7 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
-## [5.1.0] - 2026-08-17
+## [5.1.2] - 2026-08-18
+
+### Fixed
+
+- Enshrouded now queries the configured server port directly, matching the current official dedicated server.
+
+## [5.1.1] - 2026-08-17
 
 ### Added
 
